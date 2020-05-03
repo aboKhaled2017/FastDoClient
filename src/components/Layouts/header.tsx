@@ -12,7 +12,7 @@ import ContactUsIcon from '@material-ui/icons/ContactSupportRounded'
 import MyDrugsIcon from '@material-ui/icons/SearchRounded'
 import SearchDrugsIcon from '@material-ui/icons/SearchSharp'
 
-import UserIcon from '@material-ui/icons/PersonOutlineOutlined'
+import UserIcon from '@material-ui/icons/PersonAddOutlined'
 import AcountIconOutlined from '@material-ui/icons/AccountCircleOutlined'
 
 import IconButton from '@material-ui/core/IconButton';
@@ -153,7 +153,7 @@ export default function Header({}: Props): ReactElement {
                   <Button  component={Link} to="/join" size="medium" color="primary" 
                         variant="outlined"                   
                         className={classes.appBarButton} 
-                        startIcon={<Icon  fontSize="small" className="fa fa-user-plus"/> }> 
+                        startIcon={<UserIcon  fontSize="small"/> }> 
                   <span className="buttonText"> انضم الينا </span>
                   </Button>
                   <Divider className={classes.buttonDivider} orientation="vertical" flexItem/>

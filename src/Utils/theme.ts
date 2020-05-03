@@ -1,6 +1,6 @@
 import { Theme } from "@material-ui/core";
 
-export default <Theme>{
+export default {
     palette: {
         primary: {
           light: '#33c9dc',
@@ -15,4 +15,7 @@ export default <Theme>{
           contrastText: '#fff'
         }
       },
-}
+      spreatIt:{
+
+      }
+} 

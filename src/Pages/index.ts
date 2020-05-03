@@ -5,8 +5,8 @@ import MyDrugs from './MyDrugs';
 import Home from './Home';
 import Login from './Login';
 import Profile from './Profile';
-import Register from './Register';
+import Join from './Join';
 import Account from './Account';
 export {
-    AboutUs,ContactUs,DrugSearch,MyDrugs,Home,Login,Profile,Register,Account
+    AboutUs,ContactUs,DrugSearch,MyDrugs,Home,Login,Profile,Join,Account
 }

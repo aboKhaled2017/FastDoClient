@@ -15,10 +15,12 @@ interface Props {
 }
 const styles=makeStyles((theme:Theme)=>createStyles({
   footer:{
-     marginTop:theme.spacing(5),
+     marginTop:theme.spacing(4), 
+     paddingTop:theme.spacing(4),
+     borderTop:'2px solid #ccc',   
     '& .MuiGrid-container':{
       [`${theme.breakpoints.down('sm')}`]:{
-        marginBottom:theme.spacing(2)
+        marginBottom:theme.spacing(2),       
       },     
     }
   },

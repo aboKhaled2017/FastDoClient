@@ -1,0 +1,14 @@
+.MuiInputLabel-formControl{
+    right:2rem;
+    left:inherit !important;
+    font-size: 16px !important;
+  }
+.MuiInputBase-root legend{
+      text-align: right !important;
+}
+.MuiInputBase-root  legend > span {
+    font-size: .85rem !important;
+}
+.MuiInputLabel-shrink {
+  transform-origin: top right !important;
+}
