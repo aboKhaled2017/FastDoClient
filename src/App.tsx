@@ -4,7 +4,7 @@ import './App.css';
 import themeConfig from './Utils/theme'
 import {Header,Footer} from './components/Layouts'
 import { createMuiTheme, ThemeProvider, Container, Theme, withStyles } from '@material-ui/core';
-import {AboutUs,ContactUs,DrugSearch,Home,Login,MyDrugs,Profile,Join,Account} from './Pages'
+import {AboutUs,ContactUs,DrugSearch,Home,Login,MyLazDrugs,Profile,Join,Account} from './Pages'
 const styles=((theme:Theme)=>({
   mainContainer:{
     marginTop:theme.spacing(3)
@@ -27,7 +27,7 @@ export default withStyles(styles) (class App extends Component<{classes:{[key:st
                     <Route exact path="/account" component={Account}/>
                     <Route exact path="/aboutUs" component={AboutUs}/>
                     <Route exact path="/contactUs" component={ContactUs}/>
-                    <Route exact path="/myDrugs" component={MyDrugs}/>
+                    <Route exact path="/myLazDrugs" component={MyLazDrugs}/>
                     <Route exact path="/searchDrugs" component={DrugSearch}/>              
               </Switch>
              </Container>

@@ -12,3 +12,7 @@
 .MuiInputLabel-shrink {
   transform-origin: top right !important;
 }
+.MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-endAdornment{
+  right:inherit !important;
+  left:9px;
+}

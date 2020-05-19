@@ -37,6 +37,10 @@ const styles=(theme:Theme)=>({
     },
     TabPanelTitle:{
        color:'#647484'
+    },
+    indicator:{
+        width:4,
+        borderRadius:'30%'
     }
 })
 function a11yProps(index: any) {
@@ -56,7 +60,7 @@ function TabPanel(props: TabPanelProps) {
     </Typography>
     )
 }
-export default withStyles(styles)(class Profile extends Component<IProps, IState> {
+export default withStyles(styles)(class extends Component<IProps, IState> {
     state = {value:3}
     handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         this.setState({value:newValue});
@@ -74,6 +78,7 @@ export default withStyles(styles)(class Profile extends Component<IProps, IState
                         <Grid sm={4}>
                             <Tabs orientation="vertical"
                                 variant="scrollable"
+                                TabIndicatorProps={{className:classes.indicator}}
                                 value={this.state.value}
                                 onChange={this.handleChange}
                                 aria-label="Vertical tabs"

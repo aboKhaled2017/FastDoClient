@@ -59,11 +59,11 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface Props {
+interface IProps {
   
 }
 
-export default function Header({}: Props): ReactElement {
+export default function Header({}: IProps): ReactElement {
   const classes = useStyles();
   const auth=credentials.auth;
   const [openDrawer,setOpenDrawer]=useState(false);
@@ -76,7 +76,7 @@ export default function Header({}: Props): ReactElement {
   ]
   const authListItems=[
     ...unAuthListItems,
-    {text:'رواكدى',to:'/myDrugs'},
+    {text:'ادارة رواكدى',to:'/myLazDrugs'},
     {text:'البحث عن رواكد',to:'searchDrugs'}
   ]
   const listItems =auth?authListItems:unAuthListItems;
@@ -106,7 +106,7 @@ export default function Header({}: Props): ReactElement {
               <Button component={Link} to="/aboutUs" variant="text"  color="primary" className={classes.appBarButton}>ماذا عنا</Button>
               <Button component={Link} to="/contactUs" variant="text"  color="primary" className={classes.appBarButton}>تواصل معنا</Button>
               {auth && <>
-                <Button component={Link} to="/myDrugs" variant="text"  color="primary" className={classes.appBarButton}>رواكدى</Button>
+                <Button component={Link} to="/myLazDrugs" variant="text"  color="primary" className={classes.appBarButton}>ادراة رواكدى</Button>
                 <Button component={Link} to="/searchDrugs" variant="text"  color="primary" className={classes.appBarButton}>البحث عن الرواكد</Button>
               </>}
             </Box>
