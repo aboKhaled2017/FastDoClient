@@ -10,7 +10,6 @@ interface State {
 
 const styles=(theme:Theme)=>({
     contactUsContainer:{
-        background: '#e8e0e04d',
         padding: theme.spacing(5),
         borderRadius: 14,
         '& .contactForm':{

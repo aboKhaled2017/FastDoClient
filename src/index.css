@@ -9,7 +9,8 @@
 }
 body {
   margin: 0;
-  font-family:arabic_font !important
+  font-family:arabic_font !important;
+  background:#00bcd421
 }
 div,p,input,textarea,label,span:not(.fa),button,h1,h2,h3,h4,h5,h6,i:not(.fa){
   font-family:arabic_font !important

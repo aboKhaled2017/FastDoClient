@@ -1,5 +1,5 @@
 export const LazDrugTypes=[
-    {title:"اقراص",value: "شراب"},
+    {title:"اقراص",value: "اقراص"},
     {title:"شراب",value:"شراب"},
     {title:"حقن",value:"حقن"},
     {title:"نقط",value:"نقط",},
@@ -26,7 +26,7 @@ export const LazDrugsUnitTypes=[
     {title:"علبة",value:LazDrugUnitType.elba},
     {title:"كرتونة",value:LazDrugUnitType.cartoon},
     {title:"كبسولة",value:LazDrugUnitType.capsole},
-    {title:"وحدة من اسم الصنف",value:LazDrugUnitType.unit},
+    {title:"وحدة/صنف ",value:LazDrugUnitType.unit},
 ]
 export enum LazDrugPriceType{
     new,old
@@ -35,6 +35,6 @@ export const LazDrugPricesTypes=[
     {title:'سعر جديد',value:LazDrugPriceType.new},
     {title:'سعر قديم',value:LazDrugPriceType.old}
 ]
-export enum LazDrugContractType{
+export enum LazDrugConsumeType{
     exchange,burning
 }

@@ -1,14 +1,26 @@
-import { LazDrugUnitType, LazDrugPriceType, LazDrugContractType } from './DataTypes';
+import { LazDrugUnitType, LazDrugPriceType, LazDrugConsumeType } from './DataTypes';
 export interface ILazDrugModel{
     id:string
     name:string
-    quntity:number 
+    quantity:number 
     unitType:LazDrugUnitType
     priceType:LazDrugPriceType
     validDate:Date
     price:number
     drugType:string 
-    note:string
+    desc:string
     discount:number|null
-    contractType:LazDrugContractType
+    consumeType:LazDrugConsumeType
 }
+export interface ILzDrugsTableRow {
+    id:string
+    name: string
+    type:string 
+    desc:string
+    quantity: number
+    price:number
+    consumeType: number
+    discount: number
+    validDate:Date
+    priceType:number     
+  }

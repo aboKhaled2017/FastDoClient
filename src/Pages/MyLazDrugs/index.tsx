@@ -27,7 +27,7 @@ const styles=(theme:Theme)=>({
         height: 224,
     },
     container:{
-        background:'#eee',
+       
         padding:theme.spacing(.5,.5),
     },
     paper:{
@@ -36,11 +36,10 @@ const styles=(theme:Theme)=>({
     },
     tabs:{
         color:'#fff',
-        background:theme.palette.primary.main,
+        background:'#2d3e50',
         borderRadius:5
     },
     tabIndicator:{
-        background:'#fff',
         height:4
     },
     TabPanelTitle:{
@@ -74,7 +73,7 @@ const LzDrugsTabs=withStyles(styles as any)((props:ILzDrugsTabsProps):ReactEleme
     )
 })
 export default withStyles(styles as any)(class Profile extends Component<IProps, IState> {
-    state = {value:0}
+    state = {value:1}
     handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         this.setState({value:newValue});
     }

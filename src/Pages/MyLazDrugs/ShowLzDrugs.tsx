@@ -15,53 +15,16 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import DrugTabs from './DrugTabs';
+import { ILzDrugsTableRow } from '../../Interfaces/ModelsTypes';
 
-const useRowStyles = makeStyles({
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-});
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      '&.row':{
-        '&:nth-of-type(odd)': {
-          backgroundColor: theme.palette.action.hover,
-        },
-      }
-    },
-  }),
-)(TableRow);
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-  },
-  container: {
-    maxHeight: 880,
-  },
-});
-interface ILzDrugsRow {
-    id:string
-    name: string
-    type:string 
-    desc:string
-    quantity: number
-    price:number
-    consumeType: number
-    discount: number
-    validDate:Date
-    priceType:number     
-}
-  
 interface TableState {
-    columns: Array<Column<ILzDrugsRow>>;
-    data: ILzDrugsRow[];
+  columns: Array<Column<ILzDrugsTableRow>>;
+  data: ILzDrugsTableRow[];
 }
-const myData:ILzDrugsRow[]=[
+const myData:ILzDrugsTableRow[]=[
   {
-    id:'Aaaa-bbbb-ff', name: 'vental15', type: 'حقن', desc:'', quantity: 63,
+    id:'Aaaa-bbbb-ff', name: 'antinal500', type: 'حقن', desc:'', quantity: 63,
     price:20,consumeType:0,discount:10,validDate:new Date(),priceType:1
   },
   {
@@ -89,66 +52,104 @@ const myData:ILzDrugsRow[]=[
     price:19,consumeType:0,discount:10,validDate:new Date(),priceType:1
   },
 ]
-function LzDrugTableRow(props: { row: ILzDrugsRow }) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
+const useRowStyles = makeStyles({
+  root: {
+    '& > *': {
+      borderBottom: 'unset',
+    }
+  },
+  collapseCell:{
+    padding: 2,
+  width: 50,
+  textAlign: 'center'
+  }
+});
+const StyledTableRow = withStyles((theme: Theme) =>createStyles({
+    root: {
+      background:'rgba(0, 0, 0, 0.04)',
+      '&:nth-of-type(4n+3)': {
+        backgroundColor:'#647484',
+        '&> td,> th':{
+          color:'#fff',
+          '&> button':{
+            color:'#fff'
+          }
+        }
+      },
+    }
+}),
+)(TableRow);
+const useStyles = makeStyles({
+  root: {
+    width: '100%',
+  },
+  container: {
+    maxHeight: 880,
+  },
+  thead:{
+    '& th':{
+      background:'#000',
+      fontSize:20,
+      color:'#fff',
+      border: '2px solid rgba(206, 206, 206, 0.56)',
+      textAlign: 'center'
+    }
+  }
+});
+function LzDrugCollapsedRow(props: { row: ILzDrugsTableRow,open:boolean}){
+  const { row ,open} = props;
+  return <TableRow>
+            <TableCell align="right" style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                  <Box margin={1}>
+                    <Typography variant="h6" gutterBottom component="div">
+                      كل ما يتعلق بالراكد
+                    </Typography>
+                    <DrugTabs model={row}/>
+                  </Box>
+                </Collapse>
+            </TableCell>
+          </TableRow>
+}
+function LzDrugTableRow(props: { row: ILzDrugsTableRow }) {
   const classes = useRowStyles();
-
+  const {row}=props;
+  const initOpen=row.name=="antinal500"?true:false;
+  const [open, setOpen] = React.useState(initOpen);
   return (
     <React.Fragment>
-      <StyledTableRow className={classes.root +" row"}>
-        <TableCell>
+      <StyledTableRow className={classes.root}>
+        <TableCell className={classes.collapseCell}>
           <IconButton title="التفاصيل" aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
+        <TableCell align="center" component="th" scope="row">
           {row.name}
         </TableCell>
-        <TableCell>{row.type}</TableCell>
-        <TableCell>{row.price}</TableCell>
-        <TableCell>{row.quantity}</TableCell>
-        <TableCell>{row.discount}</TableCell>
+        <TableCell align="center">{row.type}</TableCell>
+        <TableCell align="center">{row.price}</TableCell>
+        <TableCell align="center">{row.quantity}</TableCell>
       </StyledTableRow>
-      <Box component={TableRow}>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                History
-              </Typography>
-              <ul>
-                <li>"property"</li>
-                <li>"property"</li>
-                <li>"property"</li>
-                <li>"property"</li>
-                <li>"property"</li>
-              </ul>
-              </Box>
-          </Collapse>
-        </TableCell>
-      </Box>
-    </React.Fragment>
+      <LzDrugCollapsedRow row={row} open={open}/>
+      </React.Fragment>
   );
 }
-
 function CollapsibleTable() {
   const classes=useStyles();
   return (
     <TableContainer component={Paper} className={classes.root}>
       <Table aria-label="collapsible table">
-        <TableHead>
+        <TableHead className={classes.thead}>
           <TableRow>
-            <TableCell />
-            <TableCell>الاسم</TableCell>
+            <TableCell colSpan={2}>الاسم</TableCell>
             <TableCell>النوع</TableCell>
             <TableCell>السعر</TableCell>
             <TableCell>الكمية</TableCell>
-            <TableCell>الخصم</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {myData.map((row:ILzDrugsRow)=> (
+          {myData.map((row:ILzDrugsTableRow)=> (
             <LzDrugTableRow key={row.name} row={row} />
           ))}
         </TableBody>

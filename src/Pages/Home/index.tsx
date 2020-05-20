@@ -16,14 +16,13 @@ interface State {
 
 const styles=((theme:Theme)=>({
     backWrapper:{   
-      margin:theme.spacing(-2.9,-4.3),
+      margin:0,
+      marginTop:theme.spacing(-3),
       backgroundImage:`url(${homeImage})`,
       backgroundSize:'cover',
       padding:theme.spacing(3),
       overflow:'hidden',
-      [`${theme.breakpoints.down('md')}`]:{
-        margin:theme.spacing(-2.9,0),
-      }
+       
     },
     welcomGrid:{
         color:'#fff',

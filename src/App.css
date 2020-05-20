@@ -16,3 +16,6 @@
   right:inherit !important;
   left:9px;
 }
+.MuiSelect-selectMenu{
+  text-align:right
+}

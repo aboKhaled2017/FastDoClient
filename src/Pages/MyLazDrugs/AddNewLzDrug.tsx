@@ -1,16 +1,19 @@
-import React, { ReactElement, useState } from 'react'
-import { Theme, withStyles, TextField, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core'
+import React, { ReactElement, useState, ChangeEvent } from 'react'
+import { Theme, withStyles, TextField, Button, FormControl, InputLabel, Select, MenuItem, Chip } from '@material-ui/core'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import SendIcon from '@material-ui/icons/SendOutlined'
 import { ILazDrugModel } from '../../Interfaces/ModelsTypes';
-import { LazDrugContractType, LazDrugPriceType, LazDrugUnitType, LazDrugsUnitTypes, LazDrugPricesTypes, LazDrugTypes } from '../../Interfaces/DataTypes';
+import { LazDrugConsumeType, LazDrugPriceType, LazDrugUnitType, LazDrugsUnitTypes, LazDrugPricesTypes, LazDrugTypes } from '../../Interfaces/DataTypes';
 interface IProps {
     classes:{[key:string]:any}
 }
+type ISelectInputChange=(event: React.ChangeEvent<{name?: string; value: unknown;}>,
+     child: React.ReactNode)=>void;
 const styles=(theme:Theme)=>({
     form:{
-        margin:'auto',
+        marginRight:theme.spacing(3),
         textAlign:'center',
+        width:'50%',
         [`${theme.breakpoints.only('sm')}`]:{
             width:'80%',
         },
@@ -39,43 +42,40 @@ const styles=(theme:Theme)=>({
     },
     formButtonIcon:{
         marginLeft:theme.spacing(1.5)
-    }
+    },
+    
 })
-const ComboBox=(props:{id:string,className:any,label:string,options:{title:string,value:any}[]})=> {
-    return (
-        <Autocomplete
-            id={props.id}     
-            style={{marginTop:'10px'}}                
-            options={props.options}
-            defaultChecked
-            defaultValue={props.options[0]}
-            getOptionLabel={(option) => option.title}
-            className={props.className}           
-            renderInput={(params) => 
-               <TextField {...params} 
-                          label={props.label} 
-                          name={props.id}
-                          variant="outlined"/>}
-        />
-        );
+const getLzDrugStateFormate=(lzDrugModel:ILazDrugModel)=>{
+    const unitTypeName=LazDrugsUnitTypes.find(v=>v.value==lzDrugModel.unitType)?.title;
+    return `يوجد لدى عدد ${lzDrugModel.quantity} ${unitTypeName} من  ${lzDrugModel.name} - ${lzDrugModel.drugType} - بسعر ${lzDrugModel.price} جنية لل/${unitTypeName}`
 }
 export default withStyles(styles as any)((props: IProps): ReactElement=> {
     const {classes}=props;
-    const [lzDrugModel,setl]=useState<ILazDrugModel>({
+    const [lzDrugModel,setLzDrugModel]=useState<ILazDrugModel>({
         id:'',
         name:'',
-        quntity:0,
-        contractType:LazDrugContractType.burning,
+        quantity:0,
+        consumeType:LazDrugConsumeType.burning,
         discount:0,
-        drugType:'',
-        note:'',
+        drugType:'اقراص',
+        desc:'',
         price:0,
         priceType:LazDrugPriceType.new,
         unitType:LazDrugUnitType.elba,
         validDate:null as any as Date
     })
     const [errors,setErrors]=useState<any>({});
-     
+    const handleSubmit=(e: React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
+        e.preventDefault();
+        alert('added')
+    }
+    const handleChange:ISelectInputChange=(e,child)=>{
+      setLzDrugModel(prev=>({...prev,[e.target.name as string]:e.target.value as string}))
+    }
+    const handleInputChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
+        e.persist();
+        setLzDrugModel(prev=>({...prev,[e.target.name as string]:e.target.value as string}))
+    }
     return (
         <div>
            <form className={classes.form}>
@@ -90,21 +90,33 @@ export default withStyles(styles as any)((props: IProps): ReactElement=> {
                    size="medium"
                    fullWidth
                    helperText={errors?.name}
-                   error={errors?.name?true:false}                       
-                   //onChange={handleChange}
+                   error={errors?.name?true:false}  
+                   value={lzDrugModel.name}                     
+                   onChange={handleInputChange}
                />
-               <ComboBox
-                   id="drugType" 
-                   label=""
-                   options={LazDrugTypes}
-                   className={classes.textField}/>
-               <ComboBox
-                   id="unitType" 
-                   label="نوع الوحدة (شريط,علبة,كرتونة,كبسولة, ... وحدة اخرى)"
-                   options={LazDrugsUnitTypes}
-                   className={classes.textField}/>
-
-               <TextField 
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="ConsumeTypeSelect" 
+                                className={classes.inputLabel}>
+                                    اختر نوع الراكد
+                    </InputLabel>       
+                    <Select
+                        variant="outlined"
+                        id="drugTypeSelect"   
+                        name="drugType"                                         
+                        //open={open}
+                        //onClose={handleClose}
+                        //onOpen={handleOpen}
+                        value={lzDrugModel.drugType}
+                        onChange={handleChange}
+                        >
+                        {LazDrugTypes.map((item,i)=>(
+                         <MenuItem  className={classes.menuItem} key={i} value={item.value}>{item.title}</MenuItem>
+                        ))}
+                    </Select>
+                    {/**<FormHelperText>Required</FormHelperText> */}
+                </FormControl>
+                
+                <TextField 
                    id="quantity"
                    name="quantity"
                    label="الكمية"
@@ -116,9 +128,30 @@ export default withStyles(styles as any)((props: IProps): ReactElement=> {
                    fullWidth
                    helperText={errors?.quantity}
                    error={errors?.quantity?true:false}                       
-                   //onChange={handleChange}
+                   onChange={handleInputChange}
+                   value={lzDrugModel.quantity}  
                />
-               <TextField 
+
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="ConsumeTypeSelect" className={classes.inputLabel}>نوع الوحدة (شريط,علبة,كرتونة,كبسولة, ... وحدة اخرى)</InputLabel>       
+                    <Select
+                        variant="outlined"
+                        id="unitTypeSelect"
+                        name="unitType"
+                        //open={open}
+                        //onClose={handleClose}
+                        //onOpen={handleOpen}
+                        value={lzDrugModel.unitType}
+                        onChange={handleChange}
+                        >
+                        {LazDrugsUnitTypes.map((item,i)=>(
+                         <MenuItem key={i} value={item.value}>{item.title}</MenuItem>
+                        ))}
+                    </Select>
+                    {/**<FormHelperText>Required</FormHelperText> */}
+                </FormControl>
+                     
+                <TextField 
                    id="price"
                    name="price"
                    label="سعر الوحدة"
@@ -130,18 +163,36 @@ export default withStyles(styles as any)((props: IProps): ReactElement=> {
                    fullWidth
                    helperText={errors?.price}
                    error={errors?.price?true:false}                       
-                   //onChange={handleChange}
-               />
-                <ComboBox
-                   id="priceType" 
-                   label="نوع السعر"
-                   options={LazDrugPricesTypes}
-                   className={classes.textField}/>
+                   onChange={handleInputChange}
+                   value={lzDrugModel.price}  
+                />
 
+                <Chip size="small" 
+                      style={{marginTop:2}}
+                      label={getLzDrugStateFormate(lzDrugModel)}/>
+
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="priceTypeSelect" className={classes.inputLabel}>نوع السعر</InputLabel>       
+                    <Select
+                        variant="outlined"
+                        id="priceTypeSelect"
+                        name="priceType"
+                        //open={open}
+                        //onClose={handleClose}
+                        //onOpen={handleOpen}
+                        value={lzDrugModel.priceType}
+                        onChange={handleChange}
+                        >
+                        {LazDrugPricesTypes.map((item,i)=>(
+                         <MenuItem key={i} value={item.value}>{item.title}</MenuItem>
+                        ))}
+                    </Select>
+                    {/**<FormHelperText>Required</FormHelperText> */}
+                </FormControl>
                <TextField 
                    id="validDate"
                    name="validDate"
-                   label="تاريخ صلاعية الراكد"
+                   label="تاريخ صلاحية الراكد"
                    type="date"
                    variant="outlined"       
                    fullWidth                             
@@ -150,12 +201,13 @@ export default withStyles(styles as any)((props: IProps): ReactElement=> {
                    size="medium"
                    helperText={errors?.validDate}
                    error={errors?.validDate?true:false} 
+                   value={lzDrugModel.validDate}  
                />
 
                <TextField 
                    id="discount"
                    name="discount"
-                   label="نسبة الخصم فى حالة لو تريد الحرق/البيع مباشرة"
+                   label="نسبة الخصم فى حالة البيع مباشرة دون استبدال"
                    type="number"
                    variant="outlined"                  
                    className={classes.textField}
@@ -164,32 +216,31 @@ export default withStyles(styles as any)((props: IProps): ReactElement=> {
                    fullWidth
                    helperText={errors?.discount}
                    error={errors?.discount?true:false}                       
-                   //onChange={handleChange}
+                   onChange={handleInputChange}
+                   value={lzDrugModel.discount}  
                />
                 
                 <FormControl className={classes.formControl}>
-                <InputLabel id="contractTypeSelect" className={classes.inputLabel}>كيفية استهلاك الراكد</InputLabel>       
+                    <InputLabel id="consumeTypeSelect" className={classes.inputLabel}>كيفية استهلاك الراكد</InputLabel>       
                     <Select
+                        name="consumeType"
                         variant="outlined"
-                        id="selectContracttype"
+                        id="selectConsumeType"
                         //open={open}
                         //onClose={handleClose}
                         //onOpen={handleOpen}
-                        value={0}
-                        //onChange={this.handleSelectCityChange}
+                        value={lzDrugModel.consumeType}
+                        onChange={handleChange}
                         >
-                        <MenuItem value={3}>
-                        <em>اختر  كيفية الاستهلاك</em>
-                        </MenuItem>
-                        <MenuItem value={0}>الاستبدال</MenuItem>
-                        <MenuItem value={1}>الحرق/البيع</MenuItem>
+                        <MenuItem value={0}>استبدال جمهور مع جمهور</MenuItem>
+                        <MenuItem value={1}>بيع (الحرق بالخصم) </MenuItem>
                     </Select>
                     {/**<FormHelperText>Required</FormHelperText> */}
                 </FormControl>
             
                <TextField 
-                   id="note"
-                   name="note"
+                   id="desc"
+                   name="desc"
                    label="عبر عن منتجك بالتفصيل"
                    type="text"
                    rows={5}
@@ -200,13 +251,16 @@ export default withStyles(styles as any)((props: IProps): ReactElement=> {
                    className={classes.textField}
                    margin="dense"
                    size="medium"
-                   helperText={errors?.note}
-                   error={errors?.note?true:false} 
+                   helperText={errors?.desc}
+                   error={errors?.desc?true:false} 
+                   onChange={handleInputChange}
+                   value={lzDrugModel.desc}  
                />
                <Button 
                         variant="contained" color="primary" 
                         className={classes.formButton} 
-                        type="submit"                               
+                        type="submit"   
+                        onClick={handleSubmit}                            
                         startIcon={
                             <SendIcon className={classes.formButtonIcon}/>
                         }> 

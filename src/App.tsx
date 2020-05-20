@@ -7,7 +7,7 @@ import { createMuiTheme, ThemeProvider, Container, Theme, withStyles } from '@ma
 import {AboutUs,ContactUs,DrugSearch,Home,Login,MyLazDrugs,Profile,Join,Account} from './Pages'
 const styles=((theme:Theme)=>({
   mainContainer:{
-    marginTop:theme.spacing(3)
+    marginTop:theme.spacing(3),
   }
 }))
 export default withStyles(styles) (class App extends Component<{classes:{[key:string]:any}}>{
@@ -17,7 +17,7 @@ export default withStyles(styles) (class App extends Component<{classes:{[key:st
       <ThemeProvider theme={createMuiTheme(themeConfig)}>
            <BrowserRouter>
              <Header/>
-             <Container disableGutters className={this.props.classes.mainContainer}>
+             <div  className={this.props.classes.mainContainer}>
               <Switch>            
                     <Route exact path="/" component={Home}/>
                     <Route exact path="/login" component={Login}/>
@@ -30,7 +30,7 @@ export default withStyles(styles) (class App extends Component<{classes:{[key:st
                     <Route exact path="/myLazDrugs" component={MyLazDrugs}/>
                     <Route exact path="/searchDrugs" component={DrugSearch}/>              
               </Switch>
-             </Container>
+             </div>
              <Footer/>
            </BrowserRouter>        
       </ThemeProvider>

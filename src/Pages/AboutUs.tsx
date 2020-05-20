@@ -8,7 +8,6 @@ interface Props {
 }
 const styles=(theme:Theme)=>({
     aboutContainer:{
-        background: '#e8e0e04d',
         padding: theme.spacing(5),
         borderRadius: 14
     },
