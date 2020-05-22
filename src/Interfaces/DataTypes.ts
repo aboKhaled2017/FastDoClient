@@ -14,6 +14,18 @@ export const LazDrugTypes=[
     {title:"مسلتزمات شعر",value:"مسلتزمات شعر",},
     {title:"مسلتزمات تزيين",value:"مسلتزمات تزيين",}
 ]
+export const DrugPagesValuesTypes=[
+   100,
+   125,
+   250,
+   500,
+   750,
+   1000,
+   1250,
+   1500,
+   1750,
+   2000
+]
 export enum LazDrugUnitType{
     shareet,
     elba,
@@ -37,4 +49,32 @@ export const LazDrugPricesTypes=[
 ]
 export enum LazDrugConsumeType{
     exchange,burning
+}
+export const LazDrugConsumeTypes=[
+    {title:'استبدالجمهور مع جمهور',value:LazDrugConsumeType.exchange},
+    {title:'حرق/بيع بدون استبدال',value:LazDrugConsumeType.burning}
+]
+export enum IDrugPagesValues{
+ P100=100,
+ P125=125,
+ P250=250,
+ P500=500,
+ P750=750,
+ P1000=1000,
+ P1250=1250,
+ P1500=1500,
+ P1750=1750,
+ P2000=2000
+}
+export interface IDrugPackageItem{
+    id:string 
+    name:string 
+    quantity:number 
+    price:number
+}
+export interface IDrugPackage{
+    name:string
+    value:IDrugPagesValues
+    items:IDrugPackageItem[]
+    totalPrice:number
 }

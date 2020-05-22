@@ -12,44 +12,49 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import EditIcon from '@material-ui/icons/EditRounded'
+import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import DrugTabs from './DrugTabs';
-import { ILzDrugsTableRow } from '../../Interfaces/ModelsTypes';
+import {  ILazDrugModel } from '../../Interfaces/ModelsTypes';
+import { LazDrugConsumeType } from '../../Interfaces/DataTypes';
 
 interface TableState {
-  columns: Array<Column<ILzDrugsTableRow>>;
-  data: ILzDrugsTableRow[];
+  columns: Array<Column<ILazDrugModel>>;
+  data: ILazDrugModel[];
 }
-const myData:ILzDrugsTableRow[]=[
+const myData:ILazDrugModel[]=[
   {
-    id:'Aaaa-bbbb-ff', name: 'antinal500', type: 'حقن', desc:'', quantity: 63,
-    price:20,consumeType:0,discount:10,validDate:new Date(),priceType:1
+    id:'Aaaa-bbbb-ff', name: 'antinal500', type: 'حقن', quantity: 63,
+    price:20,consumeType:LazDrugConsumeType.burning,discount:10,
+    validDate:new Date(),priceType:1,unitType:0,
+    desc:'حقن انتينال 500 تاريخ جديد ,المنتج متوفر الى يوم الثلاثاء القادم, استبدال جمهور بجمهور'
   },
   {
     id:'Aaaa-bbbb-bb', name: 'antinal', type: 'اقراص', desc:'', quantity: 18,
-    price:25,consumeType:0,discount:77,validDate:new Date(),priceType:1
+    price:25,consumeType:LazDrugConsumeType.exchange,discount:77,validDate:new Date(),priceType:1,unitType:1
   },
   {
     id:'Aaaa-bbbb-tt', name: 'bros15', type: 'مستلزمات طبية', desc:'', quantity: 16,
-    price:10,consumeType:1,discount:20,validDate:new Date(),priceType:0
+    price:10,consumeType:LazDrugConsumeType.burning,discount:20,validDate:new Date(),priceType:0,unitType:0
   },
   {
     id:'Aaaa-bbbb-rr', name: 'koncat', type: 'شراب', desc:'', quantity: 44,
-    price:105,consumeType:1,discount:50,validDate:new Date(),priceType:0
+    price:105,consumeType:LazDrugConsumeType.exchange,discount:50,validDate:new Date(),priceType:0,unitType:0
   },
   {
     id:'Aaaa-bbbb-ee', name: 'abimole', type: 'نقط', desc:'', quantity: 51,
-    price:44,consumeType:0,discount:10,validDate:new Date(),priceType:1
+    price:44,consumeType:LazDrugConsumeType.burning,discount:10,validDate:new Date(),priceType:1,unitType:2
   },
   {
     id:'Aaaa-bbbb-po', name: 'capsol', type: 'مرهم دهان', desc:'', quantity: 98,
-    price:17,consumeType:0,discount:10,validDate:new Date(),priceType:0
+    price:17,consumeType:LazDrugConsumeType.burning,discount:10,validDate:new Date(),priceType:0,unitType:1
   },
   {
     id:'Aaaa-bbbb-cv', name: 'voltareen', type: 'حقن', desc:'', quantity: 15,
-    price:19,consumeType:0,discount:10,validDate:new Date(),priceType:1
+    price:19,consumeType:LazDrugConsumeType.burning,discount:10,validDate:new Date(),priceType:1,unitType:2
   },
 ]
 const useRowStyles = makeStyles({
@@ -96,7 +101,7 @@ const useStyles = makeStyles({
     }
   }
 });
-function LzDrugCollapsedRow(props: { row: ILzDrugsTableRow,open:boolean}){
+function LzDrugCollapsedRow(props: { row: ILazDrugModel,open:boolean}){
   const { row ,open} = props;
   return <TableRow>
             <TableCell align="right" style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -111,7 +116,7 @@ function LzDrugCollapsedRow(props: { row: ILzDrugsTableRow,open:boolean}){
             </TableCell>
           </TableRow>
 }
-function LzDrugTableRow(props: { row: ILzDrugsTableRow }) {
+function LzDrugTableRow(props: { row: ILazDrugModel }) {
   const classes = useRowStyles();
   const {row}=props;
   const initOpen=row.name=="antinal500"?true:false;
@@ -130,6 +135,16 @@ function LzDrugTableRow(props: { row: ILzDrugsTableRow }) {
         <TableCell align="center">{row.type}</TableCell>
         <TableCell align="center">{row.price}</TableCell>
         <TableCell align="center">{row.quantity}</TableCell>
+        <TableCell align="center">
+           <div>
+           <IconButton  title="تعديل بيانات الراكد">
+            <EditIcon color="primary"/>
+           </IconButton>
+           <IconButton  title="حذف الراكد">
+            <DeleteForeverRoundedIcon color="secondary"/>
+           </IconButton>
+           </div>
+        </TableCell>
       </StyledTableRow>
       <LzDrugCollapsedRow row={row} open={open}/>
       </React.Fragment>
@@ -146,10 +161,11 @@ function CollapsibleTable() {
             <TableCell>النوع</TableCell>
             <TableCell>السعر</TableCell>
             <TableCell>الكمية</TableCell>
+            <TableCell>التحم</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {myData.map((row:ILzDrugsTableRow)=> (
+          {myData.map((row:ILazDrugModel)=> (
             <LzDrugTableRow key={row.name} row={row} />
           ))}
         </TableBody>
@@ -157,7 +173,6 @@ function CollapsibleTable() {
     </TableContainer>
   );
 }
-
 function LzDrugsTable() {
     const [state, setState] = React.useState<TableState>({
       columns: [

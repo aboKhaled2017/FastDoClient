@@ -2,7 +2,9 @@ import React from 'react'
 import { makeStyles, Tabs, Tab } from '@material-ui/core';
 import { a11yProps } from '../../../Commons/Services';
 import TabPanel from '../../../Commons/VTabPanel';
-import { ILzDrugsTableRow } from '../../../Interfaces/ModelsTypes';
+import { ILzDrugsTableRow, ILazDrugModel } from '../../../Interfaces/ModelsTypes';
+import DrugDetails from './DrugDetails';
+import AddToPackage from './AddToPackage';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -13,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
       borderRight: `1px solid ${theme.palette.divider}`,
     },
 }));
-export default(props:{model:ILzDrugsTableRow})=>{
+export default(props:{model:ILazDrugModel})=>{
 const classes = useStyles();
 const [value, setValue] = React.useState(0);
 const {model}=props;
@@ -36,11 +38,10 @@ return (
             <Tab label="حالةالراكد" {...a11yProps(2)} />
         </Tabs>
         <TabPanel value={value} index={0}>
-            Item One
-            <div>{model.validDate.toISOString()} {model.name}</div>
+           <DrugDetails model={model}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-            Item Two
+            <AddToPackage model={model}/>
         </TabPanel>
         <TabPanel value={value} index={2}>
             Item Three

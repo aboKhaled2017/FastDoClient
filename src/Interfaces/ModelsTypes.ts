@@ -1,13 +1,13 @@
-import { LazDrugUnitType, LazDrugPriceType, LazDrugConsumeType } from './DataTypes';
+import { LazDrugUnitType, LazDrugPriceType, LazDrugConsumeType, IDrugPagesValues } from './DataTypes';
 export interface ILazDrugModel{
     id:string
     name:string
+    type:string 
     quantity:number 
     unitType:LazDrugUnitType
     priceType:LazDrugPriceType
     validDate:Date
     price:number
-    drugType:string 
     desc:string
     discount:number|null
     consumeType:LazDrugConsumeType
@@ -23,4 +23,9 @@ export interface ILzDrugsTableRow {
     discount: number
     validDate:Date
     priceType:number     
-  }
+}
+export interface IAddNewPackage {
+    errors:any 
+    name:string 
+    packgType:IDrugPagesValues
+}

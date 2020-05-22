@@ -1,14 +1,13 @@
 import React, { ReactElement, useState, ChangeEvent } from 'react'
 import { Theme, withStyles, TextField, Button, FormControl, InputLabel, Select, MenuItem, Chip } from '@material-ui/core'
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import SendIcon from '@material-ui/icons/SendOutlined'
 import { ILazDrugModel } from '../../Interfaces/ModelsTypes';
 import { LazDrugConsumeType, LazDrugPriceType, LazDrugUnitType, LazDrugsUnitTypes, LazDrugPricesTypes, LazDrugTypes } from '../../Interfaces/DataTypes';
+import { getLzDrugStateFormate } from '../../Commons/Services';
+import { ISelectInputChange } from '../../Interfaces/EventTypes';
 interface IProps {
     classes:{[key:string]:any}
 }
-type ISelectInputChange=(event: React.ChangeEvent<{name?: string; value: unknown;}>,
-     child: React.ReactNode)=>void;
 const styles=(theme:Theme)=>({
     form:{
         marginRight:theme.spacing(3),
@@ -45,10 +44,6 @@ const styles=(theme:Theme)=>({
     },
     
 })
-const getLzDrugStateFormate=(lzDrugModel:ILazDrugModel)=>{
-    const unitTypeName=LazDrugsUnitTypes.find(v=>v.value==lzDrugModel.unitType)?.title;
-    return `يوجد لدى عدد ${lzDrugModel.quantity} ${unitTypeName} من  ${lzDrugModel.name} - ${lzDrugModel.drugType} - بسعر ${lzDrugModel.price} جنية لل/${unitTypeName}`
-}
 export default withStyles(styles as any)((props: IProps): ReactElement=> {
     const {classes}=props;
     const [lzDrugModel,setLzDrugModel]=useState<ILazDrugModel>({
@@ -57,7 +52,7 @@ export default withStyles(styles as any)((props: IProps): ReactElement=> {
         quantity:0,
         consumeType:LazDrugConsumeType.burning,
         discount:0,
-        drugType:'اقراص',
+        type:'اقراص',
         desc:'',
         price:0,
         priceType:LazDrugPriceType.new,
@@ -101,12 +96,12 @@ export default withStyles(styles as any)((props: IProps): ReactElement=> {
                     </InputLabel>       
                     <Select
                         variant="outlined"
-                        id="drugTypeSelect"   
-                        name="drugType"                                         
+                        id="typeSelect"   
+                        name="type"                                         
                         //open={open}
                         //onClose={handleClose}
                         //onOpen={handleOpen}
-                        value={lzDrugModel.drugType}
+                        value={lzDrugModel.type}
                         onChange={handleChange}
                         >
                         {LazDrugTypes.map((item,i)=>(

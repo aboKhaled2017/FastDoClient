@@ -101,7 +101,7 @@ export default withStyles(styles as any)(class Profile extends Component<IProps,
                         </TabPanel>
                         <TabPanel  value={this.state.value} index={2}>
                                 <Typography variant="subtitle1" className={classes.TabPanelTitle}> 
-                                    انشاء باكج/عرض تبادلى جديد
+                                    انشاء باكج / باقة جديدة
                                 </Typography>
                                 <AddNewPackage/>
                         </TabPanel>
