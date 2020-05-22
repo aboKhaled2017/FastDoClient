@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/FastDoClient/static/css/main.7d9988b9.chunk.css",
+    "main.js": "/FastDoClient/static/js/main.38cd80ff.chunk.js",
+    "main.js.map": "/FastDoClient/static/js/main.38cd80ff.chunk.js.map",
+    "runtime-main.js": "/FastDoClient/static/js/runtime-main.25db66c5.js",
+    "runtime-main.js.map": "/FastDoClient/static/js/runtime-main.25db66c5.js.map",
+    "static/js/2.c1181dd0.chunk.js": "/FastDoClient/static/js/2.c1181dd0.chunk.js",
+    "static/js/2.c1181dd0.chunk.js.map": "/FastDoClient/static/js/2.c1181dd0.chunk.js.map",
+    "index.html": "/FastDoClient/index.html",
+    "precache-manifest.c5b3cd62c7a1b1a36cda2574d368de52.js": "/FastDoClient/precache-manifest.c5b3cd62c7a1b1a36cda2574d368de52.js",
+    "service-worker.js": "/FastDoClient/service-worker.js",
+    "static/css/main.7d9988b9.chunk.css.map": "/FastDoClient/static/css/main.7d9988b9.chunk.css.map",
+    "static/js/2.c1181dd0.chunk.js.LICENSE.txt": "/FastDoClient/static/js/2.c1181dd0.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/FastDoClient/static/media/GE_Dinar_Two_Medium.78502733.otf",
+    "static/media/all.min.css": "/FastDoClient/static/media/fa-solid-900.b70cea03.ttf",
+    "static/media/homeImage.jpg": "/FastDoClient/static/media/homeImage.2b923fbb.jpg",
+    "static/media/home_company_slider_bg1.jpg": "/FastDoClient/static/media/home_company_slider_bg1.941d96db.jpg",
+    "static/media/pharma.jpg": "/FastDoClient/static/media/pharma.da72dba0.jpg",
+    "static/media/storeIcon.png": "/FastDoClient/static/media/storeIcon.d72f8cdb.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.25db66c5.js",
+    "static/js/2.c1181dd0.chunk.js",
+    "static/css/main.7d9988b9.chunk.css",
+    "static/js/main.38cd80ff.chunk.js"
+  ]
+}
