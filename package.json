@@ -1,6 +1,6 @@
 {
-  "homepage": "https://abokhaled2017.github.io/FastDoClient",
-  "name": "FastDo",
+  "homepage": "http://abokhaled2017.github.io/FastDoClient",
+  "name": "fastdo",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
