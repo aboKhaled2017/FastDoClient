@@ -5,6 +5,8 @@ import TabPanel from '../../../Commons/VTabPanel';
 import { ILzDrugsTableRow, ILazDrugModel } from '../../../Interfaces/ModelsTypes';
 import DrugDetails from './DrugDetails';
 import AddToPackage from './AddToPackage';
+import { LazDrugConsumeType } from '../../../Interfaces/DataTypes';
+import PackageStatus from './PackageStatus';
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -17,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default(props:{model:ILazDrugModel})=>{
 const classes = useStyles();
-const [value, setValue] = React.useState(0);
+const [value, setValue] = React.useState(1);
 const {model}=props;
 const handleChange = (event: React.ChangeEvent<{}>, newValue:number) => {
     setValue(newValue);
@@ -34,17 +36,17 @@ return (
             className={classes.tabs}
         >
             <Tab label="كل البيانات" {...a11yProps(0)} />
-            <Tab label="اضف الى باكج" {...a11yProps(1)} />
+            <Tab label="اضف الى باكج" {...a11yProps(1)} disabled={model.consumeType==LazDrugConsumeType.burning}/>
             <Tab label="حالةالراكد" {...a11yProps(2)} />
         </Tabs>
         <TabPanel value={value} index={0}>
            <DrugDetails model={model}/>
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        <TabPanel value={value} index={1} disbaled={model.consumeType==LazDrugConsumeType.burning}>
             <AddToPackage model={model}/>
         </TabPanel>
         <TabPanel value={value} index={2}>
-            Item Three
+            <PackageStatus model={model}/>
         </TabPanel>
     </div>
 );

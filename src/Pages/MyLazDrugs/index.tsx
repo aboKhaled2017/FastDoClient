@@ -1,5 +1,5 @@
 import React, { Component, Fragment, ReactElement } from 'react'
-import { Theme, withStyles, Tabs, Tab, Typography, Grid, Container, List, ListItem, ListItemIcon, ListItemText, Divider, Paper } from '@material-ui/core'
+import { Theme, withStyles, Tabs, Tab, Typography, Grid, Container, List, ListItem, ListItemIcon, ListItemText, Divider, Paper, Box } from '@material-ui/core'
 
 import AddIcon from '@material-ui/icons/AddCircleRounded'
 import ShowIcon from '@material-ui/icons/ViewComfyRounded'
@@ -26,8 +26,7 @@ const styles=(theme:Theme)=>({
         display: 'flex',
         height: 224,
     },
-    container:{
-       
+    container:{   
         padding:theme.spacing(.5,.5),
     },
     paper:{
@@ -73,7 +72,7 @@ const LzDrugsTabs=withStyles(styles as any)((props:ILzDrugsTabsProps):ReactEleme
     )
 })
 export default withStyles(styles as any)(class Profile extends Component<IProps, IState> {
-    state = {value:1}
+    state = {value:3}
     handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         this.setState({value:newValue});
     }
@@ -81,12 +80,12 @@ export default withStyles(styles as any)(class Profile extends Component<IProps,
         const {classes}=this.props;
         return (
            <Fragment>
-               <Container>
+               <Box>
                    <Typography align="center" color="primary" variant="h4">
                    صفحة ادارة الرواكد 
                    </Typography>
                    <LzDrugsTabs className={classes.tabs} value={this.state.value} handleChange={this.handleChange}/>
-                   <Container  className={classes.container}>
+                   <Box  className={classes.container}>
                         <TabPanel  value={this.state.value} index={0}>
                                 <Typography variant="subtitle1" className={classes.TabPanelTitle}> 
                                     اضافة راكد جديد
@@ -106,13 +105,13 @@ export default withStyles(styles as any)(class Profile extends Component<IProps,
                                 <AddNewPackage/>
                         </TabPanel>
                         <TabPanel  value={this.state.value} index={3}>
-                                <Typography variant="subtitle1" className={classes.TabPanelTitle}> 
-                                     عرض بكجاتى/عروضى التبادلية
+                                <Typography variant="h6" className={classes.TabPanelTitle}> 
+                                     كل الباكجز/الباقات الخاصة بى
                                 </Typography>
                                 <ShowPackages/>
                         </TabPanel>
-                   </Container>
-               </Container>                        
+                   </Box>
+               </Box>                        
            </Fragment>
         )
     }

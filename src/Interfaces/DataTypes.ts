@@ -77,4 +77,6 @@ export interface IDrugPackage{
     value:IDrugPagesValues
     items:IDrugPackageItem[]
     totalPrice:number
+    desc:string
+    imgSrc:string
 }

@@ -27,5 +27,6 @@ export interface ILzDrugsTableRow {
 export interface IAddNewPackage {
     errors:any 
     name:string 
+    desc:string
     packgType:IDrugPagesValues
 }

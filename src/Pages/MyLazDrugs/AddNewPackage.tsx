@@ -28,6 +28,9 @@ const styles=(theme:Theme)=>({
         },
         '& label':{
             color:'#666'
+        },
+        '& .MuiInputBase-root':{
+            paddingTop:25
         }
     },
     formControl: {   
@@ -53,6 +56,7 @@ export default withStyles(styles as any)(({classes}: IProps)=> {
     const [newPackage,setNewPackage]=useState<IAddNewPackage>({
         name:'',
         packgType:0,
+        desc:'',
         errors:{}
     });
     const [packages,setPackages]=useState(DrugsPackges.get());
@@ -70,7 +74,9 @@ export default withStyles(styles as any)(({classes}: IProps)=> {
     }
     const handleSubmit=(e: React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
-        const {name,packgType,errors}=newPackage;
+        let {name,packgType,desc,errors}=newPackage;
+        name=name.trim();
+        desc=desc.trim();
         let hasErrors=false;
         if(!name ||name.length<2){
             errors.name="الاسم غير صالح";
@@ -79,20 +85,29 @@ export default withStyles(styles as any)(({classes}: IProps)=> {
         if(!packgType ||packgType==0){
             errors.packgType="من فضلك اختار الباكج/الباقة";
             hasErrors=true;
+        }
+        if(!desc ||desc.length<10){
+            errors.desc="الوص على الاقل يتكون من 10 حروف";
+            hasErrors=true;
         }        
         if(hasErrors){
             setNewPackage(prev=>({...prev,errors}));
             return;
         }
         else{
-            setNewPackage(prev=>({...prev,name:'',packgType:0,errors:{}}));
+            setNewPackage(prev=>({...prev,name:'',desc:'',packgType:0,errors:{}}));
         }
-        DrugsPackges.addNew(name,packgType);
-        setPackages(DrugsPackges.get())
-        setOpen(true)
+        var res=DrugsPackges.addNew(name,packgType,desc);
+        if(!res.done){
+            alert(res.error)
+        }
+        else{
+            setOpen(true)
         setTimeout(() => {
             setOpen(false)
         }, 3000);
+        }
+        setPackages(DrugsPackges.get())       
     }
     const handleChange:ISelectInputChange=(e,child)=>{
       setNewPackage(prev=>({...prev,[e.target.name as string]:e.target.value as string}))
@@ -103,7 +118,7 @@ export default withStyles(styles as any)(({classes}: IProps)=> {
     }
     const handleChipDelete = () => {
         console.info('You clicked the delete icon.');
-      };
+    };
 
     return (
         <Box mt={3}>
@@ -135,7 +150,8 @@ export default withStyles(styles as any)(({classes}: IProps)=> {
                             <Select
                                 variant="outlined"
                                 id="packgTypeSelect"   
-                                name="packgType"                                         
+                                name="packgType"   
+                                error={newPackage.errors && newPackage.errors.packgType}                                      
                                 //open={open}
                                 //onClose={handleClose}
                                 //onOpen={handleOpen}
@@ -147,10 +163,27 @@ export default withStyles(styles as any)(({classes}: IProps)=> {
                                 <MenuItem  className={classes.menuItem} key={i} value={item}>{`باقة ${item} جنية`}</MenuItem>
                                 ))}
                             </Select>
+                            <FormHelperText error={newPackage.errors && newPackage.errors.packgType}>
+                                {newPackage.errors.packgType}
+                            </FormHelperText>
                         </FormControl>
-                        {newPackage.errors && newPackage.errors.packgType &&
-                        <Typography variant="body2" color="secondary">{newPackage.errors.packgType}</Typography>
-                        }
+                        <TextField 
+                                id="desc"
+                                name="desc"
+                                label="اكتب وصف يعبر عن محتوى الباقة/الباكج   (كل ما تريد شرحة للمستهلك)"
+                                type="text"
+                                rows={5}
+                                rowsMax={10}
+                                multiline
+                                variant="outlined"
+                                fullWidth
+                                className={classes.textField}
+                                margin="dense"
+                                helperText={newPackage.errors?.desc}
+                                error={newPackage.errors?.desc?true:false} 
+                                onChange={handleInputChange}
+                                value={newPackage.desc}  
+                        />                       
                         <Button className={classes.formButton} color="primary"
                                 type="submit"
                                 startIcon={<PlusIcon color="primary"/>}
@@ -159,10 +192,10 @@ export default withStyles(styles as any)(({classes}: IProps)=> {
                         </Button>
                         </form>
                         <Snackbar open={open} autoHideDuration={400} onClose={handleClose}>
-                        <Alert  onClose={handleClose} severity="success">
-                        تم اضافة الباكج /الباقة بنجاح
-                        </Alert>
-                    </Snackbar>
+                            <Alert  onClose={handleClose} severity="success">
+                            تم اضافة الباكج /الباقة بنجاح
+                            </Alert>
+                        </Snackbar>
                 </Box>
               </Grid>
               <Grid item md={5} xs alignContent="center">

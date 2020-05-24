@@ -119,7 +119,7 @@ function LzDrugCollapsedRow(props: { row: ILazDrugModel,open:boolean}){
 function LzDrugTableRow(props: { row: ILazDrugModel }) {
   const classes = useRowStyles();
   const {row}=props;
-  const initOpen=row.name=="antinal500"?true:false;
+  const initOpen=row.name=="antinal"?true:false;
   const [open, setOpen] = React.useState(initOpen);
   return (
     <React.Fragment>
