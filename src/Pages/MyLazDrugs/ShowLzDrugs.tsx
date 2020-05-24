@@ -93,7 +93,7 @@ const useStyles = makeStyles({
   },
   thead:{
     '& th':{
-      background:'#000',
+      background:'#008394',
       fontSize:20,
       color:'#fff',
       border: '2px solid rgba(206, 206, 206, 0.56)',
@@ -172,85 +172,6 @@ function CollapsibleTable() {
       </Table>
     </TableContainer>
   );
-}
-function LzDrugsTable() {
-    const [state, setState] = React.useState<TableState>({
-      columns: [
-        { title: 'id', field: 'id',hidden:true},
-        { title: 'الاسم', field: 'name' },
-        { title: 'النوع', field: 'type'},
-        {
-          title: 'الوصف',
-          field: 'desc',
-          lookup: { 34: 'Istanbul', 63: 'Sanliurfa' },
-        },
-        { title: 'الكمية', field: 'quantity', type:'numeric'},
-        { title: 'السعر للوحدة', field: 'price',type:'numeric' },
-        {
-          title: 'طريقة الاستهلاك',
-          field: 'consumeType',
-          lookup: { 
-            0: 'تبادل جمهور مع جمهور',
-            1: 'البيع بالخصم',
-            2:'اى منهما' },
-        },
-        { title: 'نسبة الخصم', field: 'discount',type:'numeric',render:(data,type)=>{
-          return `${data.discount} %`;
-        }},
-        { title: 'تاريخ الصلاحية', field: 'validDate',type:'date'},
-        { title: 'نوع السعر', field: 'priceType', lookup:{
-          0:'سعر جديد',
-          1:'سعر قديم'
-        } },
-      ],
-      data: myData
-    });
-  
-    return (
-      <MaterialTable
-        title="الرواكد خاصتى"
-        columns={state.columns}
-        data={state.data}
-        
-        editable={{
-          onRowAdd: (newData) =>
-            new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                setState((prevState) => {
-                  const data = [...prevState.data];
-                  data.push(newData);
-                  return { ...prevState, data };
-                });
-              }, 600);
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                if (oldData) {
-                  setState((prevState) => {
-                    const data = [...prevState.data];
-                    data[data.indexOf(oldData)] = newData;
-                    return { ...prevState, data };
-                  });
-                }
-              }, 600);
-            }),
-          onRowDelete: (oldData) =>
-            new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                setState((prevState) => {
-                  const data = [...prevState.data];
-                  data.splice(data.indexOf(oldData), 1);
-                  return { ...prevState, data };
-                });
-              }, 600);
-            }),
-        }}
-      />
-    );
 }
 interface Props {
     
