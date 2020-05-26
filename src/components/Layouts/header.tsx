@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       flexGrow: 1,
     },
+    appBar:{
+      background:theme.palette.primary.main,
+      color:'#fff'
+    },
     menuButton: {
       marginLeft: theme.spacing(2),
     },
@@ -92,7 +96,7 @@ export default function Header({}: IProps): ReactElement {
     setOpenDrawer(!openDrawer);
   }
   return (
-       <AppBar position="sticky" color="inherit">
+       <AppBar position="sticky" className={classes.appBar}>
          <Toolbar variant="dense">
            <Box m={1} alignItems="center">          
             <Link to="/">
@@ -102,12 +106,12 @@ export default function Header({}: IProps): ReactElement {
            {/**show only desktop screen */}
            <Hidden smDown={true}>
             <Box flexGrow={1}>
-              <Button component={Link} to="/" variant="text"  color="primary" className={classes.appBarButton}>الرئيسية</Button>
-              <Button component={Link} to="/aboutUs" variant="text"  color="primary" className={classes.appBarButton}>ماذا عنا</Button>
-              <Button component={Link} to="/contactUs" variant="text"  color="primary" className={classes.appBarButton}>تواصل معنا</Button>
+              <Button component={Link} to="/" variant="text"  color="inherit" className={classes.appBarButton}>الرئيسية</Button>
+              <Button component={Link} to="/aboutUs" variant="text"  color="inherit" className={classes.appBarButton}>ماذا عنا</Button>
+              <Button component={Link} to="/contactUs" variant="text"  color="inherit" className={classes.appBarButton}>تواصل معنا</Button>
               {auth && <>
-                <Button component={Link} to="/myLazDrugs" variant="text"  color="primary" className={classes.appBarButton}>ادراة رواكدى</Button>
-                <Button component={Link} to="/searchDrugs" variant="text"  color="primary" className={classes.appBarButton}>البحث عن الرواكد</Button>
+                <Button component={Link} to="/myLazDrugs" variant="text"  color="inherit" className={classes.appBarButton}>ادراة رواكدى</Button>
+                <Button component={Link} to="/searchDrugs" variant="text"  color="inherit" className={classes.appBarButton}>البحث عن الرواكد</Button>
               </>}
             </Box>
               {auth && (
@@ -117,7 +121,7 @@ export default function Header({}: IProps): ReactElement {
                     aria-controls="menu-appbar"
                     aria-haspopup="true"
                     onClick={handleMenu}
-                    color="primary"
+                    color="inherit"
                   >
                     <AccountCircle />
                   </IconButton>
@@ -150,14 +154,14 @@ export default function Header({}: IProps): ReactElement {
               )}
               {!auth && 
               <Box display="flex">
-                  <Button  component={Link} to="/join" size="medium" color="primary" 
+                  <Button  component={Link} to="/join" size="medium" color="inherit" 
                         variant="outlined"                   
                         className={classes.appBarButton} 
                         startIcon={<UserIcon  fontSize="small"/> }> 
                   <span className="buttonText"> انضم الينا </span>
                   </Button>
                   <Divider className={classes.buttonDivider} orientation="vertical" flexItem/>
-                  <Button component={Link} to="/login" size="medium" color="primary" 
+                  <Button component={Link} to="/login" size="medium" color="inherit" 
                           variant="outlined"                   
                           className={classes.appBarButton} 
                           startIcon={<Icon  fontSize="small" className="fa fa-sign"/> }> 
@@ -170,7 +174,7 @@ export default function Header({}: IProps): ReactElement {
            <Hidden mdUp={true}>
             <Box flexGrow={1}/>
             <IconButton edge="start" 
-                        color="primary"
+                        color="inherit"
                         aria-label="open drawer"
                         onClick={handleDrawerToggle}
                         className={classes.menuButton}>

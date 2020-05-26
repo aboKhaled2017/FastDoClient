@@ -30,3 +30,18 @@ export interface IAddNewPackage {
     desc:string
     packgType:IDrugPagesValues
 }
+export interface ILazDrugShowModel{
+    id:string
+    name:string
+    type:string 
+    quantity:number 
+    unitType:LazDrugUnitType
+    priceType:LazDrugPriceType
+    validDate:Date
+    price:number
+    desc:string
+    discount:number|null
+    consumeType:LazDrugConsumeType
+    address:string 
+    pharmacyName:string
+}

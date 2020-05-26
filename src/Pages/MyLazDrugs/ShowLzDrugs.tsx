@@ -119,8 +119,8 @@ function LzDrugCollapsedRow(props: { row: ILazDrugModel,open:boolean}){
 function LzDrugTableRow(props: { row: ILazDrugModel }) {
   const classes = useRowStyles();
   const {row}=props;
-  const initOpen=row.name=="antinal"?true:false;
-  const [open, setOpen] = React.useState(initOpen);
+  //const initOpen=row.name=="antinal"?true:false;
+  const [open, setOpen] = React.useState(false);
   return (
     <React.Fragment>
       <StyledTableRow className={classes.root}>

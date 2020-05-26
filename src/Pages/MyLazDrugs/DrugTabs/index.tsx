@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default(props:{model:ILazDrugModel})=>{
 const classes = useStyles();
-const [value, setValue] = React.useState(1);
+const [value, setValue] = React.useState(0);
 const {model}=props;
 const handleChange = (event: React.ChangeEvent<{}>, newValue:number) => {
     setValue(newValue);
