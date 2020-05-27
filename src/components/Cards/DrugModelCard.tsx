@@ -18,7 +18,7 @@ import CheckedIcon from '@material-ui/icons/CheckRounded';
 import SendIcon from '@material-ui/icons/SendRounded';
 import { ILazDrugShowModel } from '../../Interfaces/ModelsTypes';
 import { getDrugUnitType, getLzDrugStateFormate, getDrugValidDate, getDrugPriceType, getDrugConsumeType, getDrugDesc } from '../../Commons/Services';
-import { Button } from '@material-ui/core';
+import { Button, Box, Divider } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -119,9 +119,18 @@ export default function RecipeReviewCard(props:{model:ILazDrugShowModel}) {
          <RequestButton/>
         }
         title={`${model.name} / ${model.type}`}
-        subheader={`${model.quantity} ${getDrugUnitType(model.unitType)} بخصم ${model.discount} جنية`}
+        subheader={`${model.quantity} ${getDrugUnitType(model.unitType)} بخصم ${model.discount} %`}
       />
       <CardContent>
+        <Box display="flex">
+          <Typography variant="subtitle1" color="primary">
+            صيدلية /{model.pharmacyName}
+          </Typography>
+          <Divider variant="middle" flexItem orientation="vertical"/>
+          <Typography variant="body1" color="textPrimary">
+           {model.address}
+          </Typography>
+        </Box>
         <Typography variant="body1" color="textSecondary" component="p">
          {model.desc}
         </Typography>
