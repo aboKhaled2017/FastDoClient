@@ -1,6 +1,6 @@
 import { LazDrugConsumeType } from "../../Interfaces/DataTypes"
 import { ILazDrugShowModel } from "../../Interfaces/ModelsTypes"
-export default [
+const dataRecords=[
     {
       id:'Aaaa-bbbb-ff', name: 'profeen',
       type: 'أقراص', quantity: 63,
@@ -158,4 +158,31 @@ export default [
                 pharmacyName:'د وحيد عصمت محمد',
                 desc:'كمامات مزودة بفلتر  عدد 51 قطعة , بخصم 25%'
               },
-  ] as ILazDrugShowModel[]
+] as ILazDrugShowModel[]
+
+export const getCityDataList=()=>{
+  let data:{name:string,destricts:{name:string}[]}[]=[];
+   dataRecords.forEach(rec=>{
+    let [cityName,destrictName]=rec.address.split('/');
+    cityName=cityName.trim();
+    destrictName=destrictName.trim();
+    if(!data.some(r=>r.name===cityName)){
+      data.push({name:cityName,destricts:[{name:destrictName}]})
+    }
+    else{
+      let c=data.find(r=>r.name==cityName);
+      let index=data.findIndex(d=>d.name===c?.name);
+      if(!c?.destricts.some(d=>d.name===destrictName))
+      {
+        c?.destricts.push({name:destrictName});
+        (data as any)[index]=c;
+      }
+
+    }
+  })
+  return data;
+} 
+export const getCitisNamesList=()=>{
+  return getCityDataList().map(rec=>({name:rec.name}))
+}
+export default dataRecords

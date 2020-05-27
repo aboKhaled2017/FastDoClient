@@ -8,6 +8,9 @@ import { ILazDrugShowModel } from '../../Interfaces/ModelsTypes'
 import DrugModelCard from '../../components/Cards/DrugModelCard'
 
 import SearchInput from './SearchInput'
+import AddressFilter from './FiltersControls/AddressFilter'
+
+
 const useStyles=makeStyles((theme:Theme)=>({
   burningDrugsTable:{
     '& table':{
@@ -62,20 +65,38 @@ body: {
 export default ()=>{
   const tableRef=createRef(); 
   const classes=useStyles();
-  const [tableData,setTableData]=useState(dataRecords)
-
+  const originalTableData=dataRecords;
+  let [filteredData,setFilteredData]=useState(dataRecords);
+  const [tableData,setTableData]=useState(originalTableData)
   const handleInpChange=(e: React.ChangeEvent<HTMLInputElement>)=>{
     let q=e.target.value.trim();
-    if(!q) setTableData(dataRecords);
-    let data=dataRecords.filter(record=>record.name.includes(q))
-     setTableData(data)
+    if(!q) setTableData(filteredData);
+    let data=filteredData.filter(record=>record.name.includes(q))
+    setTableData(data)
   }
+  const handleOnCitySelectChange=(event: object, cities:{name:string}[]|null, reason: string)=>{
+    if(!cities||cities?.length==0){
+      setTableData(originalTableData);
+      return;
+    }
+    const filtData=originalTableData.filter(rec=>{
+      let name=rec.address.split('/')[0].trim();
+      return cities?.some(c=>c.name===name)
+    })
+    setTableData(filtData)
+    setFilteredData(filtData);
+ }
   return (
     <div className={classes.burningDrugsTable}>
       <Grid container>
          <Grid item md={4} xs={12}>
-            <Box p={'1px 5px'}>
-              <SearchInput onChange={handleInpChange}/>
+            <Box m={'2px 8px'}>
+              <Box>
+                <SearchInput onChange={handleInpChange}/>
+              </Box>
+              <Box mt={3}>
+                <AddressFilter handleSelectChange={handleOnCitySelectChange}/>
+              </Box>
             </Box>
          </Grid>
          <Grid item md={8} xs={12}>
