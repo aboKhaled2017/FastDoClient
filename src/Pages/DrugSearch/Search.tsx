@@ -9,7 +9,10 @@ import DrugModelCard from '../../components/Cards/DrugModelCard'
 
 import SearchInput from './SearchInput'
 import AddressFilter from './FiltersControls/AddressFilter'
-
+import { OnAutoCompleteSelectChange } from '../../Interfaces/UIsTypes'
+import { connect } from 'react-redux'
+import { ISearchDataState } from '../../Interfaces/States'
+import DateFilter from './FiltersControls/DateFilter'
 
 const useStyles=makeStyles((theme:Theme)=>({
   burningDrugsTable:{
@@ -61,94 +64,88 @@ body: {
   }
 }
 }
-
-export default ()=>{
+interface IProps{
+  tableData:ILazDrugShowModel[]
+  filteredData:ILazDrugShowModel[]
+}
+const SearchPage= (props:IProps)=>{
   const tableRef=createRef(); 
   const classes=useStyles();
-  const originalTableData=dataRecords;
-  let [filteredData,setFilteredData]=useState(dataRecords);
-  const [tableData,setTableData]=useState(originalTableData)
-  const handleInpChange=(e: React.ChangeEvent<HTMLInputElement>)=>{
-    let q=e.target.value.trim();
-    if(!q) setTableData(filteredData);
-    let data=filteredData.filter(record=>record.name.includes(q))
-    setTableData(data)
-  }
-  const handleOnCitySelectChange=(event: object, cities:{name:string}[]|null, reason: string)=>{
-    if(!cities||cities?.length==0){
-      setTableData(originalTableData);
-      return;
-    }
-    const filtData=originalTableData.filter(rec=>{
-      let name=rec.address.split('/')[0].trim();
-      return cities?.some(c=>c.name===name)
-    })
-    setTableData(filtData)
-    setFilteredData(filtData);
- }
+  const {tableData}=props
+
   return (
     <div className={classes.burningDrugsTable}>
       <Grid container>
          <Grid item md={4} xs={12}>
             <Box m={'2px 8px'}>
               <Box>
-                <SearchInput onChange={handleInpChange}/>
+                <SearchInput/>
               </Box>
               <Box mt={3}>
-                <AddressFilter handleSelectChange={handleOnCitySelectChange}/>
+                <AddressFilter/>
+              </Box>
+              <Box mt={5}>
+                <DateFilter/>
               </Box>
             </Box>
          </Grid>
          <Grid item md={8} xs={12}>
          <MaterialTable
-      title="ابحث عن راكدك هنا"
-      icons={tableIcons}    
-      tableRef={tableRef}
-      localization={tbLocalization}
-      style={{
-        background:'transparent',
-        boxShadow:'none'
-      }}
-      components={{    
+            title="ابحث عن راكدك هنا"
+            icons={tableIcons}    
+            tableRef={tableRef}
+            localization={tbLocalization}
+            style={{
+              background:'transparent',
+              boxShadow:'none'
+            }}
+            components={{    
 
-        Row:(props:any)=>{
-        let record=props.data as ILazDrugShowModel;
-        return(
-        <Box alignContent="center" m={'15px 15px'}>
-          <DrugModelCard model={record}/>
-        </Box>
-        )
-        }
-      }}
-      options={{
-        filtering:true,
-        header:true,
-        toolbar:false,
-        headerStyle:{
-          marginBottom:15,
-          background:'transparent'
-        },
-         showTitle:false,
-         hideFilterIcons:false,
-         searchFieldVariant:'outlined',
-         searchFieldAlignment:'right',
-         searchFieldStyle:{
-           background:'#fff'
-         },
-         
-      }}
-      
-      columns={[
-        { title: 'الاسم', field: 'name',tooltip:'رتب حسب الاسم',filtering:false},
-        { title: 'الكمية', field: 'quantity',tooltip:'راب حسب الكمية',filtering:false },
-        { title: 'السعر', field: 'price',tooltip:'رتب حسب السعر',filtering:false},
-        {title:  "الخصم",field: 'discount',tooltip:'رتب حسب الخصم',filtering:false},
-        
-      ]}
-      data={tableData}
-    />
+              Row:(props:any)=>{
+              let record=props.data as ILazDrugShowModel;
+              return(
+              <Box alignContent="center" m={'15px 15px'}>
+                <DrugModelCard model={record}/>
+              </Box>
+              )
+              }
+            }}
+            options={{
+              filtering:true,
+              header:true,
+              toolbar:false,
+              headerStyle:{
+                marginBottom:15,
+                background:'transparent'
+              },
+              showTitle:false,
+              hideFilterIcons:false,
+              searchFieldVariant:'outlined',
+              searchFieldAlignment:'right',
+              searchFieldStyle:{
+                background:'#fff'
+              },
+              
+            }}
+            
+            columns={[
+              { title: 'الاسم', field: 'name',tooltip:'رتب حسب الاسم',filtering:false},
+              { title: 'الكمية', field: 'quantity',tooltip:'راب حسب الكمية',filtering:false },
+              { title: 'السعر', field: 'price',tooltip:'رتب حسب السعر',filtering:false},
+              {title:  "الخصم",field: 'discount',tooltip:'رتب حسب الخصم',filtering:false},
+              {title:  "تاريخ الصلاحية",field: 'validDate',tooltip:'رتب حسب تاريخ الصلاحية',filtering:false},
+              
+            ]}
+            data={tableData}
+        />
          </Grid>
       </Grid>
     </div>
   )
 }
+const mapStateToProps=(state:{searchData:ISearchDataState})=>({
+  tableData:state.searchData.searchDataTable,
+  filteredData:state.searchData.fileteredSearchData
+})
+ 
+export default connect(mapStateToProps, {})(SearchPage)

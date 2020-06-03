@@ -5,6 +5,8 @@ import themeConfig from './Utils/theme'
 import {Header,Footer} from './components/Layouts'
 import { createMuiTheme, ThemeProvider, Container, Theme, withStyles } from '@material-ui/core';
 import {AboutUs,ContactUs,DrugSearch,Home,Login,MyLazDrugs,Profile,Join,Account} from './Pages'
+import {Provider} from 'react-redux'
+import store from './Redux/store';
 const styles=((theme:Theme)=>({
   mainContainer:{
     marginTop:theme.spacing(3),
@@ -15,7 +17,8 @@ export default withStyles(styles) (class App extends Component<{classes:{[key:st
     return (
     <Fragment>
       <ThemeProvider theme={createMuiTheme(themeConfig)}>
-           <BrowserRouter>
+         <Provider store={store}>
+         <BrowserRouter>
              <Header/>
              <div  className={this.props.classes.mainContainer}>
               <Switch>            
@@ -32,7 +35,8 @@ export default withStyles(styles) (class App extends Component<{classes:{[key:st
               </Switch>
              </div>
              <Footer/>
-           </BrowserRouter>        
+           </BrowserRouter>
+         </Provider>     
       </ThemeProvider>
     </Fragment>)
   }

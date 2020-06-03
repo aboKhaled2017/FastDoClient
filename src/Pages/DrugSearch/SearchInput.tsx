@@ -5,7 +5,8 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import SearchIcon from '@material-ui/icons/Search';
-
+import {onSearchInputChange} from '../../Redux/Actions/searchDataActions'
+import { connect } from 'react-redux';
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: '2px 0',
@@ -27,19 +28,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default (props:{onChange:(e: React.ChangeEvent<HTMLInputElement>)=>void})=>{
+interface IProps{
+  onSearchInputChange:typeof onSearchInputChange
+}
+const SearchInputFilter=(props:IProps)=>{
   const classes = useStyles();
   const inpRef=createRef();
   const handleClearText=()=>{
-  let el= (inpRef.current as HTMLInputElement);
-  let lastValue = el.value;
-  el.value="";
-  var event=new Event('change',{ bubbles: true });
-  let tracker = (el as any)._valueTracker;
-if (tracker) {
-  tracker.setValue(lastValue);
-}
-  (inpRef.current as HTMLInputElement).dispatchEvent(event)
+      let el= (inpRef.current as HTMLInputElement);
+      let lastValue = el.value;
+      el.value="";
+      var event=new Event('change',{ bubbles: true });
+      let tracker = (el as any)._valueTracker;
+      if (tracker) {
+        tracker.setValue(lastValue);
+      }
+      (inpRef.current as HTMLInputElement).dispatchEvent(event)
   }
   return (
     <Paper component="form" className={classes.root}>
@@ -51,7 +55,7 @@ if (tracker) {
         className={classes.input}
         placeholder="ابحث باسم الراكد"
         inputProps={{ 'aria-label': 'search' }}
-        onChange={props.onChange}
+        onChange={e=> props.onSearchInputChange(e.target.value.trim())}
       />
       <IconButton type="submit" className={classes.iconButton} aria-label="search">
         <SearchIcon />
@@ -59,3 +63,4 @@ if (tracker) {
     </Paper>
   );
 }
+export default connect(null,{onSearchInputChange})(SearchInputFilter as any)

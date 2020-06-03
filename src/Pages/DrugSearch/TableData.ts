@@ -185,4 +185,11 @@ export const getCityDataList=()=>{
 export const getCitisNamesList=()=>{
   return getCityDataList().map(rec=>({name:rec.name}))
 }
+export const getDestrictsNamesListOfCity=(cName:string)=>{
+  if(!cName.trim())
+  return getCityDataList().reduce((prev,city,i)=>{
+   return prev.concat(city.destricts)
+  },[] as {name:string}[])
+  return getCityDataList().find(c=>c.name===cName)?.destricts;
+}
 export default dataRecords
