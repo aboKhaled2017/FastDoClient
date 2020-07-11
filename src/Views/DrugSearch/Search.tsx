@@ -13,7 +13,6 @@ import { OnAutoCompleteSelectChange } from '../../Interfaces/UIsTypes'
 import { connect } from 'react-redux'
 import { ISearchDataState } from '../../Interfaces/States'
 import DateFilter from './FiltersControls/DateFilter'
-
 const useStyles=makeStyles((theme:Theme)=>({
   burningDrugsTable:{
     '& table':{

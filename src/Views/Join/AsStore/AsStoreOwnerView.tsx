@@ -1,7 +1,7 @@
 import React, { Component, FormEvent } from 'react'
 import { Grid, Typography, Button, CircularProgress, Theme, withStyles, Stepper, Paper, Step, StepLabel, StepContent } from '@material-ui/core'
 import { Link } from 'react-router-dom'
-import ViewIcon from '../../Images/storeIcon.png'
+import ViewIcon from './../../../Images/storeIcon.png'
 import ViewSteps from './AsStoreSteps';
 interface Props {
     classes:{[key:string]:any}

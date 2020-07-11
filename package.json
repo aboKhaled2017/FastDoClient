@@ -13,12 +13,15 @@
     "@types/react-dom": "^16.9.6",
     "@types/react-router-dom": "^5.1.4",
     "cra-template-typescript": "1.0.3",
+    "immutability-helper": "^3.1.1",
     "jss": "^10.1.1",
     "jss-rtl": "^0.3.0",
+    "jwt-decode": "^2.2.0",
     "material-table": "^1.58.2",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-images-upload": "^1.2.8",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
@@ -51,6 +54,9 @@
   },
   "devDependencies": {
     "@types/elasticsearch": "^5.0.36",
+    "@types/jwt-decode": "^2.2.1",
+    "@types/react-redux": "^7.1.9",
     "gh-pages": "^2.2.0"
-  }
+  },
+  "proxy": "http://fastdo.azurewebsites.net/api"
 }

@@ -30,8 +30,8 @@ export enum LazDrugUnitType{
     shareet,
     elba,
     capsole,
-    unit,
     cartoon,
+    unit
 }
 export const LazDrugsUnitTypes=[
     {title:"شريط",value:LazDrugUnitType.shareet},
@@ -50,6 +50,9 @@ export const LazDrugPricesTypes=[
 export enum LazDrugConsumeType{
     exchange,burning
 }
+export enum  RegImageType{
+license,commercialReg
+}
 export const LazDrugConsumeTypes=[
     {title:'استبدالجمهور مع جمهور',value:LazDrugConsumeType.exchange},
     {title:'حرق/بيع بدون استبدال',value:LazDrugConsumeType.burning}
@@ -66,6 +69,10 @@ export enum IDrugPagesValues{
  P1750=1750,
  P2000=2000
 }
+export enum DateFilterChangeType{
+    Before,
+    After
+}
 export interface IDrugPackageItem{
     id:string 
     name:string 
@@ -79,4 +86,11 @@ export interface IDrugPackage{
     totalPrice:number
     desc:string
     imgSrc:string
+}
+export interface IComponentHistory{
+    push:(url:string)=>void
+}
+export interface IHistory{
+  push(url: string): void;
+  goBack():void;
 }

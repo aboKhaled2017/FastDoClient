@@ -7,13 +7,12 @@ import { Box, Theme, withStyles, Grid, Typography, Button } from '@material-ui/c
 import {Link} from 'react-router-dom'
 
 import ServicesSection from './servicesSection'
-interface Props {
+import { IUserState } from '../../Interfaces/States'
+import { connect } from 'react-redux'
+interface IProps {
     classes:{[key:string]:string}
+    user:IUserState
 }
-interface State {
-    
-}
-
 const styles=((theme:Theme)=>({
     backWrapper:{   
       margin:0,
@@ -87,17 +86,16 @@ const styles=((theme:Theme)=>({
       }
     }
   }))
-export default withStyles(styles)( class Home extends Component<Props, State> {
-    state = {}
-
+const HomeComponent= withStyles(styles)( class Home extends Component<IProps> {
     render() {
-        const {classes}=this.props;
+        const {classes,user}=this.props;
+        const {authenticated,userIdentity}=user;
         return (
             <Box>
                 <Grid className={classes.backWrapper}>
                     <Grid item className={classes.welcomGrid}>
                       <Typography variant="h3" color="inherit" className={classes.welocmGridH3}>
-                          <span> مرحبا بك مع فاست دو</span>
+                          <span> مرحبا {userIdentity.user.name} بك مع فاست دو</span>
                           <br/>
                           <span>انضم الى فاست دو واستخدم كل خدماتها </span>
                       </Typography>
@@ -116,6 +114,7 @@ export default withStyles(styles)( class Home extends Component<Props, State> {
                           <Typography variant="body2" color="textSecondary" className={classes.afterWelocmGridbody2}>
                             تحصل على كل خدمات الصيدليات
                           </Typography>
+                          {!authenticated &&
                           <Button variant="contained" color="primary" 
                                   className={classes.afterWelocmGridButton}
                                   component={Link}                                 
@@ -123,6 +122,7 @@ export default withStyles(styles)( class Home extends Component<Props, State> {
                           startIcon={
                              <UserIcon className={classes.afterWelocmGridButtonIcon}/>
                           }>انضم الان</Button>
+                          }
                        </Grid>
                        <Grid item xs={12} md={6} className={classes.afterWelcomGridPart}>
                           <div className={classes.afterWelcomGridImgWrapper}>
@@ -134,6 +134,7 @@ export default withStyles(styles)( class Home extends Component<Props, State> {
                           <Typography variant="body2" color="textSecondary" className={classes.afterWelocmGridbody2}>
                             تحصل على كل خدمات المخازن
                           </Typography>
+                          {!authenticated &&
                           <Button variant="contained" color="primary" 
                                   className={classes.afterWelocmGridButton}
                                   component={Link}                                 
@@ -141,6 +142,7 @@ export default withStyles(styles)( class Home extends Component<Props, State> {
                           startIcon={
                              <UserIcon className={classes.afterWelocmGridButtonIcon}/>
                           }>انضم الان</Button>
+                          }
                        </Grid>
                     </Grid>
                 </Grid>
@@ -148,4 +150,7 @@ export default withStyles(styles)( class Home extends Component<Props, State> {
             </Box>
         )
     }
-})
+});
+export default connect((state:{user:IUserState})=>({
+    user:state.user
+}), {})(HomeComponent)

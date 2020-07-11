@@ -14,6 +14,9 @@ export function getLzDrugStateFormate(lzDrugModel:ILazDrugModel){
 export function getDrugValidDate(date:Date){
   return `${date.toLocaleDateString()}`
 }
+export function displayDrugValidDateAs_MMYYYY_Formate(date:Date){
+  return `${date.getMonth()+1} - ${date.getFullYear()}`
+}
 export function getDrugPriceType(priceType:LazDrugPriceType){
    return priceType==LazDrugPriceType.new?"سعر جديد":"سعر قديم";
 }

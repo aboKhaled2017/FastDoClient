@@ -17,8 +17,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CheckedIcon from '@material-ui/icons/CheckRounded';
 import SendIcon from '@material-ui/icons/SendRounded';
 import { ILazDrugShowModel } from '../../Interfaces/ModelsTypes';
-import { getDrugUnitType, getLzDrugStateFormate, getDrugValidDate, getDrugPriceType, getDrugConsumeType, getDrugDesc } from '../../Commons/Services';
-import { Button, Box, Divider } from '@material-ui/core';
+import { getDrugUnitType, getLzDrugStateFormate, getDrugValidDate, getDrugPriceType, getDrugConsumeType, getDrugDesc, displayDrugValidDateAs_MMYYYY_Formate } from '../../Commons/Services';
+import { Button, Box, Divider, Chip } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -122,7 +122,13 @@ export default function RecipeReviewCard(props:{model:ILazDrugShowModel}) {
         subheader={`${model.quantity} ${getDrugUnitType(model.unitType)} بخصم ${model.discount} %`}
       />
       <CardContent>
-        <Box display="flex">
+        <Box mt={-1}>
+          <Typography variant="body1" color="textSecondary">
+            {`تاريخ الصلاحية : `} 
+            <Chip disabled label={displayDrugValidDateAs_MMYYYY_Formate(model.validDate)} variant="outlined"/>
+          </Typography>
+        </Box>
+        <Box display="flex" mt={1}>
           <Typography variant="subtitle1" color="primary">
             صيدلية /{model.pharmacyName}
           </Typography>
@@ -159,22 +165,22 @@ export default function RecipeReviewCard(props:{model:ILazDrugShowModel}) {
         <table className={classes.table}>
           <tbody>
               <tr className={classes.tr}>
-                  <td>الاسم: {model.name}</td>
+                  <td>الاسم : {model.name}</td>
               </tr>
               <tr className={classes.tr}>
-                  <td>النوع: {model.type}</td>
+                  <td>النوع : {model.type}</td>
               </tr>
               <tr className={classes.tr}>
               <td>{getLzDrugStateFormate(model)}</td>
               </tr>
               <tr className={classes.tr}>
-              <td>{`تاريخ الصلاحية - ${getDrugValidDate(model.validDate)}`}</td>
+              <td>{`تاريخ الصلاحية : ${displayDrugValidDateAs_MMYYYY_Formate(model.validDate)}`}</td>
               </tr>
               <tr className={classes.tr}>
-              <td>{`نوع السعر - ${getDrugPriceType(model.priceType)}`}</td>
+              <td>{`نوع السعر : ${getDrugPriceType(model.priceType)}`}</td>
               </tr>
               <tr className={classes.tr}>
-              <td>الخصم {model.discount} %</td>
+              <td>الخصم : {model.discount} %</td>
               </tr>
           </tbody>
         </table>

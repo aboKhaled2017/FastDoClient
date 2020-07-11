@@ -1,5 +1,5 @@
-import { LOADING_SEARCH_DATA, SET_SEARCH_FILTERED_DATA, SET_SEARCH_TABLE_DATA, SET_SELECTED_CITIES, SET_SELECTED_DESTICTS, Stop_LOADING_SEARCH_DATA } from "../types"
-import dataRecords from "../../Pages/DrugSearch/TableData"
+import { LOADING_SEARCH_DATA, SET_SEARCH_FILTERED_DATA, SET_SEARCH_TABLE_DATA, SET_SELECTED_CITIES, SET_SELECTED_DESTICTS, Stop_LOADING_SEARCH_DATA, SET_DATE_FILTER } from "../types"
+import dataRecords from "../../Views/DrugSearch/TableData"
 import { ISearchDataState } from "../../Interfaces/States"
 
 
@@ -8,10 +8,14 @@ loading:false ,
 searchDataTable:dataRecords,
 fileteredSearchData:dataRecords,
 selectedFilteredCities:[],
-selectedFilteredDesticts:[]
+selectedFilteredDesticts:[],
+dateFilter:{
+    before:null,
+    after:null
+}
 }
 
-export default (state = initialState, { type, payload }:{type:string,payload:any}) => {
+export default (state = initialState, { type, payload }:{type:string,payload:any}):ISearchDataState => {
     switch (type) {
     case LOADING_SEARCH_DATA:
          return { ...state, loading:true }
@@ -25,7 +29,8 @@ export default (state = initialState, { type, payload }:{type:string,payload:any
         return {...state,selectedFilteredCities:payload}
     case SET_SELECTED_DESTICTS:
         return {...state,selectedFilteredDesticts:payload}
-        
+    case SET_DATE_FILTER:
+        return {...state,dateFilter:payload}
     default:
         return state
     }

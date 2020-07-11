@@ -3,8 +3,8 @@ import { Theme, withStyles, Container, Box, createMuiTheme, ThemeProvider, PropT
 import { Link } from 'react-router-dom'
 import Fab from '@material-ui/core/Fab';
 import UserIcon from '@material-ui/icons/PersonAddOutlined'
-import AsPharmacierView from './AsPharmacierView';
-import AsStoreOwnerView from './AsStoreOwnerView';
+import AsPharmacierView from './AsPharmacy/AsPharmacierView';
+import AsStoreOwnerView from './AsStore/AsStoreOwnerView';
 enum JoinType{
   JoinAsPharmacier,
   JoinAsStoreOwner

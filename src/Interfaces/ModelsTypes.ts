@@ -45,3 +45,12 @@ export interface ILazDrugShowModel{
     address:string 
     pharmacyName:string
 }
+export interface IDateFilter{
+    before:Date|null
+    after:Date|null
+}
+export interface IArea{
+    id:number
+    name:string
+    superAreaId:number|null
+}

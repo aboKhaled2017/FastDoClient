@@ -1,6 +1,6 @@
 import React, { ReactElement, useState } from 'react'
 import LogoImg from '../../Images/company.png';
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,6 +11,7 @@ import AboutUsIcon from '@material-ui/icons/InfoRounded'
 import ContactUsIcon from '@material-ui/icons/ContactSupportRounded'
 import MyDrugsIcon from '@material-ui/icons/SearchRounded'
 import SearchDrugsIcon from '@material-ui/icons/SearchSharp'
+import LogoutIcon from '@material-ui/icons/ExitToAppRounded'
 
 import UserIcon from '@material-ui/icons/PersonAddOutlined'
 import AcountIconOutlined from '@material-ui/icons/AccountCircleOutlined'
@@ -28,7 +29,11 @@ import Menu from '@material-ui/core/Menu';
 import { Box, Button, Divider, List, ListItem, ListItemText, ListItemIcon, ListSubheader, Typography, Fade } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer'
 
-import {credentials} from '../../config'
+import {logoutUser} from '../../Redux/Actions/userActions'
+import { IUserState } from '../../Interfaces/States';
+import { connect } from 'react-redux';
+import { IHistory } from '../../Interfaces/DataTypes';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -64,12 +69,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-  
+  user:IUserState
+  logoutUser:(history:IHistory)=>void
 }
 
-export default function Header({}: IProps): ReactElement {
+function Header(props: IProps): ReactElement {
   const classes = useStyles();
-  const auth=credentials.auth;
+  const history=useHistory();
+  const {user,logoutUser}=props;
+  const {authenticated}=user;
   const [openDrawer,setOpenDrawer]=useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -83,7 +91,7 @@ export default function Header({}: IProps): ReactElement {
     {text:'ادارة رواكدى',to:'/myLazDrugs'},
     {text:'البحث عن رواكد',to:'searchDrugs'}
   ]
-  const listItems =auth?authListItems:unAuthListItems;
+  const listItems =authenticated?authListItems:unAuthListItems;
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -95,6 +103,10 @@ export default function Header({}: IProps): ReactElement {
   const handleDrawerToggle=()=>{
     setOpenDrawer(!openDrawer);
   }
+  const handleLogout=()=>{
+    logoutUser(history);
+  }
+  
   return (
        <AppBar position="sticky" className={classes.appBar}>
          <Toolbar variant="dense">
@@ -109,12 +121,12 @@ export default function Header({}: IProps): ReactElement {
               <Button component={Link} to="/" variant="text"  color="inherit" className={classes.appBarButton}>الرئيسية</Button>
               <Button component={Link} to="/aboutUs" variant="text"  color="inherit" className={classes.appBarButton}>ماذا عنا</Button>
               <Button component={Link} to="/contactUs" variant="text"  color="inherit" className={classes.appBarButton}>تواصل معنا</Button>
-              {auth && <>
+              {authenticated && <>
                 <Button component={Link} to="/myLazDrugs" variant="text"  color="inherit" className={classes.appBarButton}>ادراة رواكدى</Button>
                 <Button component={Link} to="/searchDrugs" variant="text"  color="inherit" className={classes.appBarButton}>البحث عن الرواكد</Button>
               </>}
             </Box>
-              {auth && (
+              {authenticated && (
                 <Box>
                   <IconButton
                     aria-label="account of current user"
@@ -149,10 +161,14 @@ export default function Header({}: IProps): ReactElement {
                       <AcountIconOutlined/>
                       <Typography variant="subtitle2">حسابى</Typography>
                     </MenuItem>
+                    <MenuItem onClick={handleLogout}>
+                      <LogoutIcon/>
+                      <Typography variant="subtitle2">خروج</Typography>
+                    </MenuItem>
                   </Menu>
                 </Box>
               )}
-              {!auth && 
+              {!authenticated && 
               <Box display="flex">
                   <Button  component={Link} to="/join" size="medium" color="inherit" 
                         variant="outlined"                   
@@ -201,7 +217,7 @@ export default function Header({}: IProps): ReactElement {
                    ))}
                  </List>
                  <Divider/>
-                 {!auth &&
+                 {!authenticated &&
                   <List>
                     <ListItem>
                         <Button  component={Link} to="/join"   color="primary" 
@@ -221,7 +237,7 @@ export default function Header({}: IProps): ReactElement {
                     </ListItem>
                   </List>
                  }
-                 {auth &&
+                 {authenticated &&
                   <List                       
                        subheader={
                           <ListSubheader>
@@ -255,3 +271,6 @@ export default function Header({}: IProps): ReactElement {
        </AppBar>
   );
 }
+export default connect((state:{user:IUserState})=>({
+user:state.user
+}), {logoutUser})(Header as any)
