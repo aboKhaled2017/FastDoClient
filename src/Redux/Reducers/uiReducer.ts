@@ -1,4 +1,4 @@
-import { SET_ERRORS, CLEAR_ERRORS, LOADING_UI, STOP_LOADING_UI, SET_SIGNUP_STEPPE, SET_SIGGNUP_ON_INPUT_CHANGE_PH, SET_SIGGNUP_ON_INPUT_CHANGE_STK, SET_USER_IDENTITY, ClEAR_SIGNUP_STEPPER } from '../types';
+import { SET_ERRORS, CLEAR_ERRORS, LOADING_UI, STOP_LOADING_UI, SET_SIGNUP_STEPPE, SET_SIGGNUP_ON_INPUT_CHANGE_PH, SET_SIGGNUP_ON_INPUT_CHANGE_STK, SET_USER_IDENTITY, ClEAR_SIGNUP_STEPPER, RESET_SIGNUP_CURRENT_STEP } from '../types';
 import { I_UI_State, I_SignUp_Stepper } from '../../Interfaces/States';
 import { clone } from '../../Helpers/HelperArrayFuncs';
 
@@ -83,13 +83,15 @@ export default   (state =clone(_initialState), { type, payload }:{type:string,pa
     case SET_ERRORS:
         return { ...clone(state), loading:false,errors:{...payload}}
     case CLEAR_ERRORS:
-        return {...clone(state), errors:{...clone(_initialState).errors},loading:false};
+        return {...clone(state), errors:{...clone(_initialState).errors}};
     case LOADING_UI:
-        return {...clone(state),loading:true} 
+        return {...clone(state),loading:true} ;
     case STOP_LOADING_UI:
-        return {...clone(state),loading:false}  
+        return {...clone(state),loading:false} ;
     case SET_SIGNUP_STEPPE:
-        return {...clone(state),signUp_Stepper:{...payload},loading:false}
+        return {...clone(state),signUp_Stepper:{...payload},loading:false};
+    case RESET_SIGNUP_CURRENT_STEP:
+        return {...clone(state),signUp_Stepper:{...clone(state.signUp_Stepper),currentStep:0}};
     case ClEAR_SIGNUP_STEPPER:
         return {
             /*...clone(state),

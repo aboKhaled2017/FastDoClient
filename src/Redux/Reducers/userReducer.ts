@@ -2,8 +2,8 @@
 import { Reducer } from 'react';
 import { AnyAction } from 'redux';
 import { IUserState } from '../../Interfaces/States';
-import {ICurrentUserIdentifier, ITokenIdentifier, IUserIdentity } from '../../Interfaces/AccountTypes';
-import {REMOVE_USER_IDENTITY,SET_USER_IDENTITY, LOADING_USER, Stop_LOADING_USER } from '../types';
+import {ICurrentUserIdentifier, ITokenIdentifier, IUserIdentity, E_UserType } from '../../Interfaces/AccountTypes';
+import {REMOVE_USER_IDENTITY,SET_USER_IDENTITY, LOADING_USER, Stop_LOADING_USER, SET_USER_TYPE } from '../types';
 import { clone } from '../../Helpers/HelperArrayFuncs';
 
 const initialState:IUserState = {

@@ -1,7 +1,7 @@
 import React, { Component, FormEvent } from 'react'
 import { Grid, Typography, TextField, Button, CircularProgress, Theme,
          withStyles, FormControl, FormLabel,
-         RadioGroup, FormControlLabel, Radio } from '@material-ui/core'
+         RadioGroup, FormControlLabel, Radio, Box } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import AccountBoxIcon from '@material-ui/icons/AccountBoxRounded'
 import { ILogin_Errors, ILoginData } from '../../Interfaces/AccountTypes'
@@ -121,7 +121,15 @@ const LoginComponent= withStyles(styles as any)(class extends Component<IProps,I
                             />
                        </RadioGroup>
                     </FormControl>
-                                                                                       
+                    <Box>
+                        <Typography component={Link} 
+                                    to="/forgotpassword"
+                                    variant="h6" 
+                                    color="textSecondary"
+                                    >
+                                      هل نسيت كلمة السر؟
+                        </Typography>
+                    </Box>                                                         
                     <Button 
                             type="submit" variant="contained" 
                             disabled={loading}
@@ -132,7 +140,7 @@ const LoginComponent= withStyles(styles as any)(class extends Component<IProps,I
                             <CircularProgress size={30} color="secondary" className={classes.progress}/>
                         )
                         }
-                    </Button>     
+                    </Button>                        
                     <br/><small>ليس لدى حساب ,سجل انضمام من    <Link to="/join">هنا</Link></small>        
                     </form>
                 </Grid>

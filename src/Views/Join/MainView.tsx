@@ -3,14 +3,17 @@ import { Theme, withStyles, Container, Box, createMuiTheme, ThemeProvider, PropT
 import { Link } from 'react-router-dom'
 import Fab from '@material-ui/core/Fab';
 import UserIcon from '@material-ui/icons/PersonAddOutlined'
-import AsPharmacierView from './AsPharmacy/AsPharmacierView';
-import AsStoreOwnerView from './AsStore/AsStoreOwnerView';
+import AsPharmacierView from './AsPharmacy';
+import AsStoreOwnerView from './AsStore';
+import {Reset_SignUp_Current_Step} from '../../Redux/Actions/UIActions'
+import { connect } from 'react-redux';
 enum JoinType{
   JoinAsPharmacier,
   JoinAsStoreOwner
 }
 interface IProps {
     classes:{[key:string]:any}
+    Reset_SignUp_Current_Step:()=>void
 }
 interface IState {
     joinType:JoinType
@@ -80,7 +83,7 @@ const joinViewTheme=createMuiTheme({
    }
   }
 } as any)
-export default withStyles(styles as any)(class  extends Component<IProps, IState> {
+const MainView= withStyles(styles as any)(class  extends Component<IProps, IState> {
     state = {joinType:JoinType.JoinAsPharmacier}
     asPharmacierBtnRef:RefObject<HTMLButtonElement>
     asStoreBtnRef:RefObject<HTMLButtonElement>
@@ -104,12 +107,14 @@ export default withStyles(styles as any)(class  extends Component<IProps, IState
     handleOnAsPharmacierBtnClicked=(e:MouseEvent)=>{
       (this.asPharmacierBtnRef.current as HTMLButtonElement).style.background=this.focusedBgColorForBtn;
       (this.asStoreBtnRef.current as HTMLButtonElement).style.background=this.unFocusedBgColorForBtn;
-      this.setState({joinType:JoinType.JoinAsPharmacier})
+      this.setState({joinType:JoinType.JoinAsPharmacier});
+      this.props.Reset_SignUp_Current_Step();
     }
     handleOnAsStoreBtnClicked=(e:Event)=>{
       (this.asPharmacierBtnRef.current as HTMLButtonElement).style.background=this.unFocusedBgColorForBtn;
       (this.asStoreBtnRef.current as HTMLButtonElement).style.background=this.focusedBgColorForBtn;
-      this.setState({joinType:JoinType.JoinAsStoreOwner})
+      this.setState({joinType:JoinType.JoinAsStoreOwner});
+      this.props.Reset_SignUp_Current_Step();
     }
     render() {
         const {classes}=this.props;
@@ -142,3 +147,5 @@ export default withStyles(styles as any)(class  extends Component<IProps, IState
         </Container>)
     }
 })
+
+export default connect(null,{Reset_SignUp_Current_Step})(MainView as any)

@@ -2,7 +2,7 @@ import React, { Component, FormEvent } from 'react'
 import { Grid, Typography, CircularProgress, Theme, withStyles, Stepper, Step, StepLabel, StepContent, Button } from '@material-ui/core'
 import { Link, useHistory } from 'react-router-dom'
 import ViewIcon from './../../../Images/pharmacyIcon.png'
-import ViewSteps from './AsPharmacySteps';
+import ViewSteps from './Steps';
 import { I_SignUp_Stepper, I_UI_State } from '../../../Interfaces/States';
 import {Set_SignUp_Stepper,Execute_SignUp_Ph_Step} from '../../../Redux/Actions/UIActions';
 import { connect } from 'react-redux';
@@ -81,10 +81,10 @@ const AS_Pharmacy_View=withStyles(styles as any)(class extends Component<Props, 
         }
     }  
     handleBack = () => {
-        this.props.Set_SignUp_Stepper(this.props.signupStepper.currentStep-1,true);
+        this.props.Set_SignUp_Stepper(this.props.signupStepper.currentStep-1,false);
     }   
     handleReset = () => {
-        this.props.Set_SignUp_Stepper(0,this.props.signupStepper.isValid);
+        this.props.Set_SignUp_Stepper(0,false);
     }
     render() {
         const {classes,signupStepper,loading}=this.props;

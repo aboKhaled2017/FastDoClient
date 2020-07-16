@@ -1,7 +1,7 @@
-import { SET_USER_IDENTITY,REMOVE_USER_IDENTITY, SET_ERRORS, CLEAR_ERRORS, LOADING_UI,  LOADING_USER, MARK_NOTIFICATIONS_READ, SET_SIGNUP_STEPPE, SET_SIGGNUP_ON_INPUT_CHANGE_PH, SET_SIGGNUP_ON_INPUT_CHANGE_STK, STOP_LOADING_UI, ClEAR_SIGNUP_STEPPER } from '../types';
+import { SET_USER_IDENTITY,REMOVE_USER_IDENTITY, SET_ERRORS, CLEAR_ERRORS, LOADING_UI,  LOADING_USER, MARK_NOTIFICATIONS_READ, SET_SIGNUP_STEPPE, SET_SIGGNUP_ON_INPUT_CHANGE_PH, SET_SIGGNUP_ON_INPUT_CHANGE_STK, STOP_LOADING_UI, ClEAR_SIGNUP_STEPPER, SET_USER_TYPE, RESET_SIGNUP_CURRENT_STEP } from '../types';
 import axios from 'axios'
 import { Dispatch, AnyAction } from 'redux'
-import {IPh_Signup_Step1, IUserIdentity, I_UI_Errors, I_Ph_SignUp_Errors, I_Stk_SignUp_Errors, I_SignUp_Errors, IPh_Signup_Step2, IPh_Signup_Step3, IPh_Signup_Step4} from '../../Interfaces/AccountTypes'
+import {IPh_Signup_Step1, IUserIdentity, I_UI_Errors, I_Ph_SignUp_Errors, I_Stk_SignUp_Errors, I_SignUp_Errors, IPh_Signup_Step2, IPh_Signup_Step3, IPh_Signup_Step4, E_UserType} from '../../Interfaces/AccountTypes'
 import { I_SignUp_Stepper, I_DataOf_Signup_Ph_Steps, I_DataOf_Signup_Stk_Steps } from '../../Interfaces/States';
 import store from '../store';
 import { clone } from '../../Helpers/HelperArrayFuncs';
@@ -66,12 +66,12 @@ export const signUp_Step_Try=(
     :api.post(_getStepPrefix_Ph_URL(step,type),userData);
    
     Request.then(res=>{
-     if(step==3){
-         dispatch(finalSignUp(type) as any);         
-     }else{
-        dispatch(Set_SignUp_Stepper(step+1 as number,false) as any);       
-     }
-     dispatch({type:CLEAR_ERRORS});
+        if(step==3){
+            dispatch(finalSignUp(type) as any);         
+        }else{
+           dispatch(Set_SignUp_Stepper(step+1 as number,false) as any);       
+        }
+        dispatch({type:CLEAR_ERRORS});
     })
     .catch(err=>{
         if(!err.response) 
@@ -108,6 +108,7 @@ export const signUp_Step_Try=(
     })
 }
 export const finalSignUp=(type:SignUpType)=>(dispatch:Dispatch<AnyAction>|any)=>{
+    dispatch({type:LOADING_UI});
     if(type==SignUpType.pharmacy)
     dispatch(finalSignUp_Ph(type) as any);
     else
@@ -133,7 +134,8 @@ export const finalSignUp_Ph=(type:SignUpType)=>(dispatch:Dispatch<AnyAction>|any
 
     var request=api_formData.post(_getStepPrefix_Ph_URL(null,type),data);
     request.then(res=>{
-        dispatch({type:ClEAR_SIGNUP_STEPPER});    
+        dispatch({type:ClEAR_SIGNUP_STEPPER});  
+        dispatch({type:SET_USER_TYPE,payload:E_UserType.pharmacier});
         dispatch(setUserIdentity(res.data));
         history.goBack();
     })
@@ -171,7 +173,8 @@ export const finalSignUp_Stk=(type:SignUpType)=>(dispatch:Dispatch<AnyAction>|an
 
     var request=api_formData.post(_getStepPrefix_Ph_URL(null,type),data);
     request.then(res=>{
-        dispatch({type:ClEAR_SIGNUP_STEPPER});    
+        dispatch({type:ClEAR_SIGNUP_STEPPER}); 
+        dispatch({type:SET_USER_TYPE,payload:E_UserType.stocker});   
         dispatch(setUserIdentity(res.data));
         history.goBack();
     })
@@ -251,4 +254,8 @@ export const Execute_SignUp_Stk_Step=(stepNumber:number,_history:IHistory)=>(dis
         case 3: dispatch(signUp_Step_Try(data?.step4,3,SignUpType.stock));break;
         default :return;
         }
+}
+
+export const Reset_SignUp_Current_Step=()=>(dispatch:Dispatch<AnyAction>|any)=>{
+    dispatch({type:RESET_SIGNUP_CURRENT_STEP});
 }

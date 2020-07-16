@@ -2,9 +2,9 @@ import React,{Component, Fragment} from 'react';
 import {BrowserRouter,Route,Switch, Redirect, Router} from 'react-router-dom'
 import './App.css';
 import themeConfig from './Utils/theme'
-import {Header,Footer} from './components/Layouts'
+import {Header,Footer, SharedSection} from './components/Layouts'
 import { createMuiTheme, ThemeProvider, Theme, withStyles } from '@material-ui/core';
-import {AboutUs,ContactUs,DrugSearch,Home,Login,MyLazDrugs,Profile,Join,Account,NotFound} from './Views'
+import {AboutUs,ContactUs,DrugSearch,Home,Login,MyLazDrugs,Profile,Join,Account,NotFound,ForgotPassword} from './Views'
 import {Provider} from 'react-redux'
 import jwtDecode from 'jwt-decode'
 import axios from 'axios'
@@ -27,7 +27,7 @@ const styles=((theme:Theme)=>({
   }
 }));
 const InitialWorkBeforMountHome=()=>{
-  axios.defaults.baseURL=Base_URLs.local_BaseUrl;
+  axios.defaults.baseURL=Base_URLs.BaseUrl;
   store.dispatch(GetAreas() as any);
   const UserIdentityStr=localStorage.getItem("UserIdentifier");
   if(UserIdentityStr){
@@ -60,6 +60,7 @@ export default withStyles(styles) (class App extends Component<IProps>{
          <Provider store={store}>
          <Router history={browserHistory}>
              <Header/>
+             <SharedSection/>
              <div  className={this.props.classes.mainContainer}>
               <Switch>            
                     <Route exact path="/" component={Home}/>
@@ -71,7 +72,8 @@ export default withStyles(styles) (class App extends Component<IProps>{
                     <Route exact path="/aboutUs" component={AboutUs}/>
                     <Route exact path="/contactUs" component={ContactUs}/>
                     <Route exact path="/myLazDrugs" component={MyLazDrugs}/>
-                    <Route exact path="/searchDrugs" component={DrugSearch}/> 
+                    <Route exact path="/searchDrugs" component={DrugSearch}/>
+                    <Route exact path="/forgotpassword" component={ForgotPassword}/> 
                     <Route exact path="/not-found" component={NotFound}/>
                     <Redirect to="/not-found" />             
               </Switch>

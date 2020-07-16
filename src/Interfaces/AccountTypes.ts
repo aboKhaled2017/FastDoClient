@@ -121,7 +121,9 @@ export interface IStk_Signup_Step4_Error
 export interface IPh_SignUp_Form extends 
 IPh_Signup_Step1,IPh_Signup_Step2,
 IPh_Signup_Step3,IPh_Signup_Step4{}
-export interface IStk_SignUp_Form extends IStk_Signup_Step1,IStk_Signup_Step2,IStk_Signup_Step3,IStk_Signup_Step4{}
+export interface IStk_SignUp_Form extends 
+IStk_Signup_Step1,IStk_Signup_Step2,
+IStk_Signup_Step3,IStk_Signup_Step4{}
 
 export interface IPh_SignUp_Errors{
     Name?:string[],
@@ -155,7 +157,7 @@ export interface IStk_SignUp_Errors{
     ConfirmPassword?:string[]
     G?:string
 }
-enum E_UserType{
+export enum E_UserType{
     pharmacier,
     stocker
 }
@@ -200,6 +202,7 @@ export interface ICurrentUserIdentifier{
     persPhone:string 
     landlinePhone:string 
     emailConfirmed:boolean
+    userType:E_UserType
 }
 export interface ITokenIdentifier{
     token:string

@@ -1,20 +1,28 @@
 import React, { Component, FormEvent } from 'react'
-import { Grid, Typography, Button, CircularProgress, Theme, withStyles, Stepper, Paper, Step, StepLabel, StepContent } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import { Grid, Typography, CircularProgress, Theme, withStyles, Stepper, Step, StepLabel, StepContent, Button } from '@material-ui/core'
+import { Link, useHistory } from 'react-router-dom'
 import ViewIcon from './../../../Images/storeIcon.png'
-import ViewSteps from './AsStoreSteps';
+import ViewSteps from './Steps';
+import { I_SignUp_Stepper, I_UI_State } from '../../../Interfaces/States';
+import {Set_SignUp_Stepper,Execute_SignUp_Stk_Step} from '../../../Redux/Actions/UIActions';
+import { connect } from 'react-redux';
+import { IHistory } from '../../../Interfaces/DataTypes';
+import { createHistoryInstance } from 'searchkit';
 interface Props {
     classes:{[key:string]:any}
+    signupStepper:I_SignUp_Stepper
+    Set_SignUp_Stepper:(currentStep:number,isValid:boolean)=>void
+    Execute_SignUp_Stk_Step:(stepNumber:number,history:IHistory)=>void
+    loading:boolean
 }
 interface State {
-    activeStep:number
     steps:string[]
 }
 const styles=(theme:Theme)=>({
     ...(theme as any).spreadCommonJoinView,
        root: {
         width: '100%',
-        padding:theme.spacing(3,0,10,0)
+        padding:theme.spacing(3,0,28,0)
       },
       form:{
           position:'absolute',
@@ -58,32 +66,36 @@ const styles=(theme:Theme)=>({
 function getSteps() {
     return ['بيانات الهوية', 'بيانات اثبات الهوية', 'بيانات التواصل','بيانات الحساب'];
 }
-export default withStyles(styles as any)(class extends Component<Props, State> {
-    state = {activeStep:0,steps:getSteps()}
+const AS_Stock_View=withStyles(styles as any)(class extends Component<Props, State> {
+    state = {steps:getSteps()}
     handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
     }
-    handleNext = () => {      
-        this.setState((prevSate) =>({activeStep:prevSate.activeStep+1}));
-    }
-    
+    history=createHistoryInstance()
+    handleNext = () => {     
+        if(this.props.signupStepper.isValid){
+            this.props.Set_SignUp_Stepper(this.props.signupStepper.currentStep+1,false);
+        }
+        else{ 
+            this.props.Execute_SignUp_Stk_Step(this.props.signupStepper.currentStep,this.history)
+        }
+    }  
     handleBack = () => {
-        this.setState((prevSate) =>({activeStep:prevSate.activeStep-1}));
-    }
-    
+        this.props.Set_SignUp_Stepper(this.props.signupStepper.currentStep-1,false);
+    }   
     handleReset = () => {
-        this.setState({activeStep:0});
+        this.props.Set_SignUp_Stepper(0,false);
     }
     render() {
-        const {classes}=this.props;
-        const loading=false;
+        const {classes,signupStepper,loading}=this.props;
+        const errors:any={};
         return (
             <div className={classes.root}>                 
                 <div style={{textAlign:'center'}}>
                     <img src={ViewIcon} alt="smile" className={classes.image}/>
-                    <Typography variant="h6" color="primary" className={classes.pageTitle}>سجل بياناتك وانضم الينا كمالك مخزن</Typography>
+                    <Typography variant="h6" color="primary" className={classes.pageTitle}>سجل بياناتك وانضم الينا كمخزن</Typography>
                 </div>
-                <Stepper className={classes.stepper} activeStep={this.state.activeStep} orientation="vertical">
+                <Stepper className={classes.stepper} activeStep={signupStepper.currentStep} orientation="vertical">
                     {this.state.steps.map((label, index) => (
                     <Step key={label}>
                         <StepLabel>{label}</StepLabel>
@@ -92,14 +104,14 @@ export default withStyles(styles as any)(class extends Component<Props, State> {
                                 <Grid item xs={3} sm={4} md/>
                                 <Grid item xs={9} sm={6} md>                               
                                     <form noValidate onSubmit={this.handleSubmit}>
-                                    {index===0 && <ViewSteps.SInfoStep/>}
-                                    {index===1 && <ViewSteps.SIdentityStep/>}
-                                    {index===2 && <ViewSteps.SContactStep/>}
-                                    {index===3 && <ViewSteps.SAccountStep/>}
+                                    {index===0 && <ViewSteps.step1/>}
+                                    {index===1 && <ViewSteps.step2/>}
+                                    {index===2 && <ViewSteps.step3/>}
+                                    {index===3 && <ViewSteps.step4/>}
                                     <div className={classes.actionsContainer}>
                                         <div>
                                             <Button
-                                                disabled={this.state.activeStep === 0}
+                                                disabled={signupStepper.currentStep === 0}
                                                 onClick={this.handleBack}
                                                 className={classes.stepButton}
                                             >
@@ -113,7 +125,7 @@ export default withStyles(styles as any)(class extends Component<Props, State> {
                                                 type="submit"
                                                 disabled={loading}
                                                 >
-                                                {this.state.activeStep ===this.state.steps.length - 1 ? 'انضم الان' : 'التالى'}
+                                                {signupStepper.currentStep ===this.state.steps.length - 1 ? 'انضم الان' : 'التالى'}
                                                 {
                                                 loading&&(
                                                     <CircularProgress size={30} color="secondary" className={classes.progress}/>
@@ -134,4 +146,8 @@ export default withStyles(styles as any)(class extends Component<Props, State> {
             </div>
         )
     }
-})
+});
+export default  connect((state:{UI:I_UI_State})=>({
+    signupStepper:state.UI.signUp_Stepper,
+    loading:state.UI.loading
+}),{Set_SignUp_Stepper,Execute_SignUp_Stk_Step})(AS_Stock_View as any);
