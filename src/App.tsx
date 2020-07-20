@@ -4,7 +4,7 @@ import './App.css';
 import themeConfig from './Utils/theme'
 import {Header,Footer, SharedSection} from './components/Layouts'
 import { createMuiTheme, ThemeProvider, Theme, withStyles } from '@material-ui/core';
-import {AboutUs,ContactUs,DrugSearch,Home,Login,MyLazDrugs,Profile,Join,Account,NotFound,ForgotPassword} from './Views'
+import {AboutUs,ContactUs,DrugSearch,Home,Login,ManageMyDrugs,Profile,Join,Account,NotFound,ForgotPassword} from './Views'
 import {Provider} from 'react-redux'
 import jwtDecode from 'jwt-decode'
 import axios from 'axios'
@@ -71,7 +71,7 @@ export default withStyles(styles) (class App extends Component<IProps>{
                     <Route exact path="/account" component={Account}/>
                     <Route exact path="/aboutUs" component={AboutUs}/>
                     <Route exact path="/contactUs" component={ContactUs}/>
-                    <Route exact path="/myLazDrugs" component={MyLazDrugs}/>
+                    <Route exact path="/myLazDrugs" component={ManageMyDrugs}/>
                     <Route exact path="/searchDrugs" component={DrugSearch}/>
                     <Route exact path="/forgotpassword" component={ForgotPassword}/> 
                     <Route exact path="/not-found" component={NotFound}/>

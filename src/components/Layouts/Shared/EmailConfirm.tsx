@@ -14,9 +14,12 @@ function EmailConfirm({userS}: Props): ReactElement {
     return (
        <Box>
            <Alert severity="warning">
-               بريدك الالكترونى غير مفعل ,لقد تم ارسال كود الى {email} 
+               <span>
+               بريدك الالكترونى غير مفعل ,لقد تم ارسال كود الى <span className="notArabicFont">{email} </span>
+               <br/>
                احصل على كود التفعيل وقم بالتفعيل من 
-              <Box marginX={1}>
+               </span>    
+              <Box marginX={1} display="inline">
                  <Button color="primary" variant="outlined" component={Link} to='/account'>هنا</Button>
               </Box> 
             </Alert>

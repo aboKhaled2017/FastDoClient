@@ -2,7 +2,7 @@ import React, { Component, FormEvent, Fragment } from 'react'
 import { TextField, Button, CircularProgress, Theme, withStyles, Typography, Box, Backdrop } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/SendRounded'
 import { IChangeNameErrors } from '../Interfaces'
-import { IUserIdentity } from '../../../Interfaces/AccountTypes'
+import { IUserIdentity, ICurrentUserIdentifier, E_UserType } from '../../../Interfaces/AccountTypes'
 import axios from 'axios'
 import { displayError } from '../../../Helpers/HelperJsxFunctions'
 import { connect } from 'react-redux'
@@ -12,6 +12,7 @@ import Alert from '@material-ui/lab/Alert'
 interface IProps {
     classes:{[key:string]:any}
     setUserIdentity:(userIdentity:IUserIdentity)=>void 
+    userIdentity:ICurrentUserIdentifier
 }
 interface IState{
     newName:string
@@ -52,24 +53,25 @@ const styles=(theme:Theme)=>({
 class ChangePhone_View extends Component<IProps, IState> {
     constructor(props:any){
         super(props);
-        this.state={...this.initState}
+        this.state={...this.initState()}
     }
-    initState={
-        newName:'',
+    initState=()=>({
+        newName:this.props.userIdentity.name,
         errors:{
             NewName:undefined,
             G:undefined}as IChangeNameErrors,
         loading:false,
         OpenAletr:false
-    }    
+    })    
     handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
         this.setState(prev=>({...prev,loading:true}));
-        axios.patch('/manage/name',{newName:this.state.newName})
+        let path=`/${this.props.userIdentity.userType==E_UserType.pharmacier?'ph':'stk'}/membership/name`;
+        axios.patch(path,{newName:this.state.newName})
         .then(res=>{
-        this.setState(prev=>({...this.initState,OpenAletr:true}));
+        this.setState(prev=>({...this.initState(),OpenAletr:true}));
         setTimeout(() => {
-            this.setState(prev=>({...this.initState,OpenAletr:false}));
+            this.setState(prev=>({...this.initState(),OpenAletr:false}));
         }, 1200);
             this.props.setUserIdentity(res.data);
         })
@@ -132,5 +134,6 @@ class ChangePhone_View extends Component<IProps, IState> {
     }
 }
 export default connect((state:{user:IUserState})=>({
+    userIdentity:state.user.userIdentity.user
 }), {setUserIdentity})(withStyles(styles as any)(ChangePhone_View)) as any
 

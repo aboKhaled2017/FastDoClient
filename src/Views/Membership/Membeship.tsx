@@ -1,19 +1,17 @@
 import React, { Component, Fragment } from 'react'
-import { Theme, withStyles, Tabs, Tab, Typography, Box, Grid, Container } from '@material-ui/core'
+import { Theme, withStyles, Tabs, Tab, Typography, Box, Grid, Container } from '@material-ui/core';
 
-import MainInfoForm from './ManageName'
-import ContactInfoForm from './ManageContact'
+import NameChange_View from './ManageName'
+import ContactsChange_View from './ManageContacts';
 
 import UserIcon from '@material-ui/icons/PersonRounded'
-import LocationIcon from '@material-ui/icons/PlaceRounded'
 import ContactIcon from '@material-ui/icons/PhoneInTalkRounded'
-import IdentityIcon from '@material-ui/icons/CheckRounded'
 import { IUserState } from '../../Interfaces/States'
 import { connect } from 'react-redux'
-import { E_UserType } from '../../Interfaces/AccountTypes'
+import { E_UserType, ICurrentUserIdentifier } from '../../Interfaces/AccountTypes'
 interface IProps {
     classes:{[key:string]:any}
-    user:IUserState
+    user:ICurrentUserIdentifier
 }
 interface IState {
     value:number
@@ -63,7 +61,7 @@ function TabPanel(props: TabPanelProps) {
     )
 }
 class MembershipPage extends Component<IProps, IState> {
-    state = {value:3}
+    state = {value:0}
     handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         this.setState({value:newValue});
     }
@@ -101,7 +99,7 @@ class MembershipPage extends Component<IProps, IState> {
                                  ?"معلومات اساسية عن الصيدلية ومديريها"
                                  :"معلومات اساسية عن المخزن ومديريه"}
                                 </Typography>
-                                <MainInfoForm/>
+                                <NameChange_View/>
                             </TabPanel>
                             <TabPanel value={this.state.value} index={1}>
                                <Typography variant="h6" className={classes.TabPanelTitle}>
@@ -109,7 +107,7 @@ class MembershipPage extends Component<IProps, IState> {
                                     ?"بيانات التواصل للصيدلية"
                                     :"بيانات التواصل للمخزن"}
                                </Typography>
-                               <ContactInfoForm/>
+                               <ContactsChange_View/>
                             </TabPanel>
                         </Grid>
                 </Grid>   
@@ -120,5 +118,5 @@ class MembershipPage extends Component<IProps, IState> {
 }
 
 export default connect((state:{user:IUserState})=>({
-    user:state.user
+    user:state.user.userIdentity.user
 }), {})(withStyles(styles)(MembershipPage)) as any

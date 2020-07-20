@@ -201,6 +201,7 @@ export interface ICurrentUserIdentifier{
     name:string
     persPhone:string 
     landlinePhone:string 
+    address:string
     emailConfirmed:boolean
     userType:E_UserType
 }

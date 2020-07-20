@@ -43,20 +43,14 @@ export const LazDrugsUnitTypes=[
 export enum LazDrugPriceType{
     new,old
 }
-export const LazDrugPricesTypes=[
-    {title:'سعر جديد',value:LazDrugPriceType.new},
-    {title:'سعر قديم',value:LazDrugPriceType.old}
-]
+
 export enum LazDrugConsumeType{
     exchange,burning
 }
 export enum  RegImageType{
 license,commercialReg
 }
-export const LazDrugConsumeTypes=[
-    {title:'استبدالجمهور مع جمهور',value:LazDrugConsumeType.exchange},
-    {title:'حرق/بيع بدون استبدال',value:LazDrugConsumeType.burning}
-]
+
 export enum IDrugPagesValues{
  P100=100,
  P125=125,
@@ -73,6 +67,14 @@ export enum DateFilterChangeType{
     Before,
     After
 }
+export const LazDrugPricesTypes=[
+    {title:'سعر جديد',value:LazDrugPriceType.new},
+    {title:'سعر قديم',value:LazDrugPriceType.old}
+]
+export const LazDrugConsumeTypes=[
+    {title:'استبدالجمهور مع جمهور',value:LazDrugConsumeType.exchange},
+    {title:'حرق/بيع بدون استبدال',value:LazDrugConsumeType.burning}
+]
 export interface IDrugPackageItem{
     id:string 
     name:string 

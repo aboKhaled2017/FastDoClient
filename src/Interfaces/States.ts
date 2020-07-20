@@ -1,5 +1,6 @@
 import { ILazDrugShowModel, IDateFilter, IArea } from "./ModelsTypes";
 import { IUserIdentity, I_UI_Errors, IPh_Signup_Step1, IPh_Signup_Step2, IPh_Signup_Step3, IPh_Signup_Step4, IStk_Signup_Step1, IStk_Signup_Step2, IStk_Signup_Step3, IStk_Signup_Step4, E_UserType } from "./AccountTypes";
+import { I_Drug_DataModel } from "./DrugsTypes";
 
 export interface ISearchDataState{
     loading:boolean 
@@ -17,10 +18,11 @@ export interface IUserState{
 }
 export interface IDataState{
 loading:boolean
- areas:{
+areas:{
     cities:IArea[]
     destricts:IArea[]
- }
+},
+myDrugs:I_Drug_DataModel[]
 }
 export interface I_DataOf_Signup_Ph_Steps{
    step1:IPh_Signup_Step1
