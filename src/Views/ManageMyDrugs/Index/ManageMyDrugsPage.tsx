@@ -51,7 +51,7 @@ class manageMyDrugsPage extends Component<IProps, IState> {
     state = {value:0}
     componentDidMount(){
         if(this.props.myDrugs && this.props.myDrugs.length==0)
-          GetMyDrugs();
+          this.props.GetMyDrugs();
     }
     handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         this.setState({value:newValue});
