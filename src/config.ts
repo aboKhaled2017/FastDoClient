@@ -4,7 +4,7 @@ export  const credentials={
 export const Base_URLs={
     production_Url:'http://fastdo.azurewebsites.net/api/',
     local_BaseUrl:"http://localhost:10/api/",
-    get BaseUrl(){return this.local_BaseUrl}
+    get BaseUrl(){return this.production_Url}
 }
 export const Fetch_Headers=new Headers();
 Fetch_Headers.append("Content-Type", "application/json");
