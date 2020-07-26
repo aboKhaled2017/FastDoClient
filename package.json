@@ -30,8 +30,6 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -55,8 +53,7 @@
   "devDependencies": {
     "@types/elasticsearch": "^5.0.36",
     "@types/jwt-decode": "^2.2.1",
-    "@types/react-redux": "^7.1.9",
-    "gh-pages": "^2.2.0"
+    "@types/react-redux": "^7.1.9"
   },
   "proxy": "http://fastdo.azurewebsites.net/api"
 }
