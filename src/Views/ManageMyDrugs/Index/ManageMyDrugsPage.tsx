@@ -1,5 +1,5 @@
-import React, { Component, Fragment, ReactElement } from 'react'
-import { Theme, withStyles,Typography,Divider, Paper, Box } from '@material-ui/core'
+import React, { Component, Fragment } from 'react'
+import { Theme, withStyles,Typography, Box } from '@material-ui/core'
 
 
 import TabPanel from '../../../Commons/TabPanel'
@@ -10,12 +10,12 @@ import ShowReceivedRequests_ByMe from '../ShowRecvReqsts/ShowRecvReqsts'
 import LzDrgsTabs from './Components/LzDrgsTabs'
 import { IDataState } from '../../../Interfaces/States'
 import { connect } from 'react-redux'
-import {GetMyDrugs} from '../../../Redux/Actions/DataActions'
-import { I_Drug_DataModel } from '../../../Interfaces/DrugsTypes'
+import {GetMyDrugs_Page} from '../../../Redux/Actions/DataActions'
+import { I_Drug_DataModel, I_PaginationReq_To_GetDrugs } from '../../../Interfaces/DrugsTypes'
 interface IProps {
     classes:{[key:string]:any}
-    GetMyDrugs:()=>void
-    myDrugs:I_Drug_DataModel[]
+    GetMyDrugs_Page:()=>void
+    dataRows:I_Drug_DataModel[]
 }
 interface IState{}
 
@@ -48,10 +48,10 @@ const styles=(theme:Theme)=>({
 
 
 class manageMyDrugsPage extends Component<IProps, IState> {
-    state = {value:0}
+    state = {value:1}
     componentDidMount(){
-        if(this.props.myDrugs && this.props.myDrugs.length==0)
-          this.props.GetMyDrugs();
+        if(this.props.dataRows && this.props.dataRows.length==0)
+          this.props.GetMyDrugs_Page();
     }
     handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         this.setState({value:newValue});
@@ -97,5 +97,5 @@ class manageMyDrugsPage extends Component<IProps, IState> {
     }
 }
 export default connect((state:{data:IDataState})=>({
-myDrugs:state.data.myDrugs
-}), {GetMyDrugs})(withStyles(styles as any)(manageMyDrugsPage)) as any;
+dataRows:state.data.myDrugs.rows
+}), {GetMyDrugs_Page})(withStyles(styles as any)(manageMyDrugsPage)) as any;

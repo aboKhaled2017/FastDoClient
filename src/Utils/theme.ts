@@ -15,6 +15,7 @@ export default {
           contrastText: '#fff'
         }
       },
+      direction: 'rtl',
       spreatIt:{
 
       }

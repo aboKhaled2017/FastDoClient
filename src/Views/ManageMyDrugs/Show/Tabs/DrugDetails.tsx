@@ -1,9 +1,10 @@
-import React, { ReactElement } from 'react'
-import { ILazDrugModel } from '../../../../Interfaces/ModelsTypes'
-import { getLzDrugStateFormate, getDrugValidDate, getDrugPriceType, getDrugConsumeType, getDrugDesc }
+import React from 'react'
+import {Get_DrgPriceType_StrFormate, Get_DrgConsumeType_StrFormate, getDrugDesc, Get_DrgValidDate }
  from '../../../../Commons/Services'
 import { makeStyles, Typography, Button } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/EditRounded'
+import { I_Drug_DataModel } from '../../../../Interfaces/DrugsTypes';
+import { Get_LzDrgStateFormate } from '../../services';
 const useStyles = makeStyles((theme) => ({
     tr:{
         background:'#eee',
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 interface IProps {
-    model:ILazDrugModel
+    model:I_Drug_DataModel
 }
 
 export default ({model}: IProps)=> {
@@ -28,19 +29,19 @@ export default ({model}: IProps)=> {
     <table>
         <tbody>
             <tr className={classes.tr}>
-                <td>{model.name} / {model.type}</td>
+                <td><span className="notArabicFont">{model.name}</span> / {model.type}</td>
             </tr>
             <tr className={classes.tr}>
-            <td>{getLzDrugStateFormate(model)}</td>
+            <td>{Get_LzDrgStateFormate(model)}</td>
             </tr>
             <tr className={classes.tr}>
-            <td>{`تاريخ الصلاحية - ${getDrugValidDate(model.validDate)}`}</td>
+            <td>{`تاريخ الصلاحية - ${Get_DrgValidDate(model.valideDate)}`}</td>
             </tr>
             <tr className={classes.tr}>
-            <td>{`نوع السعر - ${getDrugPriceType(model.priceType)}`}</td>
+            <td>{`نوع السعر - ${Get_DrgPriceType_StrFormate(model.priceType)}`}</td>
             </tr>
             <tr className={classes.tr}>
-            <td>{`نوع الاستهلاك - ${getDrugConsumeType(model.consumeType,model.discount)}`}</td>
+            <td>{`نوع الاستهلاك - ${Get_DrgConsumeType_StrFormate(model.consumeType,model.discount)}`}</td>
             </tr>
             <tr className={classes.tr}>
             <td>
@@ -53,15 +54,5 @@ export default ({model}: IProps)=> {
             </td>
             </tr>
          </tbody>
-         <div>
-             <Button variant="outlined" 
-                     title="تعديل البيانات"
-                     color="primary"
-                     className={classes.editButton}
-                     startIcon={<EditIcon color="primary"/>}
-                     >
-                تعديل البيانات  
-             </Button>
-         </div>
     </table>)
 }

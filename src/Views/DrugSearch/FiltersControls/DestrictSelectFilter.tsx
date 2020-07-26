@@ -12,7 +12,8 @@ import { OnAutoCompleteSelectChange } from '../../../Interfaces/UIsTypes';
 
 import {OnCityFilterChange,OnDestrictsFilterChange} from '../../../Redux/Actions/searchDataActions'
 import { connect } from 'react-redux';
-import { ISearchDataState } from '../../../Interfaces/States';
+import { ISearchDataState, IDataState } from '../../../Interfaces/States';
+import { IArea } from '../../../Interfaces/ModelsTypes';
 
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
@@ -22,12 +23,15 @@ const useStyles = makeStyles((theme) => ({
         width:'100% !important'
     },
     textField: {
-      background:'#fff',
+      background:'#fff !important',
       fontFamily:' arabic_font !important'
     },
 }));
 interface IDestrictsSelectFilterProps{
-    selectedCities:{name:string}[]
+    selectedCities:{id: number;}[]
+    loadingAreas:boolean
+    cities:IArea[]
+    destricts:IArea[]
     OnDestrictsFilterChange:typeof OnDestrictsFilterChange
 }
 interface IOption{
@@ -45,16 +49,18 @@ const IsContains=(largArr:Array<IOption>,arr:IOption[])=>{
 }
 const Filter=(props:IDestrictsSelectFilterProps)=> {
     const classes=useStyles();
-    
-    let {OnDestrictsFilterChange,selectedCities}=props;
-    if(selectedCities.length==0){
-        selectedCities=getCitisNamesList();
-    }
-    const seletcDestrictsList=selectedCities.reduce((prev,city,i)=>{
-        return prev.concat([{name:city.name,isOption:false}])
-        .concat((getDestrictsNamesListOfCity(city.name) as {name:string}[])
-        .map(des=>({name:des.name,isOption:true})))
-    },[] as {name:string,isOption:boolean}[]);
+    let {OnDestrictsFilterChange,cities,destricts,loadingAreas,selectedCities}=props;
+
+    const seletcDestrictsList=selectedCities.length==0
+    ?cities.reduce((prev,city,i)=>{
+        return prev.concat([{id:0,name:city.name,isOption:false}])
+        .concat(destricts.filter(d=>d.superAreaId==city.id).map(d=>({id:d.id,name:d.name,isOption:true})))
+    },[] as {id:number,name:string,isOption:boolean}[])
+    :selectedCities.reduce((prev,city,i)=>{
+        let cityName=cities.find(c=>c.id==city.id)?.name??"";
+        return prev.concat([{id:0,name:cityName,isOption:false}])
+        .concat(destricts.filter(d=>d.superAreaId==city.id).map(d=>({id:d.id,name:d.name,isOption:true})))
+    },[] as {id:number,name:string,isOption:boolean}[]);
 
     return (
         <Autocomplete
@@ -65,7 +71,7 @@ const Filter=(props:IDestrictsSelectFilterProps)=> {
             options={seletcDestrictsList}
             disableCloseOnSelect
             onChange={(e,destValues,r,d)=>{
-                OnDestrictsFilterChange(destValues)
+                OnDestrictsFilterChange(destValues.filter(v=>v.id!==0).map(v=>({id:v.id})))
             }}
             getOptionSelected={(option, value) => option.name === value.name}
             renderTags={(values: IOption[], getTagProps) =>
@@ -109,7 +115,14 @@ const Filter=(props:IDestrictsSelectFilterProps)=> {
         />
     );
 }
-const mapStateToProps=(state:{searchData:ISearchDataState})=>({
-    selectedCities:state.searchData.selectedFilteredCities
-})
+const mapStateToProps=(state:{data:IDataState,searchData:ISearchDataState})=>{
+    var cityIdsStr=state.searchData.filtering.CityIds;
+    var selectedCities=(!cityIdsStr)?[]:cityIdsStr.split(',').map(id=>({id:parseInt(id)}))
+    return {
+        selectedCities:selectedCities,
+        loadingAreas:state.data.loading,
+        cities:state.data.areas.cities,
+        destricts:state.data.areas.destricts
+    }
+}
 export default connect(mapStateToProps,{OnDestrictsFilterChange})(Filter as any);

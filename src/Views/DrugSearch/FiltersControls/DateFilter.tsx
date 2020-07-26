@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         
     },
     textField: {
-        background:'#fff'
+        background:'#fff !important'
     },
     divider:{
         margin:theme.spacing(2,5)
@@ -60,23 +60,11 @@ const DateFilter=(props:IProps)=>{
         after:dateFilter.after
     },DateFilterChangeType.Before);
     };
-    const handleAfterDateChange = (date:Date|null) => {
-        OnDateFilterChange({
-            before:dateFilter.before,
-            after:date
-        },DateFilterChangeType.After);
-    };
     const handleOnBeforeDateDelete = () => {
         OnDateFilterChange({
             before:null,
             after:dateFilter.after
         },DateFilterChangeType.Before);
-    };
-    const handleOnAfterDateDelete = () => {
-        OnDateFilterChange({
-            before:dateFilter.before,
-            after:null
-        },DateFilterChangeType.After);
     };
     return (
         <Box className={classes.root}>
@@ -91,15 +79,6 @@ const DateFilter=(props:IProps)=>{
                     variant="default"
                />
               }
-              {dateFilter.after && 
-               <Chip
-                    label={`صالح بعد ${displayDrugValidDateAs_MMYYYY_Formate(dateFilter.after)}`}
-                    onDelete={handleOnBeforeDateDelete}
-                    deleteIcon={<CloseIcon />}
-                    className={classes.chip}
-                    variant="default"
-              />
-              }
             </Box>
             <Box className={classes.container} mt={2}>
                 <DateField
@@ -112,19 +91,6 @@ const DateFilter=(props:IProps)=>{
                     onDateChange={handleBeforeDateChange}
                     InputLabelProps={{
                     shrink: true,
-                    }}
-                />
-                <Divider className={classes.divider} orientation="horizontal" variant="middle" light/>
-                <DateField
-                    id="afterSpecifiedDate"
-                    label="بعد تاريخ"
-                    variant="outlined"
-                    type="date"
-                    onDateChange={handleAfterDateChange}
-                    className={classes.textField}
-                    fullWidth
-                    InputLabelProps={{
-                    shrink: true
                     }}
                 />
           </Box>

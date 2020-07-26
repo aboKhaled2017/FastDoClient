@@ -12,6 +12,10 @@ export interface IAddNewLzDrg{
     unitType:E_LzDrg_UnitType,
     desc:string
 }
+export interface IUpdateLzDrg extends IAddNewLzDrg{
+    id:string
+    oldName:string
+}
 export interface IAddNewLzDrg_Errors{
     Name?:string[]
     Type?:string[]

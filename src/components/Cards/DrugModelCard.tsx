@@ -17,8 +17,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CheckedIcon from '@material-ui/icons/CheckRounded';
 import SendIcon from '@material-ui/icons/SendRounded';
 import { ILazDrugShowModel } from '../../Interfaces/ModelsTypes';
-import { getDrugUnitType, getLzDrugStateFormate, getDrugValidDate, getDrugPriceType, getDrugConsumeType, getDrugDesc, displayDrugValidDateAs_MMYYYY_Formate } from '../../Commons/Services';
+import { getDrugUnitType, getDrugDesc, displayDrugValidDateAs_MMYYYY_Formate, Get_DrgPriceType_StrFormate } from '../../Commons/Services';
 import { Button, Box, Divider, Chip } from '@material-ui/core';
+import { Get_LzDrgStateFormate } from '../../Views/ManageMyDrugs/services';
+import { I_Drgs_SearchModel } from '../../Interfaces/SearchDrugsTypes';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function RecipeReviewCard(props:{model:ILazDrugShowModel}) {
+export default function RecipeReviewCard(props:{model:any}) {
   const classes = useStyles();
   const [expanded, setExpanded] =useState(false);
   const [requestSent,setRequestSent]=useState(false)
@@ -171,13 +173,13 @@ export default function RecipeReviewCard(props:{model:ILazDrugShowModel}) {
                   <td>النوع : {model.type}</td>
               </tr>
               <tr className={classes.tr}>
-              <td>{getLzDrugStateFormate(model)}</td>
+              <td>{Get_LzDrgStateFormate(model as any)}</td>
               </tr>
               <tr className={classes.tr}>
               <td>{`تاريخ الصلاحية : ${displayDrugValidDateAs_MMYYYY_Formate(model.validDate)}`}</td>
               </tr>
               <tr className={classes.tr}>
-              <td>{`نوع السعر : ${getDrugPriceType(model.priceType)}`}</td>
+              <td>{`نوع السعر : ${Get_DrgPriceType_StrFormate(model.priceType as any)}`}</td>
               </tr>
               <tr className={classes.tr}>
               <td>الخصم : {model.discount} %</td>

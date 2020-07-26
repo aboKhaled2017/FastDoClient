@@ -28,7 +28,10 @@ const styles=(theme:Theme)=>{
       width:70
    },
    textField:{
-     margin:'10px auto 10px auto'
+     margin:'10px auto 10px auto',
+     '& input,textarea':{
+      background:'transparent !important'
+     }
    },
    button:{
      margin:theme.spacing(3,'auto',1.5,'auto'),
@@ -41,6 +44,15 @@ const styles=(theme:Theme)=>{
    },
    progress:{
      position:'absolute',
+   },
+   formControl:{
+    marginTop:'8px', 
+    background:'#fff',
+    width:'100%',
+    minWidth: 120,
+    '& .MuiSelect-selectMenu':{
+      background:'transparent !important'
+     }
    }
   }
   return{

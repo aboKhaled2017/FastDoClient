@@ -8,12 +8,7 @@ import STK_Contacts_Step from "./Step3_Contacts";
 import STK_Account_Step from "./Step4_Account";
 const styles=(theme:Theme)=>({
     ...(theme as any).spreadCommonJoinView,
-    formControl: {   
-        marginTop:'8px', 
-        background:'#fff',
-        width:'100%',
-        minWidth: 120,
-    },
+     
     formHelperText:{
         color:'#f00'
     },

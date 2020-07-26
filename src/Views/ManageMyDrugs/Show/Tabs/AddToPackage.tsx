@@ -1,6 +1,5 @@
 import React, { ReactElement, useState, useRef, Fragment } from 'react'
-import { ILazDrugModel } from '../../../../Interfaces/ModelsTypes'
-import { getLzDrugStateFormate, getDrugValidDate, getDrugPriceType, getDrugConsumeType, getDrugDesc, DrugsPackges }
+import { DrugsPackges }
  from '../../../../Commons/Services'
 import { makeStyles, Typography, Button, Box, Grid, FormControl, InputLabel, Select, MenuItem, TextField, InputProps, Badge, Chip, FormHelperText, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Divider } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/EditRounded'
@@ -9,6 +8,7 @@ import AddIcon from '@material-ui/icons/AddRounded'
 import RemoveIcon from '@material-ui/icons/CloseRounded' 
 import Alert from '@material-ui/lab/Alert';
 import { IDrugPackage } from '../../../../Interfaces/DataTypes';
+import { I_Drug_DataModel } from '../../../../Interfaces/DrugsTypes';
 const useStyles = makeStyles((theme) => ({
         form:{
             width:'100%',
@@ -71,13 +71,13 @@ const useStyles = makeStyles((theme) => ({
         }
 }));
 interface IProps {
-    model:ILazDrugModel
+    model:I_Drug_DataModel
 }
 interface IAddLzDrugToPackage{
     packName:string 
     quantity:number
 }
-const getAvaialableQuantity=(drugModel:ILazDrugModel,connectedPackgs:IDrugPackage[])=>{
+const getAvaialableQuantity=(drugModel:I_Drug_DataModel,connectedPackgs:IDrugPackage[])=>{
     return drugModel.quantity-connectedPackgs.reduce((prevValue,currentPackg,i)=>{
         let item=currentPackg.items.find(d=>d.id===drugModel.id);
         if(!item)return prevValue;
@@ -98,7 +98,7 @@ export default ({model}: IProps)=> {
     const [selectedPackgNameToRemoved,setSlectedPackgNameToRemoved]=useState('')
     const [selectedPackg,setSelectedPackg]=useState(DrugsPackges.getPackageByName(''))
     const [openConfirmDialog,setOpenConfirmDialog]=useState(false)
-    const [availableQuantity,setAailableQuantity]=useState(getAvaialableQuantity(model,connectdPackgs))
+    const [availableQuantity,setAailableQuantity]=useState(getAvaialableQuantity(model as any,connectdPackgs))
     const ResetForm=()=>{
         setFormModel({
             packName:'',
@@ -113,7 +113,7 @@ export default ({model}: IProps)=> {
         DrugsPackges.removeDrugFromPackage(selectedPackgNameToRemoved,model.id);
         setconnectdPackgs((_prev:any)=>{
             let currentPackgs= DrugsPackges.associatedPackages(model.id)
-            setAailableQuantity(getAvaialableQuantity(model,currentPackgs))
+            setAailableQuantity(getAvaialableQuantity(model as any,currentPackgs))
             return currentPackgs;
         });
         setSelectedPackg(DrugsPackges.getPackageByName(formModel.packName))
@@ -141,7 +141,7 @@ export default ({model}: IProps)=> {
             return;
         }
         ResetForm()
-        const res=DrugsPackges.addDrugToPackage(packName,model,quantity);
+        const res=DrugsPackges.addDrugToPackage(packName,model as any,quantity);
         if(res.done){
             setSelectedPackg(DrugsPackges.getPackageByName(packName))
             setconnectdPackgs(DrugsPackges.associatedPackages(model.id))  

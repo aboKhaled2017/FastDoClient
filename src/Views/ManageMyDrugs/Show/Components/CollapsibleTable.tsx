@@ -1,44 +1,17 @@
-import { ILazDrugModel } from "../../../../Interfaces/ModelsTypes";
-import { LazDrugConsumeType } from "../../../../Interfaces/DataTypes";
-import { makeStyles, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
+import { makeStyles, TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, createStyles, Theme, Backdrop, CircularProgress, Box } from "@material-ui/core";
 import React from "react";
 import LzDrgTableRow from './LzDrgTableRow'
-
-const myData:ILazDrugModel[]=[
-    {
-      id:'Aaaa-bbbb-ff', name: 'antinal500', type: 'حقن', quantity: 63,
-      price:20,consumeType:LazDrugConsumeType.burning,discount:10,
-      validDate:new Date(),priceType:1,unitType:0,
-      desc:'حقن انتينال 500 تاريخ جديد ,المنتج متوفر الى يوم الثلاثاء القادم, استبدال جمهور بجمهور'
-    },
-    {
-      id:'Aaaa-bbbb-bb', name: 'antinal', type: 'اقراص', desc:'', quantity: 18,
-      price:25,consumeType:LazDrugConsumeType.exchange,discount:77,validDate:new Date(),priceType:1,unitType:1
-    },
-    {
-      id:'Aaaa-bbbb-tt', name: 'bros15', type: 'مستلزمات طبية', desc:'', quantity: 16,
-      price:10,consumeType:LazDrugConsumeType.burning,discount:20,validDate:new Date(),priceType:0,unitType:0
-    },
-    {
-      id:'Aaaa-bbbb-rr', name: 'koncat', type: 'شراب', desc:'', quantity: 44,
-      price:105,consumeType:LazDrugConsumeType.exchange,discount:50,validDate:new Date(),priceType:0,unitType:0
-    },
-    {
-      id:'Aaaa-bbbb-ee', name: 'abimole', type: 'نقط', desc:'', quantity: 51,
-      price:44,consumeType:LazDrugConsumeType.burning,discount:10,validDate:new Date(),priceType:1,unitType:2
-    },
-    {
-      id:'Aaaa-bbbb-po', name: 'capsol', type: 'مرهم دهان', desc:'', quantity: 98,
-      price:17,consumeType:LazDrugConsumeType.burning,discount:10,validDate:new Date(),priceType:0,unitType:1
-    },
-    {
-      id:'Aaaa-bbbb-cv', name: 'voltareen', type: 'حقن', desc:'', quantity: 15,
-      price:19,consumeType:LazDrugConsumeType.burning,discount:10,validDate:new Date(),priceType:1,unitType:2
-    },
-]
-const useStyles = makeStyles({
+import { connect } from "react-redux";
+import { IDataState } from "../../../../Interfaces/States";
+import { I_Drug_DataModel, I_Drug_Pagination } from "../../../../Interfaces/DrugsTypes";
+import PaginationView from './PaginationView'
+import Alert from "@material-ui/lab/Alert";
+const useStyles =  makeStyles((theme: Theme) =>
+createStyles({
     root: {
       width: '100%',
+      background:'transparent',
+      boxShadow:'none'
     },
     container: {
       maxHeight: 880,
@@ -51,30 +24,71 @@ const useStyles = makeStyles({
         border: '2px solid rgba(206, 206, 206, 0.56)',
         textAlign: 'center'
       }
+    },
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: '#fff',
+    },
+    table:{
+      background:'transparent'
+    },
+    tbody:{
+      background:'#fff'
     }
-});
-function CollapsibleTable() {
+}));
+interface IProps{
+  dataRows:I_Drug_DataModel[]
+  pagination:I_Drug_Pagination
+  loading:boolean
+}
+const CollapsibleTable=(props:IProps)=>{
     const classes=useStyles();
+    const {loading}=props;
     return (
       <TableContainer component={Paper} className={classes.root}>
-        <Table aria-label="collapsible table">
+        <Backdrop className={classes.backdrop}
+                  open={loading}>
+              <Box mx={2}>
+              <span>جارى تحميل البييانات</span>
+              </Box>
+              <CircularProgress color="inherit" />
+        </Backdrop>
+        <Box my={1}>
+           <PaginationView/>
+        </Box>
+        <Box>
+        <Table className={classes.table} aria-label="collapsible table">
           <TableHead className={classes.thead}>
             <TableRow>
               <TableCell colSpan={2}>الاسم</TableCell>
               <TableCell>النوع</TableCell>
               <TableCell>السعر</TableCell>
               <TableCell>الكمية</TableCell>
-              <TableCell>التحم</TableCell>
+              <TableCell>التحكم</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {myData.map((row:ILazDrugModel)=> (
+          <TableBody className={classes.tbody}>
+            {props.dataRows.length==0 && 
+            <TableRow>
+               <TableCell colSpan={6}>
+                <Alert severity="warning">
+                  لايوجد بيانات للعرض
+                </Alert>
+               </TableCell>
+            </TableRow>
+            }
+            {props.dataRows.map((row:I_Drug_DataModel)=> (
               <LzDrgTableRow key={row.name} row={row} />
             ))}
           </TableBody>
         </Table>
+        </Box>
       </TableContainer>
     );
 }
 
-export default CollapsibleTable;
+export default connect((state:{data:IDataState})=>({
+  loading:state.data.loading,
+  dataRows:state.data.myDrugs.rows,
+  pagination:state.data.myDrugs.pagination
+}),{})(CollapsibleTable)

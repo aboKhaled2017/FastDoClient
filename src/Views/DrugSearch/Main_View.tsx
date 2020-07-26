@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Box, Typography, Grid } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
-import Search from './Search'
+import SearchView from './Search_View'
 
 interface Props {
     
@@ -29,7 +29,7 @@ export default class DrugSearch extends Component<Props, State> {
                         </Alert>
                     </Box>
                     <Box mt={2}>
-                      <Search/>
+                      <SearchView/>
                     </Box>
                </Box>
            </Fragment>

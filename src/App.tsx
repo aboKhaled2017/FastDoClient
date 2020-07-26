@@ -16,6 +16,9 @@ import { IUserIdentity } from './Interfaces/AccountTypes';
 import { logoutUser, setUserIdentity } from './Redux/Actions/userActions';
 import { GetAreas } from './Redux/Actions/DataActions';
 import { IHistory } from './Interfaces/DataTypes';
+import { create } from 'jss';
+import rtl from 'jss-rtl';
+import { StylesProvider, jssPreset } from '@material-ui/core/styles';
 
 interface IProps{
   classes:{[key:string]:any}
@@ -54,9 +57,9 @@ export default withStyles(styles) (class App extends Component<IProps>{
     InitialWorkBeforMountHome();    
   }
   render() {
-    return (
-    <Fragment>
-      <ThemeProvider theme={createMuiTheme(themeConfig)}>
+    const mainComponent=
+    (<Fragment>
+      <ThemeProvider theme={createMuiTheme(themeConfig as any)}>
          <Provider store={store}>
          <Router history={browserHistory}>
              <Header/>
@@ -82,7 +85,13 @@ export default withStyles(styles) (class App extends Component<IProps>{
            </Router>
          </Provider>     
       </ThemeProvider>
-    </Fragment>)
+    </Fragment>);
+    const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+    return (
+        <StylesProvider jss={jss}>
+          {mainComponent}
+        </StylesProvider>
+    )
   }
 }) as any
 

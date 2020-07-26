@@ -9,7 +9,7 @@ console.log('===================')
  }
 }
 
-export const clone= (obj:any)=> {
+export const clone= <T>(obj:T)=> {
     var copy:any;
     // Handle the 3 simple types, and null or undefined
     if (null == obj || "object" != typeof obj) return obj;
@@ -18,7 +18,7 @@ export const clone= (obj:any)=> {
     if (obj instanceof Date) {
         copy = new Date();
         copy.setTime(obj.getTime());
-        return copy;
+        return copy as T;
     }
 
     if (obj instanceof FormData) {
@@ -27,7 +27,7 @@ export const clone= (obj:any)=> {
         {
             copy.append(key,obj.get(key))
         }
-        return copy;
+        return copy as T;
     }
 
     // Handle Array
@@ -36,17 +36,18 @@ export const clone= (obj:any)=> {
         for (var i = 0, len = obj.length; i < len; i++) {
             copy[i] = clone(obj[i]);
         }
-        return copy;
+        return copy as T;
     }
 
     // Handle Object
     if (obj instanceof Object) {
         copy = {};
         for (var attr in obj) {
-            if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
+            if ((obj as any).hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
         }
-        return copy;
+        return copy as T;
     }
 
     throw new Error("Unable to copy obj! Its type isn't supported.");
 }
+

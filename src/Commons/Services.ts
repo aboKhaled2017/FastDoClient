@@ -1,5 +1,6 @@
 import { ILazDrugModel } from "../Interfaces/ModelsTypes";
 import { LazDrugsUnitTypes, LazDrugPriceType, LazDrugConsumeType, IDrugPackage, LazDrugUnitType } from "../Interfaces/DataTypes";
+import { E_LzDrg_PriceType, E_LzDrg_ConsumeType} from "../Interfaces/DrugsTypes";
 
 export function a11yProps(index:any) {
     return {
@@ -7,21 +8,18 @@ export function a11yProps(index:any) {
       'aria-controls': `vertical-tabpanel-${index}`,
     };
 }
-export function getLzDrugStateFormate(lzDrugModel:ILazDrugModel){
-  const unitTypeName=LazDrugsUnitTypes.find(v=>v.value==lzDrugModel.unitType)?.title;
-  return `يوجد لدى عدد ${lzDrugModel.quantity} ${unitTypeName} من  ${lzDrugModel.name} - ${lzDrugModel.type} - بسعر ${lzDrugModel.price} جنية لل/${unitTypeName}`
-}
-export function getDrugValidDate(date:Date){
-  return `${date.toLocaleDateString()}`
+export function Get_DrgValidDate(dateStr:string){
+  let date=new Date(dateStr);
+  return `${date.getMonth()+1} / ${date.getFullYear()}`
 }
 export function displayDrugValidDateAs_MMYYYY_Formate(date:Date){
   return `${date.getMonth()+1} - ${date.getFullYear()}`
 }
-export function getDrugPriceType(priceType:LazDrugPriceType){
-   return priceType==LazDrugPriceType.new?"سعر جديد":"سعر قديم";
+export function Get_DrgPriceType_StrFormate(priceType:E_LzDrg_PriceType){
+   return priceType==E_LzDrg_PriceType.newP?"سعر جديد":"سعر قديم";
 }
-export function getDrugConsumeType(consumeType:LazDrugConsumeType,discount:number|null){
-  return consumeType==LazDrugConsumeType.burning
+export function Get_DrgConsumeType_StrFormate(consumeType:E_LzDrg_ConsumeType,discount:number|null){
+  return consumeType==E_LzDrg_ConsumeType.burning
   ?`بيع/حرق مباشرة بخصم ${discount} %`
   :"استبدال جمهور مع جمهور";
 }

@@ -14,6 +14,7 @@ import SearchDrugsIcon from '@material-ui/icons/SearchSharp'
 import LogoutIcon from '@material-ui/icons/ExitToAppRounded'
 
 import UserIcon from '@material-ui/icons/PersonAddOutlined'
+import LoginIcon from '@material-ui/icons/Person'
 import AcountIconOutlined from '@material-ui/icons/AccountCircleOutlined'
 
 import IconButton from '@material-ui/core/IconButton';
@@ -180,7 +181,7 @@ function Header(props: IProps): ReactElement {
                   <Button component={Link} to="/login" size="medium" color="inherit" 
                           variant="outlined"                   
                           className={classes.appBarButton} 
-                          startIcon={<Icon  fontSize="small" className="fa fa-sign"/> }> 
+                          startIcon={<LoginIcon  fontSize="small"/> }> 
                       <span className="buttonText"> دخول </span>
                   </Button>
               </Box>                 

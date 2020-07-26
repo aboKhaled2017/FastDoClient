@@ -6,16 +6,18 @@
 .MuiTextField-root{
   background: transparent !important;
 }
+.MuiFormControl-root{
+  background: transparent !important;
+}
+
 .MuiTextField-root .MuiInputBase-root input,
 .MuiTextField-root .MuiInputBase-root textarea{
   background: #fff;
 }
-.MuiFormControl-root{
-  background: transparent !important;
-}
 .MuiFormControl-root:not(.MuiTextField-root) .MuiSelect-select.MuiSelect-selectMenu{
   background: #fff;
 }
+
 .MuiFormControl-root:not(.MuiTextField-root) .MuiFormLabel-root.MuiInputLabel-root{
   z-index: 5;
 }
