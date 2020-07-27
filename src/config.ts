@@ -2,7 +2,7 @@ export  const credentials={
     auth:true
 }
 export const Base_URLs={
-    production_Url:'http://fastdo.azurewebsites.net/api/',
+    production_Url:'http://moha2511995-001-site2.dtempurl.com/api/',
     local_BaseUrl:"http://localhost:10/api/",
     get BaseUrl(){return this.production_Url}
 }

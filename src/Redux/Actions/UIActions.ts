@@ -9,7 +9,7 @@ import { Base_URLs } from '../../config';
 import {setUserIdentity} from './userActions'
 import { IHistory } from '../../Interfaces/DataTypes';
 const api = axios.create({
-    baseURL: Base_URLs.local_BaseUrl,
+    baseURL: Base_URLs.BaseUrl,
     headers: {
       common: {
         Accept: 'application/json'
@@ -20,7 +20,7 @@ const api = axios.create({
     }
 })
 const api_formData = axios.create({
-    baseURL: Base_URLs.local_BaseUrl,
+    baseURL: Base_URLs.BaseUrl,
     headers: {
       common: {
         Accept: 'application/json'
