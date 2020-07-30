@@ -8,14 +8,9 @@ import ShowLzDrugs from '../Show/Show'
 import ShowSentRequests_ByMe from '../ShowSentReqsts/ShowSentReqsts'
 import ShowReceivedRequests_ByMe from '../ShowRecvReqsts/ShowRecvReqsts'
 import LzDrgsTabs from './Components/LzDrgsTabs'
-import { IDataState } from '../../../Interfaces/States'
-import { connect } from 'react-redux'
-import {GetMyDrugs_Page} from '../../../Redux/Actions/DataActions'
-import { I_Drug_DataModel, I_PaginationReq_To_GetDrugs } from '../../../Interfaces/DrugsTypes'
 interface IProps {
     classes:{[key:string]:any}
-    GetMyDrugs_Page:()=>void
-    dataRows:I_Drug_DataModel[]
+    
 }
 interface IState{}
 
@@ -48,11 +43,7 @@ const styles=(theme:Theme)=>({
 
 
 class manageMyDrugsPage extends Component<IProps, IState> {
-    state = {value:1}
-    componentDidMount(){
-        if(this.props.dataRows && this.props.dataRows.length==0)
-          this.props.GetMyDrugs_Page();
-    }
+    state = {value:0}
     handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         this.setState({value:newValue});
     }
@@ -96,6 +87,4 @@ class manageMyDrugsPage extends Component<IProps, IState> {
         )
     }
 }
-export default connect((state:{data:IDataState})=>({
-dataRows:state.data.myDrugs.rows
-}), {GetMyDrugs_Page})(withStyles(styles as any)(manageMyDrugsPage)) as any;
+export default withStyles(styles as any)(manageMyDrugsPage) as any;

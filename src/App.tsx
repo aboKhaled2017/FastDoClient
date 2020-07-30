@@ -19,6 +19,8 @@ import { IHistory } from './Interfaces/DataTypes';
 import { create } from 'jss';
 import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@material-ui/core/styles';
+import ProtectedRoute from './components/ProtectedRoute';
+import UnAuthentictedRoute from './components/UnAuthentictedRoute';
 
 interface IProps{
   classes:{[key:string]:any}
@@ -29,6 +31,7 @@ const styles=((theme:Theme)=>({
     marginTop:theme.spacing(3),
   }
 }));
+ 
 const InitialWorkBeforMountHome=()=>{
   axios.defaults.baseURL=Base_URLs.BaseUrl;
   store.dispatch(GetAreas() as any);
@@ -67,16 +70,19 @@ export default withStyles(styles) (class App extends Component<IProps>{
              <div  className={this.props.classes.mainContainer}>
               <Switch>            
                     <Route exact path="/" component={Home}/>
-                    <Route exact path="/login" component={Login}/>
-                    <Route exact path="/join" component={Join}/>
-                    <Route exact path="/join/:type" component={Join}/>
-                    <Route exact path="/profile" component={Profile}/>
-                    <Route exact path="/account" component={Account}/>
+                    <UnAuthentictedRoute  exact path="/login" component={Login}/>
+                    <UnAuthentictedRoute exact path="/join" component={Join}/>
+                    <UnAuthentictedRoute exact path="/join/:type" component={Join}/>
+                    <UnAuthentictedRoute exact path="/forgotpassword" component={ForgotPassword}/>
+
                     <Route exact path="/aboutUs" component={AboutUs}/>
                     <Route exact path="/contactUs" component={ContactUs}/>
-                    <Route exact path="/myLazDrugs" component={ManageMyDrugs}/>
-                    <Route exact path="/searchDrugs" component={DrugSearch}/>
-                    <Route exact path="/forgotpassword" component={ForgotPassword}/> 
+
+                    <ProtectedRoute  exact path="/profile" component={Profile}/>
+                    <ProtectedRoute  exact path="/account" component={Account}/>
+                    <ProtectedRoute  exact path="/myLazDrugs" component={ManageMyDrugs}/>
+                    <ProtectedRoute  exact path="/searchDrugs" component={DrugSearch}/>
+                    
                     <Route exact path="/not-found" component={NotFound}/>
                     <Redirect to="/not-found" />             
               </Switch>

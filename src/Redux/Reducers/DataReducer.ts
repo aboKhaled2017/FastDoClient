@@ -1,5 +1,5 @@
 import {LOADING_DATA,SET_AREAS_DATA, SET_ERROR_ON_FETCH_DATA, SET_USER_DRUGS_DATA,
-     UPDATE_DRGS_DATA_WITH_NEWLLY_ADDED, UPDATE_LZ_DRG, STOP_LOADING_DATA, SET_USER_DRUGS_REQS_RECIEVED_DATA, UPDATE_DRGREQUEST_MODEL, SET_USER_DRUGS_REQS_MADE_DATA } from "../types"
+     UPDATE_DRGS_DATA_WITH_NEWLLY_ADDED, UPDATE_LZ_DRG, STOP_LOADING_DATA, SET_USER_DRUGS_REQS_RECIEVED_DATA, UPDATE_DRGREQUEST_MODEL, SET_USER_DRUGS_REQS_MADE_DATA, RESET_DATA_AFTERLOGOUT } from "../types"
 import dataRecords from "../../Views/DrugSearch/TableData"
 import { IDataState } from "../../Interfaces/States"
 import { clone } from "../../Helpers/HelperArrayFuncs"
@@ -68,6 +68,8 @@ export default (state:IDataState = clone({...initialState}), { type, payload }:{
         return {...clone(state),loading:false,myDrugs:{...clone(payload)}}
     case UPDATE_DRGREQUEST_MODEL:
         return {...clone(state),loading:false,DrgsReq_I_recieved_Data:{...clone(payload)}}
+    case RESET_DATA_AFTERLOGOUT:
+        return  clone({...initialState,areas:state.areas});
     default:
         return {...clone(state)}
     }
