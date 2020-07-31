@@ -14,4 +14,4 @@ artifacts:
     - "**/*"
   discard-paths: no
   base-directory: build
-  destination:c:\inetpub\wwwroot\fastdoMainSite
+  destination: c:\inetpub\wwwroot\fastdoMainSite
