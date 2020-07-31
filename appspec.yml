@@ -1,17 +1,15 @@
 version: 0.0
 os: windows
+files:
+  - source: \build
+    destination: c:\inetpub\wwwroot\fastdoMainSite
 phases:
   pre_build:
     commands:
       - echo Installing dependencies...
-      - npm
+      - npm i
   build:
     commands:
       - echo Building...
-      - npm localBuild
-artifacts:
-  files:
-    - "**/*"
-  discard-paths: no
-  base-directory: build
-  destination: c:\inetpub\wwwroot\fastdoMainSite
+      - npm run localBuild
+
