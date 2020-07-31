@@ -1,8 +1,8 @@
 version: 0.0
 os: windows
-files:
-  - source: \build
-    destination: c:\inetpub\wwwroot\fastdoMainSite
+#files:
+#  - source: \build
+#   destination: c:\inetpub\wwwroot\fastdoMainSite
 phases:
   pre_build:
     commands:
