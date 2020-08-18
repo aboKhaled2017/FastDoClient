@@ -19,7 +19,7 @@ function EmailConfirm({userS}: Props): ReactElement {
                <br/>
                احصل على كود التفعيل وقم بالتفعيل من 
                </span>    
-              <Box marginX={1} display="inline">
+              <Box marginX={1} display="none">
                  <Button color="primary" variant="outlined" component={Link} to='/account'>هنا</Button>
               </Box> 
             </Alert>
