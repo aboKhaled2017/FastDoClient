@@ -4,12 +4,12 @@ import './App.css';
 import themeConfig from './Utils/theme'
 import {Header,Footer, SharedSection} from './components/Layouts'
 import { createMuiTheme, ThemeProvider, Theme, withStyles } from '@material-ui/core';
-import {AboutUs,ContactUs,DrugSearch,Home,Login,ManageMyDrugs,Profile,Join,Account,NotFound,ForgotPassword} from './Views'
+import {AboutUs,ContactUs,DrugSearch,Home,Login,ManageMyDrugs,Profile,Join,
+  Account,NotFound,ForgotPassword, UnAuthorized} from './Views'
 import {Provider} from 'react-redux'
 import jwtDecode from 'jwt-decode'
-import axios from 'axios'
 import store from './Redux/store';
-import {Base_URLs} from './config'
+import {setDefaultConfig} from './config'
 import { AnyAction } from 'redux';
 import {createBrowserHistory} from 'history'
 import { IUserIdentity } from './Interfaces/AccountTypes';
@@ -21,6 +21,7 @@ import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@material-ui/core/styles';
 import ProtectedRoute from './components/ProtectedRoute';
 import UnAuthentictedRoute from './components/UnAuthentictedRoute';
+import { UserRoles } from './Interfaces/UserTypes';
 
 interface IProps{
   classes:{[key:string]:any}
@@ -31,9 +32,9 @@ const styles=((theme:Theme)=>({
     marginTop:theme.spacing(3),
   }
 }));
- 
-const InitialWorkBeforMountHome=()=>{
-  axios.defaults.baseURL=Base_URLs.BaseUrl;
+const browserHistory = createBrowserHistory();
+const InitialWorkBeforMountHome=()=>{  
+  setDefaultConfig();
   store.dispatch(GetAreas() as any);
   const UserIdentityStr=localStorage.getItem("UserIdentifier");
   if(UserIdentityStr){
@@ -44,17 +45,17 @@ const InitialWorkBeforMountHome=()=>{
       //expired token ,so logout user
       if(decodedToken.exp*1000 < Date.now()){
         store.dispatch(logoutUser(null as any as IHistory) as any);
-        window.location.href="/join"
+        browserHistory.push("/login");        
       }
       //token is not expired
       else{
-        axios.defaults.headers.common['Authorization']=userIdentity.accessToken.token;
-        store.dispatch(setUserIdentity(userIdentity) as any as AnyAction)
+        userIdentity.user.role=decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+        store.dispatch(setUserIdentity(userIdentity) as any as AnyAction);      
       }
     }
   }
 }
-const browserHistory = createBrowserHistory();
+
 export default withStyles(styles) (class App extends Component<IProps>{
   componentWillMount(){
     InitialWorkBeforMountHome();    
@@ -80,10 +81,12 @@ export default withStyles(styles) (class App extends Component<IProps>{
 
                     <ProtectedRoute  exact path="/profile" component={Profile}/>
                     <ProtectedRoute  exact path="/account" component={Account}/>
-                    <ProtectedRoute  exact path="/myLazDrugs" component={ManageMyDrugs}/>
-                    <ProtectedRoute  exact path="/searchDrugs" component={DrugSearch}/>
+                    
+                    <ProtectedRoute  exact path="/myLazDrugs" component={ManageMyDrugs} targetRole={UserRoles.pharmacier}/>
+                    <ProtectedRoute  exact path="/searchDrugs" component={DrugSearch} targetRole={UserRoles.pharmacier}/>
                     
                     <Route exact path="/not-found" component={NotFound}/>
+                    <Route exact path="/unAuthorized" component={UnAuthorized}/>
                     <Redirect to="/not-found" />             
               </Switch>
              </div>

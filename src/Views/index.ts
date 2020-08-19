@@ -9,6 +9,7 @@ import Join from './Join/MainView';
 import Account from './Account';
 import NotFound from './NotFound'
 import ForgotPassword from './ForgotPassword'
+import UnAuthorized from './UnAuthorized'
 export {
-    AboutUs,ContactUs,DrugSearch,ManageMyDrugs,Home,Login,Profile,Join,Account,NotFound,ForgotPassword
+    AboutUs,ContactUs,DrugSearch,ManageMyDrugs,Home,Login,Profile,Join,Account,NotFound,ForgotPassword,UnAuthorized
 }

@@ -5,17 +5,22 @@ import { IUserState } from '../Interfaces/States';
  
 
 interface ProtectedRouteProps extends RouteProps {
-    isAuthenticated?: boolean;
+    isAuthenticated: boolean;
+    role:string
     authenticationPath: string;
+    targetRole:string
 }
 
  class ProtectedRoute extends Route<ProtectedRouteProps> {
-    public render() {
+     render() {
         let redirectPath: string = '';
-        if (!this.props.isAuthenticated) {
-            redirectPath = this.props.authenticationPath;
+        const {authenticationPath,isAuthenticated,role,targetRole}=this.props;
+        if (!isAuthenticated) {
+            redirectPath =authenticationPath;
         }
-
+        else if(targetRole!=role){
+            redirectPath="/unAuthorized";
+        }
         if (redirectPath) {
             const renderComponent = () => (<Redirect to={{pathname: redirectPath}}/>);
             return <Route {...this.props} component={renderComponent} render={undefined}/>;
@@ -26,5 +31,6 @@ interface ProtectedRouteProps extends RouteProps {
 }
  export default connect((state:{user:IUserState})=>({
     isAuthenticated:state.user.authenticated,
-    authenticationPath:'/login'
- }), {})(ProtectedRoute) as any as (props:RouteProps)=>React.ReactElement
+    authenticationPath:'/login',
+    role:state.user.userIdentity.user.role
+ }), {})(ProtectedRoute as any) as (props:RouteProps &{targetRole?:string})=>React.ReactElement

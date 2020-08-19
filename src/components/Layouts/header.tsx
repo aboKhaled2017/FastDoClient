@@ -34,6 +34,7 @@ import {logoutUser} from '../../Redux/Actions/userActions'
 import { IUserState } from '../../Interfaces/States';
 import { connect } from 'react-redux';
 import { IHistory } from '../../Interfaces/DataTypes';
+import { UserRoles } from '../../Interfaces/UserTypes';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -78,7 +79,7 @@ function Header(props: IProps): ReactElement {
   const classes = useStyles();
   const history=useHistory();
   const {user,logoutUser}=props;
-  const {authenticated}=user;
+  const {authenticated,userIdentity:{user:{role}}}=user;
   const [openDrawer,setOpenDrawer]=useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -87,11 +88,12 @@ function Header(props: IProps): ReactElement {
     {text:'ماذا عنا',to:'/aboutUs'},
     {text:'تواصل معنا',to:'/contactUs'}
   ]
-  const authListItems=[
-    ...unAuthListItems,
-    {text:'ادارة رواكدى',to:'/myLazDrugs'},
-    {text:'البحث عن رواكد',to:'searchDrugs'}
-  ]
+  const authListItems=unAuthListItems;
+  if(role==UserRoles.pharmacier){
+    authListItems.push(
+      {text:'ادارة رواكدى',to:'/myLazDrugs'},
+      {text:'البحث عن رواكد',to:'searchDrugs'});
+  }
   const listItems =authenticated?authListItems:unAuthListItems;
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -122,7 +124,7 @@ function Header(props: IProps): ReactElement {
               <Button component={Link} to="/" variant="text"  color="inherit" className={classes.appBarButton}>الرئيسية</Button>
               <Button component={Link} to="/aboutUs" variant="text"  color="inherit" className={classes.appBarButton}>ماذا عنا</Button>
               <Button component={Link} to="/contactUs" variant="text"  color="inherit" className={classes.appBarButton}>تواصل معنا</Button>
-              {authenticated && <>
+              {authenticated && role==UserRoles.pharmacier && <>
                 <Button component={Link} to="/myLazDrugs" variant="text"  color="inherit" className={classes.appBarButton}>ادراة رواكدى</Button>
                 <Button component={Link} to="/searchDrugs" variant="text"  color="inherit" className={classes.appBarButton}>البحث عن الرواكد</Button>
               </>}

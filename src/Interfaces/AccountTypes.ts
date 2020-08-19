@@ -204,6 +204,7 @@ export interface ICurrentUserIdentifier{
     address:string
     emailConfirmed:boolean
     userType:E_UserType
+    role:string 
 }
 export interface ITokenIdentifier{
     token:string
