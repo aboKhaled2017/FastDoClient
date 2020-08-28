@@ -51,10 +51,10 @@ export default ({}: Props)=>
     {text:'تواصل معنا',to:'/contactUs'}
   ]
   const servicesListItems=[
-    {text:'انضم الى فاست دو كصيدلية',to:'/register'},
-    {text:'انضم الى فاست دو كمخزن',to:'/register'},
-    {text:'قم بالبحث عن الراكد الذى تريده',to:'/serachDrugs'},
-    {text:'قم بأضافة وعرض منتجاتك الراكدة',to:'/myDrugs'}
+    {text:'انضم الى فاست دو كصيدلية',to:'/join'},
+    {text:'انضم الى فاست دو كمخزن',to:'/join'},
+    {text:'قم بالبحث عن الراكد الذى تريده',to:'/searchDrugs'},
+    {text:'قم بأضافة وعرض منتجاتك الراكدة',to:'/myLazDrugs'}
   ]
   const classes=styles();
   return (

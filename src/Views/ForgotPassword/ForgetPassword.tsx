@@ -36,7 +36,10 @@ const useStyles = makeStyles((theme: Theme) =>
             fontSize:100
         },
         textField:{
-        margin:'10px auto 10px auto'
+        margin:'10px auto 10px auto',
+       '& input':{
+        background:'transparent !important'
+       }
         },
         customeErros:{
         marginTop:20,
@@ -127,8 +130,10 @@ function ForgetPasswordView(){
                                 <Box mt={2}>
                                     <Box mb={1}>
                                             <TextField 
-                                                name="email" type="email" 
-                                                id="email" label="ادخل بريدك الالكترونى الذى سجلت به لدينا هنا" 
+                                                name="email" 
+                                                type="email" 
+                                                id="email"
+                                                label="ادخل بريدك الالكترونى الذى سجلت به لدينا هنا" 
                                                 value={status.email}
                                                 helperText={displayError(errors.Email)}
                                                 error={errors.Email?true:false}                              

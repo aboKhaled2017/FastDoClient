@@ -27,7 +27,10 @@ const styles=(theme:Theme)=>({
        margin:'10px auto 10px auto'
      },
      textField:{
-       margin:'10px auto 10px auto'
+       margin:'10px auto 10px auto',
+       '& input':{
+        background:'transparent !important'
+       }
      },
      button:{
        margin:theme.spacing(3,'auto',1.5,'auto'),

@@ -1,10 +1,11 @@
-import React, { Component } from "react";
-import { TextField, Typography, FormControl, InputLabel, MenuItem, Select, FormHelperText} from "@material-ui/core";
+import React, { Component, Fragment } from "react";
+import { TextField, Typography, FormControl, InputLabel, MenuItem, Select, FormHelperText, CircularProgress} from "@material-ui/core";
 import {
      I_UI_Errors, IStk_Signup_Step1} from '../../../../Interfaces/AccountTypes';
 import { IDataState, I_DataOf_Signup_Stk_Steps } from "../../../../Interfaces/States";
 import { ISelectInputChange } from "../../../../Interfaces/EventTypes";
 import {displayError} from '../../../../Helpers/HelperJsxFunctions'
+import store from "../../../../Redux/store";
 
 interface IStep_Props{
     classes:{[key:string]:string}
@@ -41,7 +42,7 @@ class STK_Identity_Step extends Component<IStep1_Props>{
         const {classes,selectedCityId,data:{loading:loadingData,areas:{cities,destricts}}}=this.props;
         const errors=this.props.errors.signUp_Errors.Stk_SignUp_Errors.Step1_Errors;
         const {areaId,cityId,ownerName,mgrName,name}=this.props.stk_DataOfSteps.step1;
-        
+        const loadingInitialFormData:boolean=store.getState().data.loading;
         return(
             <>
              <TextField 
@@ -87,9 +88,18 @@ class STK_Identity_Step extends Component<IStep1_Props>{
                     fullWidth
                     onChange={this.handleSelectCityChange}
                     >
-                    {cities.map((item,i)=>(
-                        <MenuItem  className={classes.menuItem} key={i} value={item.id}>{item.name}</MenuItem>
-                    ))}
+                    <Fragment>
+                    {loadingInitialFormData && <MenuItem>
+                        تحميل البيانات ... 
+                        <CircularProgress size={20}
+                                          color="secondary" 
+                                          style={{marginRight:100}}
+                                          className={classes.progress}/>
+                        </MenuItem>}
+                        {cities.map((item,i)=>(
+                            <MenuItem  className={classes.menuItem} key={i} value={item.id}>{item.name}</MenuItem>
+                        ))}
+                    </Fragment>
                 </Select>
                 <FormHelperText className={classes.formHelperText}>{displayError(errors?.CityId)}</FormHelperText>
             </FormControl> 

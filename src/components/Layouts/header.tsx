@@ -71,15 +71,15 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-  user:IUserState
+  authenticated:boolean 
+  role:UserRoles
   logoutUser:(history:IHistory)=>void
 }
 
 function Header(props: IProps): ReactElement {
   const classes = useStyles();
   const history=useHistory();
-  const {user,logoutUser}=props;
-  const {authenticated,userIdentity:{user:{role}}}=user;
+  const {logoutUser,role,authenticated}=props;
   const [openDrawer,setOpenDrawer]=useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -275,5 +275,6 @@ function Header(props: IProps): ReactElement {
   );
 }
 export default connect((state:{user:IUserState})=>({
-user:state.user
+authenticated:state.user.authenticated,
+role:state.user.userIdentity.user.role
 }), {logoutUser})(Header as any)

@@ -92,7 +92,6 @@ const SearchCard_View=(props:IProps)=> {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  const [fname,lname]=model.pharmName.split(' ');
   const handleMake_ByRequest=()=>{
     setLoading(true);
     axios.post(`/phrdrgrequests/${model.id}`)
@@ -165,7 +164,7 @@ const SearchCard_View=(props:IProps)=> {
         className={classes.cardHeader}
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar} >
-            {`${fname[0]}.${lname[0]}`}
+            {`${model.pharmName[0]}`}
           </Avatar>
         }
         action={

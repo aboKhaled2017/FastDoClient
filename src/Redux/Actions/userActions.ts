@@ -6,7 +6,7 @@ import {IHistory } from '../../Interfaces/DataTypes';
 import { clone } from '../../Helpers/HelperArrayFuncs';
 import store from '../store';
 import { Fetch_Headers } from '../../config';
-
+import jwtDecode from 'jwt-decode';
 export const logoutUser=(history:IHistory)=>(dispatch:Dispatch)=>{
   AuthorizationHeader.removeUserIdentity();
   dispatch({type:REMOVE_USER_IDENTITY});
@@ -16,6 +16,8 @@ export const logoutUser=(history:IHistory)=>(dispatch:Dispatch)=>{
 }
 
 export const setUserIdentity=(userIdentity:IUserIdentity)=>(dispatch:Dispatch)=>{
+  const decodedToken=jwtDecode(userIdentity.accessToken.token) as any;
+  userIdentity.user.role=decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
   AuthorizationHeader.setUserIdentity(userIdentity);
   dispatch({type:SET_USER_IDENTITY,payload:userIdentity})
 }

@@ -18,7 +18,7 @@ interface ProtectedRouteProps extends RouteProps {
         if (!isAuthenticated) {
             redirectPath =authenticationPath;
         }
-        else if(targetRole!=role){
+        else if(targetRole && targetRole!=role){
             redirectPath="/unAuthorized";
         }
         if (redirectPath) {
