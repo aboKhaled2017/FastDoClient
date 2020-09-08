@@ -1,5 +1,6 @@
 version: 0.0
 os: windows
+<<<<<<< HEAD
 files:
   - source: \public\index.html
     destination: c:\inetpub\wwwroot\fastdoMainSite
@@ -7,3 +8,18 @@ hooks:
   BeforeInstall:
     - location: \public\scripts\before-install.bat
       timeout: 900
+=======
+#files:
+#  - source: \build
+#   destination: c:\inetpub\wwwroot\fastdoMainSite
+phases:
+  pre_build:
+    commands:
+      - echo Installing dependencies...
+      - npm i
+  build:
+    commands:
+      - echo Building...
+      - npm run localBuild
+
+>>>>>>> f1c5dfd7852c2de68b37b9e3c27101c64cb44338
