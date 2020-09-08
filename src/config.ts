@@ -4,8 +4,8 @@ export  const credentials={
 }
 export const Base_URLs={
     production_Url:'https://www.backend.fastdo.co/api/',
-    local_BaseUrl:"http://localhost:10/api/",
-    get BaseUrl(){return this.production_Url}
+    local_BaseUrl:"https://localhost:44345/api/",
+    get BaseUrl(){return this.local_BaseUrl}
 }
 export const setDefaultConfig=()=>{
     axios.defaults.baseURL=Base_URLs.BaseUrl;

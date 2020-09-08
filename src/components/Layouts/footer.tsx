@@ -51,11 +51,7 @@ export default ({}: Props)=>
     {text:'تواصل معنا',to:'/contactUs'}
   ]
   const servicesListItems=[
-<<<<<<< HEAD
-    {text:'انضم الى فاست دو كصيدلية',to:'/join'},
-=======
     {text:'انضم الى فاست دو كصيدلية',to:'/join/1'},
->>>>>>> f1c5dfd7852c2de68b37b9e3c27101c64cb44338
     {text:'انضم الى فاست دو كمخزن',to:'/join'},
     {text:'قم بالبحث عن الراكد الذى تريده',to:'/searchDrugs'},
     {text:'قم بأضافة وعرض منتجاتك الراكدة',to:'/myLazDrugs'}
