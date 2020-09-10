@@ -3,9 +3,9 @@ import { Theme } from "@material-ui/core";
 export default {
     palette: {
         primary: {
-          light: '#33c9dc',
-          main: '#095c9e',
-          dark: '#008394',
+          light: 'rgba(47, 183, 119, 0.62)',
+          main: '#2fb777',
+          dark: 'rgb(33, 165, 103)',
           contrastText: '#fff'
         },
         secondary: {

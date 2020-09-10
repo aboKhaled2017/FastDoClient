@@ -1,8 +1,12 @@
 .MuiInputLabel-formControl{
-    right:2rem;
+    right:.9rem !important;
     left:inherit !important;
     font-size: 16px !important;
-  }
+}
+.MuiFormLabel-filled.MuiInputLabel-formControl{
+  top: 8px;
+    right: 1rem;
+}
 .MuiTextField-root{
   background: transparent !important;
 }
@@ -16,6 +20,8 @@
 }
 .MuiFormControl-root:not(.MuiTextField-root) .MuiSelect-select.MuiSelect-selectMenu{
   background: #fff;
+  margin-top: 9px;
+  margin-bottom: -12px;
 }
 
 .MuiFormControl-root:not(.MuiTextField-root) .MuiFormLabel-root.MuiInputLabel-root{

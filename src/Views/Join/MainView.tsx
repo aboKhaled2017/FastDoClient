@@ -57,14 +57,23 @@ const styles=(theme:Theme)=>{
   }
   return{
     JoinContainer:{
-        background:'rgb(245, 245, 245)'
+       
     },
     fab:{
       margin: theme.spacing(1),
+      background:'#fff',
+      color:theme.palette.primary.dark,
+      "&.clicked":{
+        background:theme.palette.primary.dark,
+        color:'#fff',
+      }
     },
     extendedIcon: {
       marginLeft: theme.spacing(1),
     },
+    joinTopBar:{
+      textAlign:'center'
+    }
  }
 }
 const joinViewTheme=createMuiTheme({
@@ -113,18 +122,17 @@ const MainView= withStyles(styles as any)(class  extends Component<IProps, IStat
       if(joinType==JoinType.JoinAsStoreOwner)
       (this.asStoreBtnRef.current as HTMLButtonElement).click()
       else 
-      (this.asPharmacierBtnRef.current as HTMLButtonElement).click()
-      
+      (this.asPharmacierBtnRef.current as HTMLButtonElement).click()     
     }
     handleOnAsPharmacierBtnClicked=(e:MouseEvent)=>{
-      (this.asPharmacierBtnRef.current as HTMLButtonElement).style.background=this.focusedBgColorForBtn;
-      (this.asStoreBtnRef.current as HTMLButtonElement).style.background=this.unFocusedBgColorForBtn;
+      (this.asPharmacierBtnRef.current as HTMLButtonElement).classList.add('clicked');
+      (this.asStoreBtnRef.current as HTMLButtonElement).classList.remove('clicked');
       this.setState({joinType:JoinType.JoinAsPharmacier});
       this.props.Reset_SignUp_Current_Step();
     }
     handleOnAsStoreBtnClicked=(e:Event)=>{
-      (this.asPharmacierBtnRef.current as HTMLButtonElement).style.background=this.unFocusedBgColorForBtn;
-      (this.asStoreBtnRef.current as HTMLButtonElement).style.background=this.focusedBgColorForBtn;
+      (this.asPharmacierBtnRef.current as HTMLButtonElement).classList.remove('clicked');
+      (this.asStoreBtnRef.current as HTMLButtonElement).classList.add('clicked');
       this.setState({joinType:JoinType.JoinAsStoreOwner});
       this.props.Reset_SignUp_Current_Step();
     }
@@ -132,10 +140,10 @@ const MainView= withStyles(styles as any)(class  extends Component<IProps, IStat
         const {classes}=this.props;
         return (
         <Container className={classes.JoinContainer}>          
-          <Box>
+          <Box className={classes.joinTopBar}>
              <Fab variant="extended"
-                  size="small"
-                  color="primary"
+                  size="medium"
+                  
                   aria-label="add"
                   focusRipple
                   buttonRef={this.asPharmacierBtnRef}                  
@@ -144,8 +152,8 @@ const MainView= withStyles(styles as any)(class  extends Component<IProps, IStat
                     انضم كصيدلي
              </Fab>
              <Fab variant="extended"
-                  size="small"
-                  color="primary"
+                  size="medium"
+                 
                   aria-label="add"
                   buttonRef={this.asStoreBtnRef}
                   className={classes.fab}>

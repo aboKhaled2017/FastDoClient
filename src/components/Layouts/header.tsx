@@ -52,7 +52,16 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     logo:{
-      height:35
+      width:180
+    },
+    logoLink:{
+      position:'absolute',
+      top: 0,
+      background:theme.palette.primary.main,
+      left: 0,
+      padding:0,
+      borderBottomRightRadius: 60,
+      borderBottomLeftRadius: 25
     },
     buttonDivider:{
       width:15,
@@ -113,9 +122,9 @@ function Header(props: IProps): ReactElement {
   return (
        <AppBar position="sticky" className={classes.appBar}>
          <Toolbar variant="dense">
-           <Box m={1} alignItems="center">          
-            <Link to="/">
-              <img  src={LogoImg} alt="فاست دو" className={classes.logo}/>
+           <Box  alignItems="center" style={{width:'15%'}}>          
+            <Link to="/" className={classes.logoLink}>
+              <img   src={LogoImg} alt="فاست دو" className={classes.logo}/>
             </Link>
            </Box>
            {/**show only desktop screen */}
