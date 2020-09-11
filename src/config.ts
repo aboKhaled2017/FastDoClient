@@ -4,7 +4,7 @@ export  const credentials={
 }
 export const Base_URLs={
     production_Url:'https://www.backend.fastdo.co/api/',
-    local_BaseUrl:"http://localhost:10/api/",
+    local_BaseUrl:"https://localhost:44345/api/",
     get BaseUrl(){return this.production_Url}
 }
 export const setDefaultConfig=()=>{

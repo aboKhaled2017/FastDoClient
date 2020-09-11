@@ -6,6 +6,7 @@ import uiReducer from './Reducers/uiReducer'
 import userReducer from './Reducers/userReducer'
 import dataReducer from './Reducers/DataReducer'
 import { clone } from '../Helpers/HelperArrayFuncs';
+import StocksDataReducer from './Reducers/StocksDataReducer';
 const initialState={}
 const middleware=[thunk]
 
@@ -13,7 +14,8 @@ const reducers=combineReducers({
     data:dataReducer,
     searchData:searchDataReducer,
     user:userReducer,
-    UI:uiReducer
+    UI:uiReducer,
+    stockData:StocksDataReducer
 })
 
 const composeEnhancers =

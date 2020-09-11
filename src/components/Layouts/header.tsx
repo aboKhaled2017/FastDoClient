@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useState, Fragment } from 'react'
 import LogoImg from '../../Images/company.png';
 import {Link, useHistory} from 'react-router-dom'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -12,6 +12,8 @@ import ContactUsIcon from '@material-ui/icons/ContactSupportRounded'
 import MyDrugsIcon from '@material-ui/icons/SearchRounded'
 import SearchDrugsIcon from '@material-ui/icons/SearchSharp'
 import LogoutIcon from '@material-ui/icons/ExitToAppRounded'
+import ManagementIcon from '@material-ui/icons/ScatterPlotSharp';
+import StoreIcon from '@material-ui/icons/StoreSharp';
 
 import UserIcon from '@material-ui/icons/PersonAddOutlined'
 import LoginIcon from '@material-ui/icons/Person'
@@ -133,10 +135,17 @@ function Header(props: IProps): ReactElement {
               <Button component={Link} to="/" variant="text"  color="inherit" className={classes.appBarButton}>الرئيسية</Button>
               <Button component={Link} to="/aboutUs" variant="text"  color="inherit" className={classes.appBarButton}>ماذا عنا</Button>
               <Button component={Link} to="/contactUs" variant="text"  color="inherit" className={classes.appBarButton}>تواصل معنا</Button>
-              {authenticated && role==UserRoles.pharmacier && <>
+              {authenticated && role==UserRoles.pharmacier && 
+              <>
                 <Button component={Link} to="/myLazDrugs" variant="text"  color="inherit" className={classes.appBarButton}>ادراة رواكدى</Button>
                 <Button component={Link} to="/searchDrugs" variant="text"  color="inherit" className={classes.appBarButton}>البحث عن الرواكد</Button>
-              </>}
+              </>
+              }
+              {authenticated && role==UserRoles.stocker && <>
+                <Button component={Link} to="/myprods" variant="text"  color="inherit" className={classes.appBarButton}>مخزنى</Button>
+
+              </>
+              }
             </Box>
               {authenticated && (
                 <Box>
@@ -274,6 +283,39 @@ function Header(props: IProps): ReactElement {
                         <Button component={Link} to="/account" color="primary">حسابى</Button>
                       </ListItemText>
                     </ListItem>
+                    {role==UserRoles.pharmacier &&
+                    <Fragment>
+                      <ListItem>
+                        <ListItemIcon>
+                            <ManagementIcon/>
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Button component={Link} to="/myLazDrugs" color="primary">رواكدى</Button>
+                        </ListItemText>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemIcon>
+                          <SearchDrugsIcon/>
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Button component={Link} to="/searhcDrugs" color="primary">البحث عن رواكد</Button>
+                        </ListItemText>
+                      </ListItem>
+                    </Fragment>
+                    }
+                    {role==UserRoles.stocker &&
+                    <Fragment>
+                      <ListItem>
+                        <ListItemIcon>
+                            <StoreIcon/>
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Button component={Link} to="/myprods" color="primary">مخزنى</Button>
+                        </ListItemText>
+                      </ListItem>
+
+                    </Fragment>
+                    }
                   </List>
                  }
               </div>

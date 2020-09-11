@@ -88,18 +88,17 @@ class STK_Identity_Step extends Component<IStep1_Props>{
                     fullWidth
                     onChange={this.handleSelectCityChange}
                     >
-                    <Fragment>
-                    {loadingInitialFormData && <MenuItem>
-                        تحميل البيانات ... 
-                        <CircularProgress size={20}
-                                          color="secondary" 
-                                          style={{marginRight:100}}
-                                          className={classes.progress}/>
+                    {loadingInitialFormData && 
+                        <MenuItem disabled>
+                            تحميل البيانات ... 
+                            <CircularProgress size={20}
+                                            color="secondary" 
+                                            style={{marginRight:100}}
+                                            className={classes.progress}/>
                         </MenuItem>}
                         {cities.map((item,i)=>(
-                            <MenuItem  className={classes.menuItem} key={i} value={item.id}>{item.name}</MenuItem>
+                         <MenuItem  className={classes.menuItem} key={i} value={item.id}>{item.name}</MenuItem>
                         ))}
-                    </Fragment>
                 </Select>
                 <FormHelperText className={classes.formHelperText}>{displayError(errors?.CityId)}</FormHelperText>
             </FormControl> 

@@ -88,7 +88,7 @@ class PH_Identity_Step extends Component<IStep1_Props>{
                     fullWidth
                     onChange={this.handleSelectCityChange}
                     >
-                    {loadingInitialFormData && <MenuItem>
+                    {loadingInitialFormData && <MenuItem disabled>
                         تحميل البيانات ... 
                         <CircularProgress size={20}
                                           color="secondary" 

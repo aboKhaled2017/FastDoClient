@@ -10,6 +10,8 @@ import Account from './Account';
 import NotFound from './NotFound'
 import ForgotPassword from './ForgotPassword'
 import UnAuthorized from './UnAuthorized'
+import ManageStockDrugs  from './ManageStockDrugs/Index';
 export {
-    AboutUs,ContactUs,DrugSearch,ManageMyDrugs,Home,Login,Profile,Join,Account,NotFound,ForgotPassword,UnAuthorized
+    AboutUs,ContactUs,DrugSearch,ManageMyDrugs,Home,
+    Login,Profile,Join,Account,NotFound,ForgotPassword,UnAuthorized,ManageStockDrugs
 }
