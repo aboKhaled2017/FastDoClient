@@ -206,6 +206,14 @@ export interface ICurrentUserIdentifier{
     userType:E_UserType
     role:string 
 }
+export interface IPharmasStockClass{
+    id:string
+    name:string
+    count:number
+}
+export interface IStockUser extends ICurrentUserIdentifier{
+ pharmasClasses:IPharmasStockClass[]
+}
 export interface ITokenIdentifier{
     token:string
     expiry:number

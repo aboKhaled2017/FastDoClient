@@ -1,0 +1,13 @@
+
+{
+    "compilerOptions": {
+      
+        "paths": {
+          "@/*":["src/*"],
+          "@Redux/*":["src/Redux/*"],
+          "@Views/*":["src/Views/*"],
+          "@Comps/*":["src/components/*"],
+          "Base/*":["/*"]
+        }
+    }
+  }

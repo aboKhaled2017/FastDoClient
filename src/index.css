@@ -13,7 +13,7 @@ body {
   /*background:#2fb77763*/
 }
 div:not(.MuiFormControl-root):not(.MuiInputBase-root),
-p,label,button,h1,h2,h3,h4,h5,h6,span,i{
+p,label,button,h1,h2,h3,h4,h5,h6,span,i,td,th{
   font-family:arabic_font !important
 }
 .notArabicFont,input,textarea,.fa{

@@ -30,4 +30,4 @@ const reducer:Reducer<IUserState,AnyAction&{payload?:any}>= (state = clone(initi
         return state
     }
 }
-export default reducer;
+export default reducer as ()=>IUserState;

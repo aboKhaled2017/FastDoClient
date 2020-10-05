@@ -11,7 +11,10 @@ import NotFound from './NotFound'
 import ForgotPassword from './ForgotPassword'
 import UnAuthorized from './UnAuthorized'
 import ManageStockDrugs  from './ManageStockDrugs/Index';
+import SearchStocksPage from './SearchStocks';
+
 export {
     AboutUs,ContactUs,DrugSearch,ManageMyDrugs,Home,
-    Login,Profile,Join,Account,NotFound,ForgotPassword,UnAuthorized,ManageStockDrugs
+    Login,Profile,Join,Account,NotFound,ForgotPassword,
+    UnAuthorized,ManageStockDrugs,SearchStocksPage
 }

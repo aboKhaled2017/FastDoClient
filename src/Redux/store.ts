@@ -7,6 +7,7 @@ import userReducer from './Reducers/userReducer'
 import dataReducer from './Reducers/DataReducer'
 import { clone } from '../Helpers/HelperArrayFuncs';
 import StocksDataReducer from './Reducers/StocksDataReducer';
+import { IUserState } from '../Interfaces/States';
 const initialState={}
 const middleware=[thunk]
 

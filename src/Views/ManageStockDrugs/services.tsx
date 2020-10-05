@@ -1,11 +1,11 @@
-import { IAddNewLzDrg, LzDrg_UnitTypesList } from "./Interfaces";
-import { I_Drug_DataModel } from "../../Interfaces/DrugsTypes";
-
-export function Get_LiveState_For_AddLzDrug(lzDrugModel:IAddNewLzDrg){
-    const unitTypeName=LzDrg_UnitTypesList.find(v=>v.value==lzDrugModel.unitType)?.title;
-    return `يوجد لدى عدد ${lzDrugModel.quantity} ${unitTypeName} من  ${lzDrugModel.name} - ${lzDrugModel.type} - بسعر ${lzDrugModel.price} جنية لل/${unitTypeName}`
+const IsValidParmaValue=(val:any):boolean=>{
+  if(typeof(val)=="number" && val>=0)return true;
+  return val;
 }
-export function Get_LzDrgStateFormate(lzDrugModel:I_Drug_DataModel){
-    const unitTypeName=LzDrg_UnitTypesList.find(v=>v.value==lzDrugModel.unitType)?.title;
-    return `يوجد لدى عدد ${lzDrugModel.quantity} ${unitTypeName} من  ${lzDrugModel.name} - ${lzDrugModel.type} - بسعر ${lzDrugModel.price} جنية لل/${unitTypeName}`
+export const Make_Url_With_PaginationData_Params=(baseUrl:string,pageData:any)=>{
+    for(let prop in pageData){
+      if((pageData as Object).hasOwnProperty(prop) && IsValidParmaValue(pageData[prop]))
+      baseUrl+=`${prop}=${pageData[prop]}&`;
+    }
+    return baseUrl.slice(0,baseUrl.length-1);
 }

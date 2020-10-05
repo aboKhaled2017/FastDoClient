@@ -125,3 +125,32 @@ export class DrugsPackges{
     },0)
   }
 }
+
+export const MessageAlerter={
+ alertNotFoundError(){
+   alert('الطلب الذى تريد معالجته غير موجود');
+ },
+ alertServerError(){
+   alert('خطأ ما حدث فى السيرفر');
+ },
+ alertProcessingErrorAtServer(){
+   alert('حدثت مشكلة اثناء المعالجة  فى السيرفر');
+ },
+ alertMessage(message:string){
+   alert(message);
+ }
+}
+
+export const InputFieldProcessor={
+  delay:function delay(callback: Function, ms: number) {
+    var timer:any = 0;
+    return function (this:(e:any)=>void, e:any) { 
+        e.persist();     
+        var context = this, args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            callback.apply(context, args);
+        }, ms || 0);
+    };
+},
+}
