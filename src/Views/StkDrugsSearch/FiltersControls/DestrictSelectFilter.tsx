@@ -6,6 +6,7 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { makeStyles, Typography, Chip } from '@material-ui/core';
 
+
 import {OnDestrictsFilterChange} from '@Redux/Actions/searchDataActions'
 import { connect } from 'react-redux';
 import { ISearchDataState, IDataState } from '@/Interfaces/States';
