@@ -1,118 +1,154 @@
-import React, { useEffect } from 'react'
-import { IDataState } from '../../../../Interfaces/States'
-import { connect } from 'react-redux'
-import {  I_DrgRequest_I_Made_Data } from '../../../../Interfaces/DrugsTypes'
-import {GetMy_DrgsReqs_IMade_Page} from '../../../../Redux/Actions/DataActions'
-import { makeStyles, Theme, createStyles, Box, Backdrop, CircularProgress } from '@material-ui/core'
-import PagingView from './Components/PagingView'
-import CardView from './Components/CardView'
-import Alert from '@material-ui/lab/Alert'
-import DeleteAlertDialoge from './Components/DeleteAlertDialoge'
-import axios from 'axios'
+import {Box, CircularProgress, createStyles, Grid, makeStyles, Theme } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import {PaginationView, JoinedPharmaCard } from './Components'
+import { E_PharmaRequestStkStatus, IPagination, IStkJoinedPharma, I_PaginationReq_To_GetPage} from '../../Interfaces'
+import { MessageAlerter } from '@/Commons/Services';
+import { Make_Url_With_PaginationData_Params } from '../../Services';
+import { Alert } from '@material-ui/lab';
+import { App_BackDrop } from '@/components/Customs';
+
+
+interface IDataStatus{
+    loading:boolean
+    rows:IStkJoinedPharma[]
+}
 const useStyles=makeStyles((theme:Theme)=>createStyles({
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
 }));
-interface IProps {
-    requests:I_DrgRequest_I_Made_Data
-    GetMy_DrgsReqs_IMade_Page:()=>void
-    loading:boolean
-}
-let selectedId:string=null as any as string;
-const ShowRecvReqsts_View = (props: IProps) => {
-    const classes=useStyles();
-    const {GetMy_DrgsReqs_IMade_Page,requests,loading}=props;
-    const [openDeleteReqDialog,setOpenDeleteReqDialoge]=React.useState(false);
-    const [deleteReqDescision,setDeleteReqDescision]=React.useState({
-        isAgreed:false,
-        madeDescision:false,
-        id:null as any as string
-    });
-    const [loadingForReq,setLoadingForReq]=React.useState(false);
-    
-    const cancelRequest=(id:string)=>{
-        setOpenDeleteReqDialoge(true);
-        selectedId=id;
-    }
-    React.useEffect(()=>{
-        if(deleteReqDescision.madeDescision&&deleteReqDescision.isAgreed && deleteReqDescision.id){
-            setLoadingForReq(true);
-            axios.delete(`/phrdrgrequests/made/${deleteReqDescision.id}`)
-            .then(res=>{
-                setLoadingForReq(false);
-            GetMy_DrgsReqs_IMade_Page();   
-            })
-            .catch(err=>{
-                setLoadingForReq(false);
-            if(err.status==404){
-            alert('حدثت مشكلة اثناء معالجة الطلب'); 
-                return;
-            }
-            if(!err.response) 
-            {
-                alert("خطأ فى الاتصال بالسيرفر");
-                return;
-            }
-            var errorsResult=err.response.data.errors;
-            alert(JSON.stringify(errorsResult))
-            })
-            .finally(()=>{
-                setDeleteReqDescision(prev=>({
-                id:prev.id,
-                isAgreed:false,
-                madeDescision:false
-                }));
-            })
-        }
-      },[deleteReqDescision.id])
-    useEffect(()=>{
-      if(loading) return;
-      if(requests.rows==null)
-      GetMy_DrgsReqs_IMade_Page();
-    },[loading]);
-    return (
-    <Box>
-      <DeleteAlertDialoge
-         openDeleteDialog={openDeleteReqDialog}
-         setDeleteDescision={setDeleteReqDescision}
-         setOpenDeleteDialoge={setOpenDeleteReqDialoge}
-         executeAfterConfirmOk={()=>{
-            setDeleteReqDescision(prev=>({
-                ...prev,
-                id:selectedId
-            }));
-         }}
-      />
-      <Backdrop className={classes.backdrop}
-                  open={loading}>
-              <Box mx={2}>
-                جارى تحميل البيانات
-              </Box>
-              <CircularProgress color="inherit" />
-      </Backdrop>
-      <PagingView/>
-      <Box>
-          {requests.rows!=null && requests.rows.length==0 &&
-          <Alert severity="info" variant="outlined">
-              انت لم تقم بارسال اى طلب على اى راكد حتى الان
-          </Alert>
-          }
-          {requests.rows!=null && requests.rows.map(row=>(
-              <Box key={row.id} my={1}>
-                 <CardView   
-                    model={row}
-                    loading={selectedId==row.id?loadingForReq:false}
-                    cancelRequest={cancelRequest}
-                    />
-              </Box>
-          ))}
-      </Box>
-    </Box>)
-}
 
-export default connect((state:{data:IDataState})=>({
-    requests:state.data.DrgsReq_I_made_Data,
-    loading:state.data.loading
-}), {GetMy_DrgsReqs_IMade_Page})(ShowRecvReqsts_View) as any
+export default ()=>{
+    const classes=useStyles();
+    const [dataStatus,setDataStatus]=useState<IDataStatus>({
+        loading:false,
+        rows:[]
+    });
+    const [pagingObj,setPagingObj]=useState<IPagination>({
+        currentPage:1,
+        pageSize:2,
+        totalCount:0,
+        totalPages:0,
+        nextPageLink:null,
+        prevPageLink:null
+    });
+    const [pagingReq,setPagingReq]=useState<I_PaginationReq_To_GetPage>({
+        pageNumber:1,
+        pageSize:2     
+    });
+
+    useEffect(()=>{      
+        getPageOfJoinedPharmas();    
+    },[pagingReq.pageNumber,pagingReq.pageSize,pagingReq.s,pagingReq.pharmaClass,pagingReq.status]);
+    const handleRefresh=()=>{
+        getPageOfJoinedPharmas();
+    };
+
+    const getPageOfJoinedPharmas=()=>{
+        setDataStatus(prev=>({...prev,loading:true}));
+        axios.get(Make_Url_With_PaginationData_Params('stk/joinedPharmas?',pagingReq))
+       .then(res=>{
+            setDataStatus({loading:false,rows:res.data});
+            setPagingObj({...JSON.parse(res.headers['x-pagination'])});
+       })
+       .catch(()=>{
+           MessageAlerter.alertServerError();
+          setDataStatus(prev=>({...prev,loading:false}));
+       })
+    };
+    
+    const onPageNumberSelected=(pageNumber:number)=>{
+        setPagingReq(prev=>({...prev,pageNumber:pageNumber}));
+    };
+    const onSetPageSize=(pageSize:number)=>{
+        setPagingReq(prev=>({...prev,pageSize:pageSize}));
+    };
+    const onSearchText=(s:string)=>{
+        setPagingReq(prev=>({...prev,s}));
+    };
+    const onSetPharmaClass=(pharmaClass:string)=>{
+        setPagingReq(prev=>({...prev,pharmaClass}))
+    }
+    const onSetReqStatus=(status:E_PharmaRequestStkStatus|"")=>{
+        if(status=="")
+        setPagingReq(prev=>({...prev,status:""}));
+        else
+        setPagingReq(prev=>({...prev,status:(status as number)-1}))
+    } 
+
+    
+    const handlePharmaRequest=(
+        executeBeforeReq:Function,
+        executeAfterReq:Function,
+        data:{
+            id:string,
+            body:any
+        })=>{
+
+        executeBeforeReq();
+        axios.patch(`stk/pharmaReqs/${data.id}`,data.body)
+        .then(res=>{
+            handleRefresh();
+        })
+        .catch(err=>{
+        if(err.status==404){
+          MessageAlerter.alertNotFoundError();
+            return;
+        }
+        if(!err.response) 
+        {
+           MessageAlerter.alertProcessingErrorAtServer();
+            return;
+        }
+        alert(JSON.stringify(err.response.data.errors))
+       })
+       .finally(()=>{
+        executeAfterReq();
+       })
+  
+    };
+
+    return (
+        <Box>
+            <App_BackDrop className={classes.backdrop}
+                          open={dataStatus.loading}>
+                <span style={{margin:'auto 2px'}}>
+                    جارى التحميل 
+                </span>
+                <CircularProgress color="inherit" />
+            </App_BackDrop>
+            <Box>
+                <Grid container>
+                    <Grid item md={12}>
+                        <PaginationView 
+                            setPageSize={onSetPageSize}
+                            onPageNumebrSelected={onPageNumberSelected}
+                            pagingData={pagingObj}
+                            onSetPharmaClass={onSetPharmaClass}
+                            onSetReqStatus={onSetReqStatus}
+                            onSearchByNameChange={onSearchText}
+                            handleRefresh={handleRefresh}/>
+                    </Grid>
+                </Grid>
+            </Box>
+            <Box>
+              <Grid container>
+              {dataStatus.rows.length==0 && 
+               <Alert severity="info">
+                   لم يوجد اى صيدليات منضمة اليك
+               </Alert>
+              }
+              {dataStatus.rows.map((model,ind)=>(
+                  <Grid item sm={12} md={6}>
+                     <Box mx={1.5} my={2}>
+                         <JoinedPharmaCard model={model} handlePharmaRequest={handlePharmaRequest}/>
+                     </Box>
+                  </Grid>
+              ))}
+              </Grid>
+            </Box>
+        </Box>
+    )
+}

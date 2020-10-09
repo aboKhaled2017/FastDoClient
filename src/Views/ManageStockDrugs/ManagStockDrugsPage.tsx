@@ -42,7 +42,7 @@ const styles=(theme:Theme)=>({
 
 
 class manageMyDrugsPage extends Component<IProps, IState> {
-    state = {value:2}
+    state = {value:1}
     handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         this.setState({value:newValue});
     }

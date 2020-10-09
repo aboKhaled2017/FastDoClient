@@ -13,31 +13,38 @@ import { IPagination } from '../../../Interfaces';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2)
   },
 }));
 
-interface IProps{
-    setPageSize:(val:number)=>void 
+type TOptionValue=string|number;
+
+interface IProps<T extends TOptionValue>{
+    setSelectedVal:(val:T)=>void 
     pagingData:IPagination
+    listItems:T[]
+    btnText:string
+    style?:React.CSSProperties | undefined
+    listItemsMap?:(el:T)=>string
 }
-export default (props:IProps)=> {
+function SelectButton<T extends TOptionValue>(props:IProps<T>){
     const classes = useStyles();
-    const {pagingData,setPageSize}=props;
+    const {pagingData,setSelectedVal,listItems,btnText,style,listItemsMap}=props;
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<any>(null);
-  
+    const [btnValue,setBtnValue]=React.useState('');
     const handleToggle = () => {
       setOpen((prevOpen) => !prevOpen);
     };
   
-    const handleClick = (e:any,val:number=0) => {      
+    const handleClick = (e:any,val?:T) => {      
       if (anchorRef.current && anchorRef.current.contains(e.target)) {
         return;
       }
-      if(val){
-          setPageSize(val);
-      }
+
+      setSelectedVal(val as T);
+      setBtnValue(`(${listItemsMap?listItemsMap(val as T):val})`);
+
       setOpen(false);
     };
   
@@ -67,24 +74,27 @@ export default (props:IProps)=> {
             variant="contained"
             color="inherit"
             size="small"
+            style={style}
             onClick={handleToggle}
             startIcon={
                 <ArrowDropDownIcon color="primary"/>
             }
           >
-          حجم الصفحة ({pagingData.pageSize})
+          {`${btnText} ${btnValue}`}
           </Button>
-          <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+          <Popper open={open} anchorEl={anchorRef.current} 
+                  role={undefined} transition 
+                  >
             {({ TransitionProps, placement }) => (
-              <Grow
+              <Grow 
                 {...TransitionProps}
                 style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
               >
                 <Paper>
                   <ClickAwayListener onClickAway={e=>handleClick(e)}>
                     <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    {[2,4,5,7,9,10,15,20].map(el=>(
-                        <MenuItem  onClick={e=>handleClick(e,el)}>{el}</MenuItem>
+                    {listItems.map(el=>(
+                        <MenuItem  onClick={e=>handleClick(e,el)}>{listItemsMap?listItemsMap(el):el}</MenuItem>
                     ))}
                     </MenuList>
                   </ClickAwayListener>
@@ -95,3 +105,5 @@ export default (props:IProps)=> {
       </>
     );
 }
+
+export default SelectButton;

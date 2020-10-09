@@ -28,6 +28,19 @@ export interface IPharmaJoinRequestToStock{
     pharmaClass:string
     seen:boolean
 }
+export interface IStkJoinedPharma_PharmaData{
+    id:string
+    name:string
+    address:string
+    addressInDetails:string
+    phoneNumber:string
+    landlinePhone:string
+}
+export interface IStkJoinedPharma{
+    pharma:IStkJoinedPharma_PharmaData
+    pharmaClass:string
+    status:E_PharmaRequestStkStatus
+}
 
 export enum E_PharmaRequestStkStatus
 {

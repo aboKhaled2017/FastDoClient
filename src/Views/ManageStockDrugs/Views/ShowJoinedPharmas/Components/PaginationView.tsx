@@ -36,8 +36,6 @@ const useStyles=makeStyles((theme:Theme)=>createStyles({
 const requestStatuses=[
     "",
     E_PharmaRequestStkStatus.Accepted+1,
-    E_PharmaRequestStkStatus.Rejected+1,
-    E_PharmaRequestStkStatus.Pending+1,
     E_PharmaRequestStkStatus.Disabled+1
 ] as (number|"")[];
 

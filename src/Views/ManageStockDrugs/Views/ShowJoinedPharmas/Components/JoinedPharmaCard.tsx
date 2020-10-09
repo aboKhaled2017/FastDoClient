@@ -1,7 +1,7 @@
 import React, { ReactElement, useCallback } from 'react'
 import { makeStyles, Theme, createStyles, Box, Card, CardHeader, Avatar, CardContent, Typography, Chip, Divider, CardActions, IconButton, Collapse, Badge, ButtonGroup, Button, CircularProgress } from '@material-ui/core'
 import { red } from '@material-ui/core/colors';
-import { E_PharmaRequestStkStatus, IPharmaJoinRequestToStock } from '../../../Interfaces';
+import { E_PharmaRequestStkStatus, IStkJoinedPharma } from '../../../Interfaces';
 
 const useStyles=makeStyles((theme:Theme)=>createStyles({
     root: {
@@ -61,12 +61,11 @@ const useStyles=makeStyles((theme:Theme)=>createStyles({
       }
 }));
 interface IProps {
-    model:IPharmaJoinRequestToStock
+    model:IStkJoinedPharma
     handlePharmaRequest:(
       
       executeBeforeReq:Function,
       executeAfterReq:Function,
-      onSuccess:Function,
       data:{
           id:string,
           body:any
@@ -76,19 +75,12 @@ export default (props: IProps) => {
     const classes=useStyles();
     const {model,handlePharmaRequest}=props;
     const [loading,setLoading]=React.useState(false);
-    const [cardState,setCardState]=React.useState<{status:E_PharmaRequestStkStatus|undefined}>({
-      status:undefined
-    })
-    const respondeToPharmaRequest=(resStatus:E_PharmaRequestStkStatus)=>{
-      const reqBody=[
+ 
+    const respondeToPharmaRequest=(s:E_PharmaRequestStkStatus)=>{
+      const reqBody=[       
         {
           "op":"replace",
-          "value":true,
-          "path":"/Seen"
-        },
-        {
-          "op":"replace",
-          "value":resStatus,
+          "value":s,
           "path":"/Status"
         }
       ];
@@ -99,9 +91,6 @@ export default (props: IProps) => {
           ()=>{
             setLoading(false);
           },
-          ()=>{
-           setCardState({status:resStatus});
-          },
           {
             id:model.pharma.id,
             body:reqBody
@@ -109,7 +98,7 @@ export default (props: IProps) => {
         )
     }
 
-    const status=cardState.status||model.status;
+    const status=model.status??E_PharmaRequestStkStatus.Accepted;
     return (
         <Card className={classes.root}>
             <CardHeader 
@@ -123,26 +112,17 @@ export default (props: IProps) => {
                  <CircularProgress color="primary"/>
               </div>}
               <Box>
-                <Chip color="default" variant="default" className="notArabicFont" label="حالة الطلب"/>
-                {status==E_PharmaRequestStkStatus.Pending &&
-                <Chip style={{margin:'auto 2px'}} 
-                      variant="default" 
-                      label={`لم يتم الرد على طلبه حتى الان`}/>}
-                {status==E_PharmaRequestStkStatus.Rejected &&
-                <Chip style={{margin:'auto 2px'}} 
-                      color="secondary" 
-                      variant="default" 
-                      label={`لقد تم رفض طلبه`}/>} 
+                <Chip color="default" variant="default"  label="حالة الصيدلية"/>
                 {status==E_PharmaRequestStkStatus.Accepted &&
                 <Chip style={{margin:'auto 2px'}} 
                       color="primary" 
                       variant="default" 
-                      label={`تم قبول طلبه`}/>} 
+                      label={`نشطة`}/>} 
                 {status==E_PharmaRequestStkStatus.Disabled &&
                 <Chip style={{margin:'auto 2px'}} 
                       color="secondary" 
                       variant="default" 
-                      label={`تم تعطيله`}/>}                  
+                      label={`معطلة`}/>}                 
               </Box>
                  
               <table>
@@ -170,16 +150,17 @@ export default (props: IProps) => {
                 <Typography variant="h6">تحديد حالة طلب الانضمام</Typography>
                 <Box>
                     <ButtonGroup variant="outlined" color="primary" aria-label="تحديد حالة الطلب">
-                        <Button disabled={status==E_PharmaRequestStkStatus.Disabled}
-                                onClick={()=>{respondeToPharmaRequest(E_PharmaRequestStkStatus.Disabled)}}>تعطيل
+                        <Button color={status==E_PharmaRequestStkStatus.Accepted?'secondary':'primary'}
+                                onClick={()=>{
+                                  respondeToPharmaRequest(
+                                    status==E_PharmaRequestStkStatus.Accepted
+                                    ?E_PharmaRequestStkStatus.Disabled
+                                    :E_PharmaRequestStkStatus.Accepted)}}>
+                                  {status==E_PharmaRequestStkStatus.Accepted?'تعطيل':'تفعيل'}
                         </Button>
                         <Button 
-                            disabled={status==E_PharmaRequestStkStatus.Rejected}
-                            onClick={()=>{respondeToPharmaRequest(E_PharmaRequestStkStatus.Rejected)}}>رفض
-                        </Button>
-                        <Button 
-                            disabled={status==E_PharmaRequestStkStatus.Accepted}
-                            onClick={()=>{respondeToPharmaRequest(E_PharmaRequestStkStatus.Accepted)}}>موافقة
+                            color="secondary"
+                            onClick={()=>{respondeToPharmaRequest(E_PharmaRequestStkStatus.Rejected)}}>ازالة الصيدلية
                         </Button>
                     </ButtonGroup>
 
