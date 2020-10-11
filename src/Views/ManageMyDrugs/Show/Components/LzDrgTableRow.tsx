@@ -6,12 +6,12 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import EditIcon from '@material-ui/icons/EditRounded'
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import DrgTabs from './../Tabs';
-import { I_Drug_DataModel } from "../../../../Interfaces/DrugsTypes";
+import { I_Drug_DataModel } from "@/Interfaces/DrugsTypes";
 import EditDrg_View from '../../Edit'
 import axios from 'axios';
 import { connect } from "react-redux";
-import {Stop_Loading_Data,GetMyDrugs_Page,Set_Loading_Data} from '../../../../Redux/Actions/DataActions'
-import theme from "../../../../Utils/theme";
+import {Stop_Loading_Data,GetMyDrugs_Page,Set_Loading_Data} from '@Redux/Actions/DataActions'
+
 import Alert from "@material-ui/lab/Alert";
 const useRowStyles = makeStyles((theme: Theme) =>
 createStyles({

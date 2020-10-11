@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import {PaginationView, PharmaReqJoinCard } from './Components'
 import { E_PharmaRequestStkStatus, IPagination, IPharmaJoinRequestToStock, I_PaginationReq_To_GetPage} from '../../Interfaces'
-import { MessageAlerter } from '@/Commons/Services';
-import { Make_Url_With_PaginationData_Params } from '../../Services';
+import { Make_Url_With_PaginationData_Params, MessageAlerter } from '@/Commons/Services';
 import { Alert } from '@material-ui/lab';
 import { App_BackDrop } from '@/components/Customs';
 
@@ -68,19 +67,19 @@ export default ()=>{
         setPagingReq(prev=>({...prev,pageNumber:pageNumber}));
     };
     const onSetPageSize=(pageSize:number)=>{
-        setPagingReq(prev=>({...prev,pageSize:pageSize}));
+        setPagingReq(prev=>({...prev,pageSize:pageSize,pageNumber:1}));
     };
     const onSearchText=(s:string)=>{
-        setPagingReq(prev=>({...prev,s}));
+        setPagingReq(prev=>({...prev,s,pageNumber:1}));
     };
     const onSetPharmaClass=(pharmaClass:string)=>{
-        setPagingReq(prev=>({...prev,pharmaClass}))
+        setPagingReq(prev=>({...prev,pharmaClass,pageNumber:1}))
     }
     const onSetReqStatus=(status:E_PharmaRequestStkStatus|"")=>{
         if(status=="")
-        setPagingReq(prev=>({...prev,status:""}));
+        setPagingReq(prev=>({...prev,pageNumber:1,status:""}));
         else
-        setPagingReq(prev=>({...prev,status:(status as number)-1}))
+        setPagingReq(prev=>({...prev,pageNumber:1,status:(status as number)-1}))
     } 
 
     

@@ -1,6 +1,9 @@
-import { SET_ERRORS, CLEAR_ERRORS, LOADING_UI, STOP_LOADING_UI, SET_SIGNUP_STEPPE, SET_SIGGNUP_ON_INPUT_CHANGE_PH, SET_SIGGNUP_ON_INPUT_CHANGE_STK, SET_USER_IDENTITY, ClEAR_SIGNUP_STEPPER, RESET_SIGNUP_CURRENT_STEP } from '../types';
-import { I_UI_State, I_SignUp_Stepper } from '../../Interfaces/States';
-import { clone } from '../../Helpers/HelperArrayFuncs';
+import { SET_ERRORS, CLEAR_ERRORS, LOADING_UI, STOP_LOADING_UI,
+         SET_SIGNUP_STEPPE, SET_SIGGNUP_ON_INPUT_CHANGE_PH,
+         SET_SIGGNUP_ON_INPUT_CHANGE_STK,
+         ClEAR_SIGNUP_STEPPER, RESET_SIGNUP_CURRENT_STEP } from '../types';
+import { I_UI_State, I_SignUp_Stepper } from '@/Interfaces/States';
+import { clone } from '@/Helpers/HelperArrayFuncs';
 
 const _intFormData=new FormData();
 _intFormData.append('licenseImg',"" as any);

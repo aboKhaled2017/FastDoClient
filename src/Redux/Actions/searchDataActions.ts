@@ -1,14 +1,15 @@
-import { SET_SEARCH_TABLE_DATA, SET_SEARCH_FILTERED_DATA, Stop_LOADING_SEARCH_DATA, LOADING_SEARCH_DATA, 
-  SET_SELECTED_CITIES, SET_SELECTED_DESTICTS, SET_DATE_FILTER, SET_ERRORS_ON_FETCH_SEARCH_DATA,
-   SET_SEARCH_Q, SET_SEARCH_CITYIDS, SET_SEARCH_AREAIDS, SET_SEARCH_PAGESIZE, SET_SEARCH_PAGENUMBER, SET_SEARCH_PAGENUMBER_AND_PAGESIZE, SET_SEARCH_ORDERBY, UPDATE_DRGS_SEARCH_ROW_AFTER_REQUEST_ADDED } from '../types';
+import { SET_SEARCH_TABLE_DATA, LOADING_SEARCH_DATA,SET_DATE_FILTER, SET_ERRORS_ON_FETCH_SEARCH_DATA,
+         SET_SEARCH_Q, SET_SEARCH_CITYIDS, SET_SEARCH_AREAIDS, SET_SEARCH_PAGESIZE,
+         SET_SEARCH_PAGENUMBER, SET_SEARCH_PAGENUMBER_AND_PAGESIZE, 
+         SET_SEARCH_ORDERBY, UPDATE_DRGS_SEARCH_ROW_AFTER_REQUEST_ADDED } from '../types';
 import axios from 'axios';
 import { Dispatch, AnyAction } from 'redux';
-import dataRecords from '../../Views/DrugSearch/TableData';
-import { IDateFilter } from '../../Interfaces/ModelsTypes';
+import { IDateFilter } from '@/Interfaces/ModelsTypes';
 import store from '../store';
-import { DateFilterChangeType } from '../../Interfaces/DataTypes';
-import {I_Drgs_SearchPaging_Parmas, I_Drgs_SeachData, I_Drgs_Search_ReturnModelAfterAdded } from '../../Interfaces/SearchDrugsTypes';
-import { clone } from '../../Helpers/HelperArrayFuncs';
+import { DateFilterChangeType } from '@/Interfaces/DataTypes';
+import {I_Drgs_SearchPaging_Parmas, I_Drgs_SeachData, I_Drgs_Search_ReturnModelAfterAdded } 
+from '@/Interfaces/SearchDrugsTypes';
+import { clone } from '@/Helpers/HelperArrayFuncs';
 
 const Make_Url_With_PaginationData_Params=(baseUrl:string,pageData:any)=>{
   for(let prop in pageData){

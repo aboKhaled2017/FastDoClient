@@ -1,23 +1,22 @@
-import React, { Component, createRef, useState } from 'react'
+import React, {  createRef, useState } from 'react'
 import { connect } from 'react-redux'
-import {GetMyStockProdsData_Page} from '../../../../../Redux/Actions/StockDataActions'
-import ImageUploadIcon from '@material-ui/icons/ImageRounded'
+import {GetMyStockProdsData_Page} from '@Redux/Actions/StockDataActions'
+
 import { makeStyles, Theme, createStyles, Box, TextField, Backdrop, CircularProgress, FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@material-ui/core'
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Typography from '@material-ui/core/Typography';
-import {IStocksDataState } from '../../../../../Interfaces/States';
+import {IStocksDataState } from '@/Interfaces/States';
 import axios from 'axios';
 import {DialogActions,DialogContent,DialogTitle} from './Modal/ModalMainComponents'
 
 import { Alert } from '@material-ui/lab'
 import UploadIcon from '@material-ui/icons/CloudUpload'
-import { displayError } from '../../../../../Helpers/HelperJsxFunctions'
-import { Base_URLs } from '../../../../../config'
+import { displayError } from '@/Helpers/HelperJsxFunctions'
+import { Base_URLs } from '@/config'
 
-import { LzDrg_TypesList } from '../../../../ManageMyDrugs/Interfaces'
-import { ISelectInputChange } from '../../../../../Interfaces/EventTypes'
-import store from '../../../../../Redux/store'
+import { ISelectInputChange } from '@/Interfaces/EventTypes'
+import store from '@Redux/store'
 import { IStockUser } from '@/Interfaces/AccountTypes'
 interface IStkProductData{
  colNameOrder:number 

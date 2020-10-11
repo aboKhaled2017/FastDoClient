@@ -1,7 +1,7 @@
-import { LOADING_STOCK_DATA ,STOP_LOADING_STOCK_DATA,REfRESH_STOCK_PRODS_DATA,SET_ERROR_ON_FETCH_STOCK_DATA} from "../types"
-import dataRecords from "../../Views/DrugSearch/TableData"
-import { IDataState, IStocksDataState } from "../../Interfaces/States"
-import { clone } from "../../Helpers/HelperArrayFuncs"
+import { LOADING_STOCK_DATA ,STOP_LOADING_STOCK_DATA,REfRESH_STOCK_PRODS_DATA,
+    SET_ERROR_ON_FETCH_STOCK_DATA} from "../types"
+import {  IStocksDataState } from "@/Interfaces/States"
+import { clone } from "@/Helpers/HelperArrayFuncs"
 
 
 const initialState:IStocksDataState= {

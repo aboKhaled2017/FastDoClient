@@ -1,10 +1,10 @@
 import {LOADING_DATA,SET_AREAS_DATA, SET_ERROR_ON_FETCH_DATA, SET_USER_DRUGS_DATA,UPDATE_LZ_DRG, STOP_LOADING_DATA, SET_USER_DRUGS_REQS_RECIEVED_DATA, UPDATE_DRGREQUEST_MODEL, SET_USER_DRUGS_REQS_MADE_DATA} from '../types';
 import axios from 'axios'
 import { Dispatch, AnyAction } from 'redux'
-import { IArea } from '../../Interfaces/ModelsTypes';
+import { IArea } from '@/Interfaces/ModelsTypes';
 import { I_Drug_DataModel, I_GetMyDrugsData, I_PaginationReq_To_GetDrugs, I_DrgRequest_I_Received_Data, I_DrgRequest_I_Received } from '../../Interfaces/DrugsTypes';
 import store from '../store';
-import { clone } from '../../Helpers/HelperArrayFuncs';
+import { clone } from '@/Helpers/HelperArrayFuncs';
 
 export const GetAreas=()=>(dispatch:Dispatch<AnyAction>|any)=>{
     dispatch({type:LOADING_DATA});

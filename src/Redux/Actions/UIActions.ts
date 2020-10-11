@@ -1,13 +1,13 @@
-import { SET_USER_IDENTITY,REMOVE_USER_IDENTITY, SET_ERRORS, CLEAR_ERRORS, LOADING_UI,  LOADING_USER, MARK_NOTIFICATIONS_READ, SET_SIGNUP_STEPPE, SET_SIGGNUP_ON_INPUT_CHANGE_PH, SET_SIGGNUP_ON_INPUT_CHANGE_STK, STOP_LOADING_UI, ClEAR_SIGNUP_STEPPER, SET_USER_TYPE, RESET_SIGNUP_CURRENT_STEP } from '../types';
+import {  SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_SIGNUP_STEPPE, SET_SIGGNUP_ON_INPUT_CHANGE_PH, SET_SIGGNUP_ON_INPUT_CHANGE_STK, STOP_LOADING_UI, ClEAR_SIGNUP_STEPPER, SET_USER_TYPE, RESET_SIGNUP_CURRENT_STEP } from '../types';
 import axios from 'axios'
 import { Dispatch, AnyAction } from 'redux'
-import {IPh_Signup_Step1, IUserIdentity, I_UI_Errors, I_Ph_SignUp_Errors, I_Stk_SignUp_Errors, I_SignUp_Errors, IPh_Signup_Step2, IPh_Signup_Step3, IPh_Signup_Step4, E_UserType} from '../../Interfaces/AccountTypes'
-import { I_SignUp_Stepper, I_DataOf_Signup_Ph_Steps, I_DataOf_Signup_Stk_Steps } from '../../Interfaces/States';
+import {IPh_Signup_Step1, I_UI_Errors, IPh_Signup_Step2, IPh_Signup_Step3, IPh_Signup_Step4, E_UserType} from '@/Interfaces/AccountTypes'
+import { I_SignUp_Stepper, I_DataOf_Signup_Ph_Steps, I_DataOf_Signup_Stk_Steps } from '@/Interfaces/States';
 import store from '../store';
-import { clone } from '../../Helpers/HelperArrayFuncs';
-import { Base_URLs } from '../../config';
+import { clone } from '@/Helpers/HelperArrayFuncs';
+import { Base_URLs } from '@/config';
 import {setUserIdentity} from './userActions'
-import { IHistory } from '../../Interfaces/DataTypes';
+import { IHistory } from '@/Interfaces/DataTypes';
 const api = axios.create({
     baseURL: Base_URLs.BaseUrl,
     headers: {

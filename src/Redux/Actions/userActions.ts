@@ -1,11 +1,11 @@
 import { SET_USER_IDENTITY,REMOVE_USER_IDENTITY, SET_ERRORS, CLEAR_ERRORS, LOADING_UI,STOP_LOADING_UI, RESET_DATA_AFTERLOGOUT } from '../types';
 import axios from 'axios'
 import { Dispatch, AnyAction } from 'redux'
-import {IUserIdentity, ILoginData, I_UI_Errors} from '../../Interfaces/AccountTypes'
-import {IHistory } from '../../Interfaces/DataTypes';
-import { clone } from '../../Helpers/HelperArrayFuncs';
+import {IUserIdentity, ILoginData, I_UI_Errors} from '@/Interfaces/AccountTypes'
+import {IHistory } from '@/Interfaces/DataTypes';
+import { clone } from '@/Helpers/HelperArrayFuncs';
 import store from '../store';
-import { Fetch_Headers } from '../../config';
+import { Fetch_Headers } from '@/config';
 import jwtDecode from 'jwt-decode';
 export const logoutUser=(history:IHistory)=>(dispatch:Dispatch)=>{
   AuthorizationHeader.removeUserIdentity();

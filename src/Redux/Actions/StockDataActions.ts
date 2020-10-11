@@ -1,10 +1,11 @@
-import {LOADING_STOCK_DATA,REfRESH_STOCK_PRODS_DATA,SET_ERROR_ON_FETCH_STOCK_DATA,STOP_LOADING_STOCK_DATA} from '../types';
+import {LOADING_STOCK_DATA,REfRESH_STOCK_PRODS_DATA,SET_ERROR_ON_FETCH_STOCK_DATA,
+  STOP_LOADING_STOCK_DATA} from '../types';
 import axios from 'axios'
 import { Dispatch, AnyAction } from 'redux'
 
-import { I_GetMyDrugsData, I_PaginationReq_To_GetDrugs } from '../../Interfaces/DrugsTypes';
+import { I_GetMyDrugsData, I_PaginationReq_To_GetDrugs } from '@/Interfaces/DrugsTypes';
 import store from '../store';
-import { clone } from '../../Helpers/HelperArrayFuncs';
+import { clone } from '@/Helpers/HelperArrayFuncs';
 
 
 const Make_Url_With_PaginationData_Params=(baseUrl:string,pageData:any)=>{
