@@ -1,13 +1,14 @@
 /* eslint-disable react/jsx-pascal-case */
 import { IPagination } from '@/Interfaces/General';
 import React, { useEffect, useState } from 'react';
-import { IStkDrugsPackage, I_PaginationReq_To_GetPage } from '../../Interfaces';
+import { E_StkPackageViewSwitcher, IStkDrugsPackage, I_PaginationReq_To_GetPage } from '../../Interfaces.d';
 import axios from 'axios';
 import { Make_Url_With_PaginationData_Params, MessageAlerter } from '@/Commons/Services';
 import { App_BackDrop } from '@/components/Customs';
 import { Box, CircularProgress, createStyles, makeStyles, Paper, TableContainer, Theme } from '@material-ui/core';
 import PaginationView from '../Components/PaginationView';
 import {StkDrugsPackagesTableView} from './Components'
+import {RequestServices} from './Services'
 
 const useStyles =  makeStyles((theme: Theme) =>
 createStyles({
@@ -31,9 +32,11 @@ interface IDataStatus{
   loading:boolean 
   rows:IStkDrugsPackage[]
 }
-interface IViewProps {}
+interface IViewProps {
+  SwitchTo:(v:E_StkPackageViewSwitcher)=>void
+}
 
-const View: React.FC<IViewProps> = () => {
+const View: React.FC<IViewProps> = props => {
     const classes=useStyles();
     const [dataStatus,setDataStatus]=useState<IDataStatus>({
         loading:false,
@@ -83,6 +86,20 @@ const View: React.FC<IViewProps> = () => {
         setPagingReq(prev=>({...prev,s,pageNumber:1}));
     };
 
+    const OnDeletePackage=(id:string)=>{
+       setDataStatus(p=>({...p,loading:true}));
+       RequestServices.OnDeletePackage({
+         id,
+         onError:()=>{
+          setDataStatus(p=>({...p,loading:false}));
+         },
+         onDone:()=>{
+         var _rows=dataStatus.rows;
+         _rows=_rows.filter(e=>e.packageId!==id);
+         setDataStatus({loading:false,rows:_rows});
+         }
+       })
+    }
   return (
     <TableContainer component={Paper} className={classes.root}>
        
@@ -103,7 +120,9 @@ const View: React.FC<IViewProps> = () => {
       </Box>
 
        <Box>
-         <StkDrugsPackagesTableView rows={dataStatus.rows}/>
+         <StkDrugsPackagesTableView rows={dataStatus.rows} 
+                                    onDeletePackage={OnDeletePackage}
+                                    SwitchTo={props.SwitchTo}/>
        </Box>
      </TableContainer>
   );

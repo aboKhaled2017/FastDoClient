@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-pascal-case */
 import { IPagination } from '@/Interfaces/General';
 import React, { useEffect, useState } from 'react';
-import { ISearchStkDrugData, I_PaginationReq_To_GetPage } from '../../Interfaces';
+import { E_StkPackageViewSwitcher, ISearchStkDrugData, I_PaginationReq_To_GetPage } from '../../Interfaces';
 import axios from 'axios';
 import { Make_Url_With_PaginationData_Params, MessageAlerter } from '@/Commons/Services';
 import { App_BackDrop } from '@/components/Customs';
@@ -31,9 +31,11 @@ interface IDataStatus{
   loading:boolean 
   rows:ISearchStkDrugData[]
 }
-interface IViewProps {}
+interface IViewProps {
+  SwitchTo:(v:E_StkPackageViewSwitcher)=>void
+}
 
-const View: React.FC<IViewProps> = () => {
+const View: React.FC<IViewProps> = props => {
     const classes=useStyles();
     const [dataStatus,setDataStatus]=useState<IDataStatus>({
         loading:false,

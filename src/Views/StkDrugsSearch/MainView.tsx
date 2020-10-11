@@ -1,8 +1,9 @@
 import TabPanel from '@/Commons/TabPanel';
-import { Theme, Box, Typography, createStyles, makeStyles } from '@material-ui/core';
+import { Theme, Box, createStyles, makeStyles } from '@material-ui/core';
 import React, { Fragment } from 'react';
 import MainHTabs from './Components/MainHTabs';
-import { SearchDrugsView,StkDrugsPackagesView} from './SubView';
+import { SearchDrugsView,StkDrugsPackagesView,EditStkDrugsPackage} from './SubView';
+import { E_StkPackageViewSwitcher } from './Interfaces';
 
 interface IProps {
     classes:{[key:string]:any}
@@ -42,6 +43,9 @@ const View:React.FC<IProps>=props=>{
     const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     }
+    const SwitchToView=(v:E_StkPackageViewSwitcher)=>{
+        setValue(v);
+    }
     const classes=useStyles();
         return (
            <Fragment>
@@ -50,11 +54,14 @@ const View:React.FC<IProps>=props=>{
                    <Box  className={classes.container}>
                         <TabPanel  value={value} index={0}>
                                 
-                                <SearchDrugsView/>
+                                <SearchDrugsView SwitchTo={SwitchToView}/>
                         </TabPanel>
                         <TabPanel  value={value} index={1}>
                                 
-                                <StkDrugsPackagesView/>
+                                <StkDrugsPackagesView SwitchTo={SwitchToView}/>
+                        </TabPanel>
+                        <TabPanel  value={value} index={2}>                               
+                                <EditStkDrugsPackage SwitchTo={SwitchToView}/>
                         </TabPanel>
                         
                    </Box>

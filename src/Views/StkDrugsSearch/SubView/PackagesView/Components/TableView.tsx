@@ -5,7 +5,7 @@ import StkPackageTableRow from './DataRow'
 
 import Alert from "@material-ui/lab/Alert";
 
-import { IStkDrugsPackage } from "@/Views/StkDrugsSearch/Interfaces";
+import { E_StkPackageViewSwitcher, IStkDrugsPackage } from "@/Views/StkDrugsSearch/Interfaces.d";
 
 const useStyles =  makeStyles((theme: Theme) =>
 createStyles({
@@ -32,10 +32,13 @@ createStyles({
 
 interface ITableViewProps{
  rows:IStkDrugsPackage[]
+ SwitchTo:(v:E_StkPackageViewSwitcher)=>void
+ onDeletePackage:(packId:string)=>void
 }
+
 const TableView:React.FC<ITableViewProps>=props=>{
    const classes=useStyles();  
-   const {rows}=props;
+   const {rows,SwitchTo,onDeletePackage}=props;
    return (
     <Table className={classes.table} aria-label="collapsible table">
     <TableHead className={classes.thead}>
@@ -59,7 +62,9 @@ const TableView:React.FC<ITableViewProps>=props=>{
       </TableRow>
       }
       {rows.map((row,i)=> (
-        <StkPackageTableRow key={i} row={row} />
+        <StkPackageTableRow key={i} row={row} 
+                                    onDeletePackage={onDeletePackage}
+                                    SwitchTo={SwitchTo}/>
       ))}
     </TableBody>
   </Table>

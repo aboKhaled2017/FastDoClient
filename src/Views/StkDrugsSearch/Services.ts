@@ -1,23 +1,5 @@
-import { IStkDrugsPackage } from "./Interfaces";
-
-interface ISearchStockDrugsView_OpenObjStatus{
-    open:boolean,opendSince:Date
-}
-type TPackageMetaData_body_FromStock_DrugDetails=[string,number];
-interface IPackageMetaData_body_FromStock{
-    stockId:string 
-    drugsList:TPackageMetaData_body_FromStock_DrugDetails[]
-}
-interface IPackageMetaData_body{
- name:string 
- fromStocks:IPackageMetaData_body_FromStock[]
-}
-interface IPackageMetaData{
-    id:string 
-    name:string 
-    isUpdated:boolean
-    body:IPackageMetaData_body
-}
+import { IPackageMetaData, IPackageMetaData_body, IProccessedStkDrugsLocallyOptions,
+     ISearchStockDrugsView_OpenObjStatus, IStkDrugsPackage } from "./Interfaces.d";
 
 const localSettings={
     VisitSearchStkDrugsView_Settings:{
@@ -46,35 +28,42 @@ const localSettings={
 
 const packageService={
   _packageServicesAtLocalStorage:'ProccessedStkDrugsLocally',
- _getPackageMetaData(id:string,packBody:IPackageMetaData_body,isUpdated:boolean):IPackageMetaData{
-   let convertedPackage:IPackageMetaData={
-       id,
+  __packageServicesAtLocalStorage_Options:'ProccessedStkDrugsLocally_Options',
+ _getPackageMetaData(pack:IStkDrugsPackage,isUpdated:boolean):IPackageMetaData{
+   let convertedPackage:IPackageMetaData={      
        isUpdated:isUpdated,
-       name:packBody.name,
-       body:packBody
+       pack
    };
    return convertedPackage;
   },
   _getPackageBodyFromJson(p:string|null){
     return p
-    ?(JSON.parse(p) as IPackageMetaData).body
+    ?this.GetPackageUpdatedBodyFromPackage((JSON.parse(p) as IPackageMetaData).pack)
     :null;
   },
-  RegisterPackage(id:string,pack:IPackageMetaData_body){
-   var p=JSON.stringify(this._getPackageMetaData(id,pack,false));
-   localStorage.setItem(`${this._packageServicesAtLocalStorage}_${id}`,p);
+  RegisterPackage(pack:IStkDrugsPackage){
+   var p=JSON.stringify(this._getPackageMetaData(pack,false));
+   localStorage.setItem(`${this._packageServicesAtLocalStorage}_${pack.packageId}`,p);
   },
-  EditPackage(id:string,pack:IPackageMetaData_body){
-    var p=JSON.stringify(this._getPackageMetaData(id,pack,true));
-    localStorage.setItem(`${this._packageServicesAtLocalStorage}_${id}`,p);
+  _UnRegisterPackage(id:string){
+    localStorage.removeItem(`${this._packageServicesAtLocalStorage}_${id}`);
   },
-  CheckIfPackageUpdatedLocally(id:string){
-   return localStorage.getItem(`${this._packageServicesAtLocalStorage}_${id}`)
-   ?true:false
+  _notused_EditPackage(pack:IStkDrugsPackage){
+    var p=JSON.stringify(this._getPackageMetaData(pack,true));
+    localStorage.setItem(`${this._packageServicesAtLocalStorage}_${pack.packageId}`,p);
   },
-  GetPackageUpdatedBody(id:string){
+  _CheckIfCurrentProccessedPackageIdIsAvaialbe(){
+   var optionsStr= localStorage.getItem(this.__packageServicesAtLocalStorage_Options)
+   if(!optionsStr)return null;
+   var options=JSON.parse(optionsStr) as IProccessedStkDrugsLocallyOptions;
+   if(!options)return null;
+   return options.currentWillEditId;
+  },
+  GetCurrentPackageToProcessed(){
+      var id=this._CheckIfCurrentProccessedPackageIdIsAvaialbe();
+      if(!id)return null;
       var packStr=localStorage.getItem(`${this._packageServicesAtLocalStorage}_${id}`);
-       return this._getPackageBodyFromJson(packStr);
+       return (JSON.parse(packStr as string) as IPackageMetaData)?.pack??null;
   },
   GetPackageUpdatedBodyFromPackage(pack:IStkDrugsPackage){
    return {
@@ -84,6 +73,25 @@ const packageService={
             drugsList:s.drugs.map(d=>([d.id,d.quantity]))
         }))
    } as IPackageMetaData_body
-  }
+  },
+   SetCurrentPackageToEdit(id:string){
+     let optionsStr=localStorage.getItem(this.__packageServicesAtLocalStorage_Options);
+     if(!optionsStr){        
+         optionsStr=JSON.stringify({currentWillEditId:id})
+         localStorage.setItem(this.__packageServicesAtLocalStorage_Options,optionsStr);
+     }
+     let options=JSON.parse(optionsStr as string) as IProccessedStkDrugsLocallyOptions;
+     options.currentWillEditId=id;
+     localStorage.setItem(this.__packageServicesAtLocalStorage_Options,JSON.stringify(options));
+ },
+ HandleOnPackageFinishEditing(){
+    var currId=this._CheckIfCurrentProccessedPackageIdIsAvaialbe();
+    if(!currId)return;
+    let optionsStr=localStorage.getItem(this.__packageServicesAtLocalStorage_Options);
+    if(!optionsStr)return;
+    localStorage.removeItem(this.__packageServicesAtLocalStorage_Options);
+    this._UnRegisterPackage(currId);
+ }
+
 }
 export {localSettings,packageService}

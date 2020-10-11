@@ -49,3 +49,29 @@ export interface IStkDrugsPackage{
     createdAt:string
     fromStocks:IStkDrugsPackage_FromStock[]
 }
+
+export enum E_StkPackageViewSwitcher{
+    SearchForStkDrugsPackages,
+    ViewForPharmaStkDrugsPackages,
+    EditForPharmaStkDrugsPackages
+}
+
+export interface ISearchStockDrugsView_OpenObjStatus{
+    open:boolean,opendSince:Date
+}
+export type TPackageMetaData_body_FromStock_DrugDetails=[string,number];
+export interface IPackageMetaData_body_FromStock{
+    stockId:string 
+    drugsList:TPackageMetaData_body_FromStock_DrugDetails[]
+}
+export interface IPackageMetaData_body{
+ name:string 
+ fromStocks:IPackageMetaData_body_FromStock[]
+}
+export interface IPackageMetaData{
+    pack: IStkDrugsPackage
+    isUpdated:boolean   
+}
+export interface IProccessedStkDrugsLocallyOptions{
+    currentWillEditId:string
+}

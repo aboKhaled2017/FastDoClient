@@ -1,8 +1,8 @@
-import { Theme, withStyles, Paper, Tabs, Tab, makeStyles, createStyles } from "@material-ui/core";
+import { Theme, Paper, Tabs, Tab, makeStyles, createStyles } from "@material-ui/core";
 import React, { ReactElement } from "react";
 import SaerchIcon from '@material-ui/icons/SearchRounded'
 import ShowIcon from '@material-ui/icons/ViewComfyRounded'
-
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles=makeStyles((theme:Theme)=>createStyles({
     root: {
@@ -41,6 +41,7 @@ const View=(props:IViewProps):ReactElement=>{
                 onChange={handleChange}>
                 <Tab label="البحث عن منتجات ادوية" icon={<SaerchIcon/>}/>
                 <Tab label="الطلبيات" icon={<ShowIcon/>} />
+                <Tab label="تعديل طلبية" icon={<EditIcon/>} />
           </Tabs>
         </Paper>
     )

@@ -7,8 +7,9 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import EditIcon from '@material-ui/icons/Edit';
 import RemoveIcon from '@material-ui/icons/Delete';
 
+import {packageService} from '../../../Services';
 import InnerStkPackageTable from "./InnerStkPackageTable";
-import { IStkDrugsPackage ,E_IStkDrugsPackage_Status} from "../../../Interfaces.d";
+import { IStkDrugsPackage ,E_IStkDrugsPackage_Status,E_StkPackageViewSwitcher} from "../../../Interfaces.d";
 
 const useStyles = makeStyles((theme: Theme) =>createStyles({
     root: {
@@ -72,6 +73,8 @@ React.FC<{row:IStkDrugsPackage,open:boolean}>=props=>{
 
 interface IRowViewProps{
   row: IStkDrugsPackage 
+  SwitchTo:(v:E_StkPackageViewSwitcher)=>void
+  onDeletePackage:(packId:string)=>void
 }
 
 const CountChip=(props:{count:Number,text:string})=>{
@@ -102,15 +105,14 @@ const getGeneralPackageStatus=(row:IStkDrugsPackage)=>{
 }
 const RowView:React.FC<IRowViewProps>=props=>{
     const classes = useStyles();
-    const { row}=props;
+    const { row,SwitchTo,onDeletePackage}=props;
     const [open, setOpen] = React.useState(false);
-    const OnPackageEditButtonClicked=(rec:IStkDrugsPackage)=>{
+    const OnPackageEditButtonClicked=(p:IStkDrugsPackage)=>{
+          packageService.SetCurrentPackageToEdit(p.packageId);
+          packageService.RegisterPackage(p);
+          SwitchTo(E_StkPackageViewSwitcher.EditForPharmaStkDrugsPackages);
+    }
 
-    }
-    const OnPackageDeleteButtonClicked=(rec:IStkDrugsPackage)=>{
-      
-    }
-    
     return (
       <React.Fragment>
         <StyledTableRow className={classes.root}>
@@ -136,10 +138,11 @@ const RowView:React.FC<IRowViewProps>=props=>{
           </TableCell>
           <TableCell align="center">
             <Box>
-              <IconButton title="تعديل الطلبية"  size="small" onClick={() =>{alert('edit');}}>
+              <IconButton title="تعديل الطلبية"  size="small" 
+                          onClick={() =>{OnPackageEditButtonClicked(row)}}>
                  <EditIcon className={classes.EditIcon}/>
               </IconButton>
-              <IconButton title="حذف الطلبية"  size="small" onClick={() =>{alert('edit');}}>
+              <IconButton title="حذف الطلبية"  size="small" onClick={() =>{onDeletePackage(row.packageId)}}>
                  <RemoveIcon color="secondary"/>
               </IconButton>
             </Box>
