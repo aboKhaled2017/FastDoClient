@@ -5,11 +5,17 @@ import searchDataReducer from './Reducers/searchDataReducer'
 import uiReducer from './Reducers/uiReducer'
 import userReducer from './Reducers/userReducer'
 import dataReducer from './Reducers/DataReducer'
-import { clone } from '../Helpers/HelperArrayFuncs';
+
 import StocksDataReducer from './Reducers/StocksDataReducer';
-import { IUserState } from '../Interfaces/States';
+import { User } from 'oidc-client';
+
 const initialState={}
 const middleware=[thunk]
+
+interface OidcState {
+  isLoadingUser: boolean;
+  user: User;
+}
 
 const reducers=combineReducers({
     data:dataReducer,

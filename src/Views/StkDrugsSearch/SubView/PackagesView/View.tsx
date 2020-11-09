@@ -7,8 +7,9 @@ import { Make_Url_With_PaginationData_Params, MessageAlerter } from '@/Commons/S
 import { App_BackDrop } from '@/components/Customs';
 import { Box, CircularProgress, createStyles, makeStyles, Paper, TableContainer, Theme } from '@material-ui/core';
 import PaginationView from '../Components/PaginationView';
-import {StkDrugsPackagesTableView} from './Components'
+import {StkDrugsPackagesTableView,AddNewStkDrugsPackageView} from './Components'
 import {RequestServices} from './Services'
+
 
 const useStyles =  makeStyles((theme: Theme) =>
 createStyles({
@@ -18,6 +19,7 @@ createStyles({
      boxShadow:'none',
      position:'relative'
    },
+   
    container: {
      maxHeight: 880,
    },
@@ -100,6 +102,9 @@ const View: React.FC<IViewProps> = props => {
          }
        })
     }
+    const onAddNewPackage=(name:string)=>{
+      handleRefresh();
+    }
   return (
     <TableContainer component={Paper} className={classes.root}>
        
@@ -111,12 +116,17 @@ const View: React.FC<IViewProps> = props => {
              <CircularProgress color="inherit" />
        </App_BackDrop>
 
-      <Box m={1}>
-          <PaginationView handleRefresh={handleRefresh}
-                          onPageNumebrSelected={onPageNumberSelected}
-                          pagingData={pagingObj}
-                          setPageSize={onSetPageSize}
-                          onSearchByNameChange={onSearchText}/>
+      <Box m={1} display="flex">
+           <Box alignSelf="center">
+              <AddNewStkDrugsPackageView onAddNewPackage={onAddNewPackage}/>
+           </Box>
+          <Box mx={1} alignSelf="center">
+              <PaginationView handleRefresh={handleRefresh}
+                              onPageNumebrSelected={onPageNumberSelected}
+                              pagingData={pagingObj}
+                              setPageSize={onSetPageSize}
+                              onSearchByNameChange={onSearchText}/>
+          </Box>
       </Box>
 
        <Box>

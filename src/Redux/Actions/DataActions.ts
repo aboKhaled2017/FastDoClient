@@ -1,4 +1,4 @@
-import {LOADING_DATA,SET_AREAS_DATA, SET_ERROR_ON_FETCH_DATA, SET_USER_DRUGS_DATA,UPDATE_LZ_DRG, STOP_LOADING_DATA, SET_USER_DRUGS_REQS_RECIEVED_DATA, UPDATE_DRGREQUEST_MODEL, SET_USER_DRUGS_REQS_MADE_DATA} from '../types';
+import { LOADING_DATA, SET_AREAS_DATA, SET_ERROR_ON_FETCH_DATA, SET_USER_DRUGS_DATA, UPDATE_LZ_DRG, STOP_LOADING_DATA, SET_USER_DRUGS_REQS_RECIEVED_DATA, UPDATE_DRGREQUEST_MODEL, SET_USER_DRUGS_REQS_MADE_DATA, SET_ALL_STOCKS_G_DATA } from '../types';
 import axios from 'axios'
 import { Dispatch, AnyAction } from 'redux'
 import { IArea } from '@/Interfaces/ModelsTypes';
@@ -30,6 +30,17 @@ export const GetAreas=()=>(dispatch:Dispatch<AnyAction>|any)=>{
     .catch(e=>{
       dispatch({type:SET_ERROR_ON_FETCH_DATA,payload:JSON.stringify(e)});
     })
+}
+
+export const GetAllStocksNames=()=>(dispatch:Dispatch<AnyAction>|any)=>{
+  dispatch({type:LOADING_DATA});
+  axios.get('/pharmas/stknames')
+  .then(res=>{
+    dispatch({type:SET_ALL_STOCKS_G_DATA,payload:res.data});
+  })
+  .catch(e=>{
+    dispatch({type:SET_ERROR_ON_FETCH_DATA,payload:JSON.stringify(e)});
+  })
 }
 const Make_Url_With_PaginationData_Params=(baseUrl:string,pageData:any)=>{
   for(let prop in pageData){

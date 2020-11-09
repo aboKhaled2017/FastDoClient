@@ -54,3 +54,7 @@ export interface IArea{
     name:string
     superAreaId:number|null
 }
+export interface IStockGData{
+    id:string
+    name:string
+}

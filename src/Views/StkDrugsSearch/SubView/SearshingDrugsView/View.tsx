@@ -6,8 +6,9 @@ import axios from 'axios';
 import { Make_Url_With_PaginationData_Params, MessageAlerter } from '@/Commons/Services';
 import { App_BackDrop } from '@/components/Customs';
 import { Box, CircularProgress, createStyles, makeStyles, Paper, TableContainer, Theme } from '@material-ui/core';
-import PaginationView from '../Components/PaginationView';
+import {PaginationView} from './Components';
 import {StkDrugsTableView} from './Components'
+import { IStockGData } from '@/Interfaces/ModelsTypes';
 
 const useStyles =  makeStyles((theme: Theme) =>
 createStyles({
@@ -53,10 +54,11 @@ const View: React.FC<IViewProps> = props => {
         pageNumber:1,
         pageSize:10
     });
-
+    
+    const [SelectedStock,setSelectedStock]=useState<IStockGData|undefined>(undefined);
     useEffect(()=>{      
       getPageOfSearchedStkDrugs();    
-    },[pagingReq.pageNumber,pagingReq.pageSize,pagingReq.s]);
+    },[pagingReq.pageNumber,pagingReq.pageSize,pagingReq.s,pagingReq.stockId]);
 
     const handleRefresh=()=>{
       getPageOfSearchedStkDrugs();
@@ -84,6 +86,10 @@ const View: React.FC<IViewProps> = props => {
     const onSearchText=(s:string)=>{
         setPagingReq(prev=>({...prev,s,pageNumber:1}));
     };
+    const onSelectedStock=(stock:IStockGData)=>{
+      setSelectedStock(stock);
+      setPagingReq(prev=>({...prev,stockId:stock?.id??null, pageNumber:1}));
+    }
 
   return (
     <TableContainer component={Paper} className={classes.root}>
@@ -98,14 +104,18 @@ const View: React.FC<IViewProps> = props => {
 
       <Box m={1}>
           <PaginationView handleRefresh={handleRefresh}
-                          onPageNumebrSelected={onPageNumberSelected}
                           pagingData={pagingObj}
+                          onPageNumebrSelected={onPageNumberSelected}
                           setPageSize={onSetPageSize}
+                          onSelectStockName={onSelectedStock}
+                          selectedStkName={(SelectedStock && SelectedStock.name)?SelectedStock.name:undefined}
                           onSearchByNameChange={onSearchText}/>
       </Box>
 
        <Box>
-         <StkDrugsTableView rows={dataStatus.rows}/>
+         <StkDrugsTableView rows={dataStatus.rows}
+                            onSelectStockName={onSelectedStock}
+                            isStockSelcted={(SelectedStock && SelectedStock.id)?true:false}/>
        </Box>
      </TableContainer>
   );

@@ -9,7 +9,6 @@ import MenuList from '@material-ui/core/MenuList';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDownCircleRounded'
 
-import { IPagination } from '@/Interfaces/General';
 
 const useStyles = makeStyles((theme) => createStyles({
   paper: {
@@ -21,7 +20,6 @@ type TOptionValue=string|number;
 
 interface IProps<T extends TOptionValue>{
     setSelectedVal:(val:T)=>void 
-    pagingData:IPagination
     listItems:T[]
     btnText:string
     style?:React.CSSProperties | undefined
@@ -29,7 +27,7 @@ interface IProps<T extends TOptionValue>{
 }
 function SelectButton<T extends TOptionValue>(props:IProps<T>){
     const classes = useStyles();
-    const {pagingData,setSelectedVal,listItems,btnText,style,listItemsMap}=props;
+    const {setSelectedVal,listItems,btnText,style,listItemsMap}=props;
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<any>(null);
     const [btnValue,setBtnValue]=React.useState('');

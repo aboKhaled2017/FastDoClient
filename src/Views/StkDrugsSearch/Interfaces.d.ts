@@ -1,3 +1,4 @@
+
 export interface ISearckStkDrugData_StockDrugsData{
     discount:number
     id:string
@@ -15,6 +16,7 @@ export interface I_PaginationReq_To_GetPage{
     pageNumber?:number 
     pageSize?:number 
     s?:string
+    stockId?:string
 }
 
 export interface IStkDrugsPackage_FromStock_DrugData{

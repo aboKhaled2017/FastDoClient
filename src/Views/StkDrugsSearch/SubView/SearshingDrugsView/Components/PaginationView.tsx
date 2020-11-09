@@ -7,18 +7,17 @@ import { makeStyles, Theme, createStyles, Box, Typography, Button, Chip, Avatar,
 import RefreshIcon from '@material-ui/icons/RefreshRounded'
 import {IPagination } from '@/Interfaces/General';
 import { InputFieldProcessor } from '@/Commons/Services';
-import SelectButtonList from './SelectButtonList';
+import SelectButtonList from '../../Components/SelectButtonList';
 import { IPharmasStockClass, IStockUser } from '@/Interfaces/AccountTypes';
 import { IUserState } from '@/Interfaces/States';
-import { AutocompleteCompForStocks } from '../SearshingDrugsView/Components';
+import  AutocompleteCompForStocks  from './AutoCompleteTextField';
 import { IStockGData } from '@/Interfaces/ModelsTypes';
 import  RemoveIcon  from '@material-ui/icons/CloseOutlined';
 
-
 interface IProps {    
-    pagingData:IPagination
     setPageSize:(val:number)=>void 
     handleRefresh:()=>void   
+    pagingData:IPagination
     onPageNumebrSelected:(pageNumber:number)=>void
     onSearchByNameChange?:(s:string)=>void
     onSelectStockName?:(s:IStockGData)=>void 
@@ -39,7 +38,7 @@ const useStyles=makeStyles((theme:Theme)=>createStyles({
 const PV= (props:IProps&{pharmasClasses:IPharmasStockClass[]})=>{
     const classes=useStyles();
     const {
-        pagingData:{pageSize,currentPage,totalCount,
+        pagingData:{currentPage,totalCount,
         totalPages,nextPageLink,prevPageLink},
         setPageSize,handleRefresh,onPageNumebrSelected,selectedStkName,
         onSearchByNameChange,onSelectStockName}=props;
@@ -64,7 +63,7 @@ const PV= (props:IProps&{pharmasClasses:IPharmasStockClass[]})=>{
                     </Box>
                 </Box>
                 <Box mx={2}>
-                        <Box display="flex">
+                    <Box display="flex">
                             <Box>
                                 <Box>
                                     <Box display="inline-block">
@@ -78,10 +77,10 @@ const PV= (props:IProps&{pharmasClasses:IPharmasStockClass[]})=>{
                                         </Button>
                                     </Box>
                                     <Box display="inline-block" ml={1}>
-                                        <SelectButtonList<number> 
-                                                    setSelectedVal={setPageSize}
-                                                    btnText={"حجم الصفحة"}
-                                                    listItems={[2,4,6,8,10]}/>
+                                        <SelectButtonList<number>
+                                                setSelectedVal={setPageSize}
+                                                btnText={"حجم الصفحة"}
+                                                listItems={[2,4,6,8,10]}/>
                                     </Box>
                                 </Box>
                                 
@@ -116,7 +115,16 @@ const PV= (props:IProps&{pharmasClasses:IPharmasStockClass[]})=>{
                                 }
                             </Box>
                         </Box>
+                </Box>
+                <Box mr={1} alignSelf="center">
+                    <Box ml={1} >
+                        <SelectButtonList<string> 
+                                    setSelectedVal={id=>{alert(id)}}
+                                    btnText={"الطلبية الحالية"}
+                                    listItemsMap={id=>""}
+                                    listItems={[]}/>
                     </Box>
+                </Box>
             </Box>)
 }
 

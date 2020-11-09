@@ -5,6 +5,7 @@ import {LOADING_DATA,SET_AREAS_DATA, SET_ERROR_ON_FETCH_DATA, SET_USER_DRUGS_DAT
 
 import { IDataState } from "@/Interfaces/States"
 import { clone } from "@/Helpers/HelperArrayFuncs"
+import { SET_ALL_STOCKS_G_DATA } from '../types';
 
 
 const initialState:IDataState= {
@@ -13,6 +14,7 @@ const initialState:IDataState= {
         cities:[],
         destricts:[]
     },
+    stocksGData:[],
     myDrugs:{
         rows:[],
         pagination:{
@@ -56,6 +58,8 @@ export default (state:IDataState = clone({...initialState}), { type, payload }:{
          return {...clone(state), loading:false }
     case SET_AREAS_DATA:
          return {...clone(state), loading:false,areas:{...payload} }
+    case SET_ALL_STOCKS_G_DATA:
+         return {...clone(state), loading:false,stocksGData:payload}
     case SET_ERROR_ON_FETCH_DATA:
         return {...clone(state),loading:false}
     case SET_USER_DRUGS_DATA:

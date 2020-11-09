@@ -39,7 +39,7 @@ const useStyles=makeStyles((theme:Theme)=>createStyles({
 
 
 const View:React.FC<IProps>=props=>{
-   const [value,setValue]=React.useState(1);
+   const [value,setValue]=React.useState(0);
     const handleChange = (e: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     }

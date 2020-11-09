@@ -10,6 +10,7 @@ import RemoveIcon from '@material-ui/icons/Delete';
 import {packageService} from '../../../Services';
 import InnerStkPackageTable from "./InnerStkPackageTable";
 import { IStkDrugsPackage ,E_IStkDrugsPackage_Status,E_StkPackageViewSwitcher} from "../../../Interfaces.d";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme: Theme) =>createStyles({
     root: {
@@ -127,6 +128,9 @@ const RowView:React.FC<IRowViewProps>=props=>{
           <TableCell align="center">
             {row.createdAt.split('/').reverse().join('/')}
           </TableCell>
+
+          {row.fromStocks.length>0 &&
+          <Fragment>
           <TableCell align="center">
             <CountChip text="مخزن" count={row.fromStocks.length}/>
           </TableCell>
@@ -136,6 +140,14 @@ const RowView:React.FC<IRowViewProps>=props=>{
           <TableCell align="center">
             {getGeneralPackageStatus(row)}
           </TableCell>
+          </Fragment>}
+           {row.fromStocks.length===0 &&
+           <TableCell colSpan={3}>
+             <Alert severity="info">
+              الطلبية فارغة  
+             </Alert>
+           </TableCell>
+           }
           <TableCell align="center">
             <Box>
               <IconButton title="تعديل الطلبية"  size="small" 
@@ -148,7 +160,7 @@ const RowView:React.FC<IRowViewProps>=props=>{
             </Box>
           </TableCell>
         </StyledTableRow>
-           <DataCollapsedRow row={row} open={open}/>
+        <DataCollapsedRow row={row} open={row.fromStocks.length>0?open:false}/>
         </React.Fragment>
     );
 }

@@ -5,6 +5,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { ISearchStkDrugData } from '../../../Interfaces';
 import InnerStkDrugTable from "./InnerStkDrugTable";
+import { IStockGData } from "@/Interfaces/ModelsTypes";
 
 const useStyles = makeStyles((theme: Theme) =>createStyles({
     root: {
@@ -65,7 +66,9 @@ React.FC<{drugData:ISearchStkDrugData,open:boolean}>=props=>{
 
 interface IRowViewProps{
   row: ISearchStkDrugData  
+  isStockSelcted:boolean
   setSelectedRow?: React.Dispatch<React.SetStateAction<ISearchStkDrugData>>
+  onSelectStockName:(s:IStockGData)=>void
 }
 
 const GetStockCount_Chip=(props:{count:Number})=>{
@@ -79,7 +82,7 @@ const GetStockCount_Chip=(props:{count:Number})=>{
 
 const RowView:React.FC<IRowViewProps>=props=>{
     const classes = useStyles();
-    const { row}=props;
+    const { row,isStockSelcted,onSelectStockName}=props;
     let hieghestDiscount=Math.max(...row.stocks.map(r=>r.discount));
     let stockWithHeighestDisc=row.stocks.find(s=>s.discount==hieghestDiscount)||row.stocks[0];
     //const initOpen=row.name=="antinal"?true:false;
@@ -92,20 +95,27 @@ const RowView:React.FC<IRowViewProps>=props=>{
                 {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </IconButton>
           </TableCell>
-          <TableCell align="center" component="th" scope="row">
+          <TableCell className="notArabicFont" align="center" 
+                     colSpan={isStockSelcted?3:1}
+                     component="th" scope="row">
             {row.name}
           </TableCell>
-          <TableCell align="center">
-            <GetStockCount_Chip count={row.stockCount}/>
-          </TableCell>
-          <TableCell align="center">
-            <Chip color="secondary" label={hieghestDiscount +" %"}/>
-            <Button  color="primary" 
-                     style={{marginRight:3}}
-                     variant="outlined">
-              {`مخزن ${stockWithHeighestDisc.stockName}`}
-            </Button>
-          </TableCell>
+          {!isStockSelcted &&
+          <Fragment>
+            <TableCell align="center">
+              <GetStockCount_Chip count={row.stockCount}/>
+            </TableCell>
+            <TableCell align="center">
+              <Chip color="secondary" label={hieghestDiscount +" %"}/>
+              <Button  color="primary" 
+                      style={{marginRight:3}}
+                      onClick={()=>{onSelectStockName({id:stockWithHeighestDisc.stockId,name:stockWithHeighestDisc.stockName})}}
+                      variant="outlined">
+                {`مخزن ${stockWithHeighestDisc.stockName}`}
+              </Button>
+            </TableCell>
+          </Fragment>
+          }
           
         </StyledTableRow>
            <DataCollapsedRow drugData={row} open={open}/>
