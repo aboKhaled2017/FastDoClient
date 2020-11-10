@@ -1,14 +1,15 @@
 /* eslint-disable react/jsx-pascal-case */
 import { IPagination } from '@/Interfaces/General';
-import React, { useEffect, useState } from 'react';
-import { E_StkPackageViewSwitcher, ISearchStkDrugData, I_PaginationReq_To_GetPage } from '../../Interfaces';
+import React, { useContext, useEffect, useState } from 'react';
+import { E_StkPackageViewSwitcher, ISearchStkDrugData, I_PaginationReq_To_GetPage, ISearchDrugsContext, IStkDrugsPackage } from '../../Interfaces';
 import axios from 'axios';
 import { Make_Url_With_PaginationData_Params, MessageAlerter } from '@/Commons/Services';
 import { App_BackDrop } from '@/components/Customs';
 import { Box, CircularProgress, createStyles, makeStyles, Paper, TableContainer, Theme } from '@material-ui/core';
 import {PaginationView} from './Components';
-import {StkDrugsTableView} from './Components'
+import {TableView} from './Components'
 import { IStockGData } from '@/Interfaces/ModelsTypes';
+import SearchDrugsContext from './SearchDrugsContext';
 
 const useStyles =  makeStyles((theme: Theme) =>
 createStyles({
@@ -54,7 +55,7 @@ const View: React.FC<IViewProps> = props => {
         pageNumber:1,
         pageSize:10
     });
-    
+   
     const [SelectedStock,setSelectedStock]=useState<IStockGData|undefined>(undefined);
     useEffect(()=>{      
       getPageOfSearchedStkDrugs();    
@@ -63,18 +64,20 @@ const View: React.FC<IViewProps> = props => {
     const handleRefresh=()=>{
       getPageOfSearchedStkDrugs();
     };
-
+    
     const getPageOfSearchedStkDrugs=()=>{
         setDataStatus(prev=>({...prev,loading:true}));
         axios.get(Make_Url_With_PaginationData_Params('pharmas/stkdrugs?',pagingReq))
-       .then(res=>{
-            setDataStatus({loading:false,rows:res.data});
-            setPagingObj({...JSON.parse(res.headers['x-pagination'])});
-       })
-       .catch(()=>{
-           MessageAlerter.alertServerError();
+        .then(res=>{
+          setDataStatus({loading:false,rows:res.data});
+          setPagingObj({...JSON.parse(res.headers['x-pagination'])});
+        })
+        .catch(err=>{
+          MessageAlerter.alertServerError();
           setDataStatus(prev=>({...prev,loading:false}));
-       })
+        });
+        
+       
     };
     
     const onPageNumberSelected=(pageNumber:number)=>{
@@ -90,34 +93,39 @@ const View: React.FC<IViewProps> = props => {
       setSelectedStock(stock);
       setPagingReq(prev=>({...prev,stockId:stock?.id??null, pageNumber:1}));
     }
-
+   const context:ISearchDrugsContext={
+      dataRows:dataStatus.rows,
+      pagingObj:pagingObj,
+      pagingReq:pagingReq,
+      selectedStock:SelectedStock,
+      handleRefresh:handleRefresh,
+      onPageNumberSelected:onPageNumberSelected,
+      onSearchText:onSearchText,
+      onSelectedStock:onSelectedStock,
+      onSetPageSize:onSetPageSize
+   }
   return (
-    <TableContainer component={Paper} className={classes.root}>
+    <SearchDrugsContext.Provider value={context}>
+        <TableContainer component={Paper} className={classes.root}>
        
-       <App_BackDrop className={classes.backdrop}
-                 open={dataStatus.loading}>
-             <Box mx={2}>
-             <span>جارى تحميل البييانات</span>
-             </Box>
-             <CircularProgress color="inherit" />
-       </App_BackDrop>
+          <App_BackDrop className={classes.backdrop}
+                    open={dataStatus.loading}>
+                <Box mx={2}>
+                <span>جارى تحميل البييانات</span>
+                </Box>
+                <CircularProgress color="inherit" />
+          </App_BackDrop>
 
-      <Box m={1}>
-          <PaginationView handleRefresh={handleRefresh}
-                          pagingData={pagingObj}
-                          onPageNumebrSelected={onPageNumberSelected}
-                          setPageSize={onSetPageSize}
-                          onSelectStockName={onSelectedStock}
-                          selectedStkName={(SelectedStock && SelectedStock.name)?SelectedStock.name:undefined}
-                          onSearchByNameChange={onSearchText}/>
-      </Box>
+          <Box m={1}>
+              <PaginationView/>
+          </Box>
 
-       <Box>
-         <StkDrugsTableView rows={dataStatus.rows}
-                            onSelectStockName={onSelectedStock}
-                            isStockSelcted={(SelectedStock && SelectedStock.id)?true:false}/>
-       </Box>
-     </TableContainer>
+          <Box>
+            <TableView/>
+          </Box>
+        </TableContainer>
+    </SearchDrugsContext.Provider>
+    
   );
 };
 

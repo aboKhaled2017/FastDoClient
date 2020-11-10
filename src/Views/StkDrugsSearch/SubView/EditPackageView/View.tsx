@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-pascal-case */
-import { Box, Button, CircularProgress, createStyles, makeStyles, Snackbar, Table, TableBody, TableCell, TableHead, TableRow, Theme, Typography } from '@material-ui/core';
+import { Box, Button, CircularProgress, createStyles, makeStyles, Snackbar, Table, 
+  TableBody, TableCell, TableHead, TableRow, Theme, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import React, { Fragment, useEffect, useState } from 'react';
 import { E_StkPackageViewSwitcher, IStkDrugsPackage, IStkDrugsPackage_FromStock, IStkDrugsPackage_FromStock_DrugData } from '../../Interfaces';
@@ -9,6 +10,8 @@ import {EditStkDrgsPackageStockRowView,EditPackageNameView} from './Components';
 import SendIcon from '@material-ui/icons/Send';
 import { App_BackDrop } from '@/components/Customs';
 import {RequestServices} from './Services'
+import ShowPackageView from '@/Views/StkDrugsSearch/SubView/Shared/ShowPackageView'
+
 const useStyles =  makeStyles((theme: Theme) =>
 createStyles({
    thead:{
@@ -156,33 +159,12 @@ const View: React.FC<IViewProps> = props => {
             <Box my={2}>
               <EditPackageNameView val={pack.name} onSaveNameChange={onNameChange}/>
             </Box>
-            <Table className={classes.table} aria-label="collapsible table">
-                <TableHead className={classes.thead}>
-                  <TableRow>
-                    <TableCell colSpan={2}>اسم المخزن</TableCell>
-                    <TableCell>العنوان</TableCell>
-                    <TableCell>اجمالى عدد الرواكد</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody className={classes.tbody}>
-                  {pack.fromStocks.length===0&&
-                  <TableCell colSpan={5}>
-                      <Alert severity="info">
-                        الطلبية لا يوجد بها عناصر مضافة
-                      </Alert>
-                  </TableCell>
-                  } 
-                  {pack.fromStocks.map((row,i)=> (
-                    <EditStkDrgsPackageStockRowView key={i} 
-                                                    row={row} 
-                                                    onDelete={OnDeleteRow} 
-                                                    onSaveQuantityChange={onSaveQuantityChange}
-                                                
-                                                    onRemoveDrugsRow={onRemoveDrugsRow}/>
-                  ))}
-                </TableBody>
-              </Table> 
+
+            <ShowPackageView  
+                    pack={pack} 
+                    OnDeleteRow={OnDeleteRow} 
+                    onSaveQuantityChange={onSaveQuantityChange}
+                    onRemoveDrugsRow={onRemoveDrugsRow}/> 
         </Box> 
         <Box mt={3}>
           <Button  color="primary" 

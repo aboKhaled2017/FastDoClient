@@ -1,11 +1,12 @@
-import { makeStyles, TableCell, TableRow, Collapse, Box, Typography, Theme, createStyles, Badge, Divider, Dialog, Backdrop, Button, DialogActions, DialogContent, DialogContentText, IconButton, Chip} from "@material-ui/core";
-import React, { Fragment } from "react";
+import { makeStyles, TableCell, Theme, createStyles, Button, IconButton, Chip} from "@material-ui/core";
+import React, { Fragment, useContext } from "react";
 import StyledTableRow from "../../Components/Tables/StyledTableRow";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { ISearchStkDrugData } from '../../../Interfaces';
-import InnerStkDrugTable from "./InnerStkDrugTable";
-import { IStockGData } from "@/Interfaces/ModelsTypes";
+import TableView_Row_Collapsed from './TableView.Row.Collapsed';
+
+import context from "../SearchDrugsContext";
 
 const useStyles = makeStyles((theme: Theme) =>createStyles({
     root: {
@@ -46,29 +47,9 @@ const useStyles = makeStyles((theme: Theme) =>createStyles({
   }
 }));
 
-const DataCollapsedRow:
-React.FC<{drugData:ISearchStkDrugData,open:boolean}>=props=>{
-    const { drugData ,open} = props;
-    return <TableRow>
-              <TableCell align="right" style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                  <Collapse in={open} timeout="auto" unmountOnExit>
-                    <Box margin={1}>
-                      <Typography variant="h6" gutterBottom component="div">
-                      <Box>
-                         <InnerStkDrugTable rowData={drugData}/>
-                      </Box>
-                      </Typography>
-                    </Box>
-                  </Collapse>
-              </TableCell>
-            </TableRow>
-}
 
 interface IRowViewProps{
-  row: ISearchStkDrugData  
-  isStockSelcted:boolean
-  setSelectedRow?: React.Dispatch<React.SetStateAction<ISearchStkDrugData>>
-  onSelectStockName:(s:IStockGData)=>void
+  row: ISearchStkDrugData 
 }
 
 const GetStockCount_Chip=(props:{count:Number})=>{
@@ -80,12 +61,14 @@ const GetStockCount_Chip=(props:{count:Number})=>{
   )
 }
 
-const RowView:React.FC<IRowViewProps>=props=>{
+const TableView_TableRow:React.FC<IRowViewProps>=props=>{
     const classes = useStyles();
-    const { row,isStockSelcted,onSelectStockName}=props;
+    const { row}=props;
+    const {onSelectedStock,selectedStock}=useContext(context);
+    const isStockSelcted=(selectedStock && selectedStock.id)?true:false;
     let hieghestDiscount=Math.max(...row.stocks.map(r=>r.discount));
     let stockWithHeighestDisc=row.stocks.find(s=>s.discount==hieghestDiscount)||row.stocks[0];
-    //const initOpen=row.name=="antinal"?true:false;
+   
     const [open, setOpen] = React.useState(false);   
     return (
       <React.Fragment>
@@ -109,7 +92,7 @@ const RowView:React.FC<IRowViewProps>=props=>{
               <Chip color="secondary" label={hieghestDiscount +" %"}/>
               <Button  color="primary" 
                       style={{marginRight:3}}
-                      onClick={()=>{onSelectStockName({id:stockWithHeighestDisc.stockId,name:stockWithHeighestDisc.stockName})}}
+                      onClick={()=>{onSelectedStock({id:stockWithHeighestDisc.stockId,name:stockWithHeighestDisc.stockName})}}
                       variant="outlined">
                 {`مخزن ${stockWithHeighestDisc.stockName}`}
               </Button>
@@ -118,9 +101,9 @@ const RowView:React.FC<IRowViewProps>=props=>{
           }
           
         </StyledTableRow>
-           <DataCollapsedRow drugData={row} open={open}/>
+           <TableView_Row_Collapsed drugData={row} open={open}/>
         </React.Fragment>
     );
 }
 
-export default RowView;
+export default TableView_TableRow;

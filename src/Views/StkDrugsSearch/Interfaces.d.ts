@@ -1,3 +1,5 @@
+import { IPagination } from "@/Interfaces/General";
+import { IStockGData } from "@/Interfaces/ModelsTypes";
 
 export interface ISearckStkDrugData_StockDrugsData{
     discount:number
@@ -76,4 +78,28 @@ export interface IPackageMetaData{
 }
 export interface IProccessedStkDrugsLocallyOptions{
     currentWillEditId:string
+}
+export interface IGViewContext{
+ loading:boolean
+ packagesSettings:{
+    packages:IStkDrugsPackage[]
+    selectedPackage?:IStkDrugsPackage
+    hasEdit:boolean
+ }
+}
+export interface IHttpObjectHandler{
+    OnSuccess:(res:any)=>void 
+    OnError?:()=>void 
+    OnComplete?:()=>void
+}
+export interface ISearchDrugsContext{
+    dataRows:ISearchStkDrugData[]
+    pagingObj:IPagination
+    pagingReq:I_PaginationReq_To_GetPage
+    handleRefresh:()=>void
+    onPageNumberSelected:(pageNumber:number)=>void
+    onSetPageSize:(pageSize:number)=>void
+    onSearchText:(s:string)=>void
+    onSelectedStock:(stock:IStockGData)=>void
+    selectedStock:IStockGData|undefined
 }

@@ -1,6 +1,7 @@
-import { IPackageMetaData, IPackageMetaData_body, IProccessedStkDrugsLocallyOptions,
-     ISearchStockDrugsView_OpenObjStatus, IStkDrugsPackage } from "./Interfaces.d";
-
+import { IHttpObjectHandler, IPackageMetaData, IPackageMetaData_body, IProccessedStkDrugsLocallyOptions,
+     ISearchStockDrugsView_OpenObjStatus, IStkDrugsPackage, I_PaginationReq_To_GetPage } from "./Interfaces.d";
+import axios from 'axios';
+import { Make_Url_With_PaginationData_Params, MessageAlerter } from "@/Commons/Services";
 const localSettings={
     VisitSearchStkDrugsView_Settings:{
         _searchInStockDrusViewAlert:'SearchInStockDrusViewAlert',
@@ -94,4 +95,48 @@ const packageService={
  }
 
 }
-export {localSettings,packageService}
+
+class PackageFromHttpService{
+ private static _instance:PackageFromHttpService=null as any;
+
+ private pagingReq:I_PaginationReq_To_GetPage={
+  pageNumber:1,
+  pageSize:10
+ };
+ private isDataFetchedBefaore:boolean=false;
+ private res:any;
+ private constructor(){}
+ static Create(pagingReq?:I_PaginationReq_To_GetPage):PackageFromHttpService{
+   if(!this._instance)this._instance=new PackageFromHttpService();
+   if(pagingReq)this._instance.pagingReq=pagingReq;
+   return this._instance;
+ }
+ Subscibe(handler:IHttpObjectHandler,refresh:boolean=true){
+ 
+  if(refresh || !this.isDataFetchedBefaore)
+  this.getPageOfSearchedStkDrugs(handler);
+  else{
+    handler.OnSuccess(this.res);
+    if(handler.OnComplete) handler.OnComplete();
+  }
+ }
+ private getPageOfSearchedStkDrugs=(handler:IHttpObjectHandler)=>{
+  axios.get(Make_Url_With_PaginationData_Params('pharmas/stkdrugpackage?',this.pagingReq))
+ .then(res=>{
+      this.isDataFetchedBefaore=true;
+      this.res=res;
+      handler.OnSuccess(res);
+      
+ })
+ .catch(()=>{
+    MessageAlerter.alertServerError();
+    if(handler.OnError) handler.OnError();    
+ })
+ .finally(()=>{
+  
+    if(handler.OnComplete) handler.OnComplete();
+
+ })
+};
+}
+export  {PackageFromHttpService,localSettings,packageService}

@@ -9,6 +9,7 @@ import { Box, CircularProgress, createStyles, makeStyles, Paper, TableContainer,
 import PaginationView from '../Components/PaginationView';
 import {StkDrugsPackagesTableView,AddNewStkDrugsPackageView} from './Components'
 import {RequestServices} from './Services'
+import {PackageFromHttpService} from '../../Services'
 
 
 const useStyles =  makeStyles((theme: Theme) =>
@@ -66,16 +67,26 @@ const View: React.FC<IViewProps> = props => {
     };
 
     const getPageOfPackages=()=>{
-        setDataStatus(prev=>({...prev,loading:true}));
-        axios.get(Make_Url_With_PaginationData_Params('pharmas/stkdrugpackage?',pagingReq))
-       .then(res=>{
+      setDataStatus(prev=>({...prev,loading:true}));
+       PackageFromHttpService.Create(pagingReq)
+        .Subscibe({
+          OnSuccess(res){
             setDataStatus({loading:false,rows:res.data});
             setPagingObj({...JSON.parse(res.headers['x-pagination'])});
+          },
+          OnError(){
+            MessageAlerter.alertServerError();
+            setDataStatus(prev=>({...prev,loading:false}));
+          }
+        },true);
+        
+        /*axios.get(Make_Url_With_PaginationData_Params('pharmas/stkdrugpackage?',pagingReq))
+       .then(res=>{
+            
        })
        .catch(()=>{
-           MessageAlerter.alertServerError();
-          setDataStatus(prev=>({...prev,loading:false}));
-       })
+           
+       })*/
     };
     
     const onPageNumberSelected=(pageNumber:number)=>{
@@ -122,18 +133,18 @@ const View: React.FC<IViewProps> = props => {
            </Box>
           <Box mx={1} alignSelf="center">
               <PaginationView handleRefresh={handleRefresh}
-                              onPageNumebrSelected={onPageNumberSelected}
-                              pagingData={pagingObj}
-                              setPageSize={onSetPageSize}
-                              onSearchByNameChange={onSearchText}/>
+                    onPageNumebrSelected={onPageNumberSelected}
+                    pagingData={pagingObj}
+                    setPageSize={onSetPageSize}
+                    onSearchByNameChange={onSearchText}/>
           </Box>
       </Box>
 
-       <Box>
+      <Box>
          <StkDrugsPackagesTableView rows={dataStatus.rows} 
-                                    onDeletePackage={OnDeletePackage}
-                                    SwitchTo={props.SwitchTo}/>
-       </Box>
+                  onDeletePackage={OnDeletePackage}
+                  SwitchTo={props.SwitchTo}/>
+      </Box>
      </TableContainer>
   );
 };

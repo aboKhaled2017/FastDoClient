@@ -1,13 +1,14 @@
 import { makeStyles, Table, TableHead, TableRow,
   TableCell, TableBody, createStyles, Theme, TableContainer, Paper, withStyles,  } from "@material-ui/core";
-import React, { Fragment } from "react";
-import StkDrugTableRow from './DataRow'
+import React, { Fragment, useContext } from "react";
+import TableView_TableRow from './TableView.Row'
 
 import Alert from "@material-ui/lab/Alert";
 
-import { ISearchStkDrugData } from "@/Views/StkDrugsSearch/Interfaces";
+import { ISearchDrugsContext, ISearchStkDrugData } from "@/Views/StkDrugsSearch/Interfaces";
 import { StyledTableCell } from ".";
-import { IStockGData } from '../../../../../Interfaces/ModelsTypes';
+import { IStockGData } from '@/Interfaces/ModelsTypes';
+import context from "../SearchDrugsContext";
 
 const useStyles =  makeStyles((theme: Theme) =>
 createStyles({
@@ -36,14 +37,12 @@ createStyles({
 }));
 
 
-interface ITableViewProps{
- rows:ISearchStkDrugData[]
- isStockSelcted:boolean
- onSelectStockName:(s:IStockGData)=>void
-}
+interface ITableViewProps{}
 const TableView:React.FC<ITableViewProps>=props=>{
    const classes=useStyles();  
-   const {rows,isStockSelcted,onSelectStockName}=props;
+   const {dataRows:rows,onSelectedStock,selectedStock}=useContext(context);
+   const isStockSelcted=(selectedStock && selectedStock.id)?true:false;
+   //const {rows,isStockSelcted,onSelectStockName}=props;
    return (
   <TableContainer  component={Paper} className={classes.root}>
       <Table className={classes.table} stickyHeader  aria-label="striky table">
@@ -70,9 +69,7 @@ const TableView:React.FC<ITableViewProps>=props=>{
           </TableRow>
           }
           {rows.map((row,i)=> (
-            <StkDrugTableRow key={i} isStockSelcted={isStockSelcted}  
-                             onSelectStockName={onSelectStockName}
-                             row={row} />
+            <TableView_TableRow key={i}  row={row}/>
           ))}
         </TableBody>
       </Table>

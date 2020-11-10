@@ -5,9 +5,9 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { connect } from 'react-redux';
-import { IDataState } from '../../../../../Interfaces/States';
-import { GetAllStocksNames } from '../../../../../Redux/Actions/DataActions';
-import { IStockGData } from '../../../../../Interfaces/ModelsTypes';
+import { IDataState } from '@/Interfaces/States';
+import { GetAllStocksNames } from '@/Redux/Actions/DataActions';
+import { IStockGData } from '@/Interfaces/ModelsTypes';
 
 interface IOption{
     name:string 

@@ -12,20 +12,21 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDownCircleRounded'
 
 const useStyles = makeStyles((theme) => createStyles({
   paper: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
+    zIndex:2
   },
 }));
 
 type TOptionValue=string|number;
 
-interface IProps<T extends TOptionValue>{
+interface IProps<T>{
     setSelectedVal:(val:T)=>void 
     listItems:T[]
     btnText:string
     style?:React.CSSProperties | undefined
     listItemsMap?:(el:T)=>string
 }
-function SelectButton<T extends TOptionValue>(props:IProps<T>){
+function SelectButton<T>(props:IProps<T>){
     const classes = useStyles();
     const {setSelectedVal,listItems,btnText,style,listItemsMap}=props;
     const [open, setOpen] = React.useState(false);
@@ -36,12 +37,14 @@ function SelectButton<T extends TOptionValue>(props:IProps<T>){
     };
   
     const handleClick = (e:any,val?:T) => {      
+  
       if (anchorRef.current && anchorRef.current.contains(e.target)) {
         return;
       }
-
-      setSelectedVal(val as T);
+      if(val){
+        setSelectedVal(val as T);
       setBtnValue(`(${listItemsMap?listItemsMap(val as T):val})`);
+      }
 
       setOpen(false);
     };
@@ -80,8 +83,10 @@ function SelectButton<T extends TOptionValue>(props:IProps<T>){
           >
           {`${btnText} ${btnValue}`}
           </Button>
-          <Popper open={open} anchorEl={anchorRef.current} 
+          <Popper open={open} 
+                  anchorEl={anchorRef.current} 
                   role={undefined} transition 
+                  className={classes.paper}
                   >
             {({ TransitionProps, placement }) => (
               <Grow 
@@ -91,8 +96,8 @@ function SelectButton<T extends TOptionValue>(props:IProps<T>){
                 <Paper>
                   <ClickAwayListener onClickAway={e=>handleClick(e)}>
                     <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    {listItems.map(el=>(
-                        <MenuItem  onClick={e=>handleClick(e,el)}>{listItemsMap?listItemsMap(el):el}</MenuItem>
+                    {listItems.map((el,i)=>(
+                        <MenuItem key={i}  onClick={e=>handleClick(e,el)}>{listItemsMap?listItemsMap(el):el}</MenuItem>
                     ))}
                     </MenuList>
                   </ClickAwayListener>

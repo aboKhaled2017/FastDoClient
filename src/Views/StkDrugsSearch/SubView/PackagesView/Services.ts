@@ -1,6 +1,6 @@
 import { MessageAlerter } from '@/Commons/Services';
 import axios from 'axios';
-import { IPackageMetaData_body } from '../../Interfaces';
+
 interface IOnDeletePackage{
     id:string   
     onDone:Function 
