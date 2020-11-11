@@ -79,14 +79,7 @@ export interface IPackageMetaData{
 export interface IProccessedStkDrugsLocallyOptions{
     currentWillEditId:string
 }
-export interface IGViewContext{
- loading:boolean
- packagesSettings:{
-    packages:IStkDrugsPackage[]
-    selectedPackage?:IStkDrugsPackage
-    hasEdit:boolean
- }
-}
+
 export interface IHttpObjectHandler{
     OnSuccess:(res:any)=>void 
     OnError?:()=>void 

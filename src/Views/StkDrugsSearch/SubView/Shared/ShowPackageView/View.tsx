@@ -43,6 +43,9 @@ interface IViewProps {
 const View: React.FC<IViewProps> =props => {
   const classes=useStyles();
   const {pack,onRemoveDrugsRow,onSaveQuantityChange,OnDeleteRow}=props;
+   
+  if(!pack)
+  return <Fragment/>
   return (
     <Fragment>
         <Table className={classes.table} aria-label="collapsible table">

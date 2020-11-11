@@ -86,47 +86,47 @@ const handleInputChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
             اضافة طلبية جديد
         </Button>
         <Dialog
-              open={openDialog}
-              onClose={()=>{setOpenDialoge(false)}}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <App_BackDrop open={loading}>
-                 <CircularProgress className={classes.circularProgress}/>
-              </App_BackDrop>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                    <Box my={1}>
-                        {errors.G &&
-                            <Alert severity="error">
-                            {displayError(errors.G)}
-                            </Alert>
-                        }
-                    </Box> 
-                    <TextField                   
-                    label="اسم الطلبية"
-                    type="text"
-                    variant="outlined"                                    
-                    className={classes.textField}
-                    margin="dense"
-                    size="medium"
-                    fullWidth
-                    helperText={displayError(errors.Name)}
-                    error={errors.Name?true:false}  
-                    value={newPack}                     
-                    onChange={handleInputChange}/>
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={()=>{setOpenDialoge(false);}} 
-                         color="secondary">
-                   الغاء
-                </Button>
-                <Button onClick={handleClick} color="primary" autoFocus>
-                   اضافة
-                </Button>
-              </DialogActions>
-    </Dialog>
+            open={openDialog}
+            onClose={()=>{setOpenDialoge(false)}}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <App_BackDrop open={loading}>
+                <CircularProgress className={classes.circularProgress}/>
+            </App_BackDrop>
+            <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+                <Box my={1}>
+                    {errors.G &&
+                        <Alert severity="error">
+                        {displayError(errors.G)}
+                        </Alert>
+                    }
+                </Box> 
+                <TextField                   
+                label="اسم الطلبية"
+                type="text"
+                variant="outlined"                                    
+                className={classes.textField}
+                margin="dense"
+                size="medium"
+                fullWidth
+                helperText={displayError(errors.Name)}
+                error={errors.Name?true:false}  
+                value={newPack}                     
+                onChange={handleInputChange}/>
+            </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+            <Button onClick={()=>{setOpenDialoge(false);}} 
+                        color="secondary">
+                الغاء
+            </Button>
+            <Button onClick={handleClick} color="primary" autoFocus>
+                اضافة
+            </Button>
+            </DialogActions>
+        </Dialog>
      </Box>
  )
 }

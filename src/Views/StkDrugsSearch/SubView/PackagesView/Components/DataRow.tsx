@@ -7,9 +7,9 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import EditIcon from '@material-ui/icons/Edit';
 import RemoveIcon from '@material-ui/icons/Delete';
 
-import {packageService} from '../../../Services';
+import {packageService} from '@Views/StkDrugsSearch/Services/PackageServices';
 import InnerStkPackageTable from "./InnerStkPackageTable";
-import { IStkDrugsPackage ,E_IStkDrugsPackage_Status,E_StkPackageViewSwitcher} from "../../../Interfaces.d";
+import { IStkDrugsPackage ,E_IStkDrugsPackage_Status,E_StkPackageViewSwitcher} from "@Views/StkDrugsSearch/Interfaces.d";
 import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme: Theme) =>createStyles({

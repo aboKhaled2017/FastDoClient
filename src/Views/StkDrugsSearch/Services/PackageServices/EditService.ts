@@ -1,5 +1,5 @@
 import { IHttpObjectHandler, IPackageMetaData, IPackageMetaData_body, IProccessedStkDrugsLocallyOptions,
-     ISearchStockDrugsView_OpenObjStatus, IStkDrugsPackage, I_PaginationReq_To_GetPage } from "./Interfaces.d";
+     ISearchStockDrugsView_OpenObjStatus, IStkDrugsPackage, I_PaginationReq_To_GetPage } from "@Views/StkDrugsSearch/Interfaces";
 import axios from 'axios';
 import { Make_Url_With_PaginationData_Params, MessageAlerter } from "@/Commons/Services";
 const localSettings={

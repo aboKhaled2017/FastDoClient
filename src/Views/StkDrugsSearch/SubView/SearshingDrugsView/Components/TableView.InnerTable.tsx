@@ -1,11 +1,11 @@
 
-import { Table, TableHead, TableRow, TableCell, TableBody, makeStyles, Theme, createStyles, Chip, TableFooter, Button, Box, TableContainer, Paper, withStyles } from '@material-ui/core';
+import { Table, TableHead, TableRow, TableCell, makeStyles, 
+  Theme, createStyles, TableFooter, Button, Box, TableContainer, Paper } from '@material-ui/core';
 import React from 'react';
 import MoreIcon from '@material-ui/icons/More'
-import { ISearchStkDrugData, ISearckStkDrugData_StockDrugsData } from '../../../Interfaces';
-import AddIcon from '@material-ui/icons/Add';
+import { ISearchStkDrugData } from '../../../Interfaces';
+import TableBodyComponent from './TableView.InnerTb.Body'
 import { StyledTableCell } from '.';
-
 
 const useStyles=makeStyles((theme:Theme)=>createStyles({
   root:{
@@ -27,57 +27,10 @@ const useStyles=makeStyles((theme:Theme)=>createStyles({
   tbody:{}
 }));
 
-interface IInnerStkDrugTableProps {
-    rowData:ISearchStkDrugData
+interface IViewProps {
+  rowData:ISearchStkDrugData
 }
-
-const StyledTableRow = withStyles((theme:Theme) => ({
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}))(TableRow);
-
-const JoinToStockStatus=(props:{isJoin:boolean})=>{
-    var text= props.isJoin?'منضم الى هذا المخزن':'غير منضم';
-    return <Chip label={text} color={props.isJoin?"primary":"default"}/>
-}
-
-const TbBodyComp:React.FC<{stocks:ISearckStkDrugData_StockDrugsData[]}>=props=>{
-  const classes=useStyles();
-  return (
-        <TableBody className={classes.tbody}>
-          {props.stocks.map((row,i)=>(
-            <StyledTableRow key={i}>
-              <TableCell>                
-               {row.stockName}
-               </TableCell>
-               <TableCell>
-               {`${row.price} ${'جنيه'}`}
-               </TableCell>
-               <TableCell>
-               {row.discount+" %"}
-               </TableCell>
-               <TableCell>
-                <JoinToStockStatus isJoin={row.isJoinedTo}/>
-               </TableCell>
-               <TableCell>
-                 <Button variant="contained" 
-                         disabled={!row.isJoinedTo}
-                         title={'اضف الى الطلبية'}
-                         endIcon={<AddIcon/>}
-                         className={classes.addToPackageBtn}>
-                     اضف الى الطلبية
-                 </Button>
-               </TableCell>
-            </StyledTableRow>
-          ))}
-         </TableBody>
-  )
-}
-
-const InnerStkDrugTable: React.FC<IInnerStkDrugTableProps> = (props) => {
+const InnerStkDrugTable: React.FC<IViewProps> = (props) => {
   const classes=useStyles();
   const {rowData:{stockCount,stocks}}=props;
   return (
@@ -94,7 +47,7 @@ const InnerStkDrugTable: React.FC<IInnerStkDrugTableProps> = (props) => {
               <StyledTableCell></StyledTableCell>
             </TableRow>
           </TableHead>
-          <TbBodyComp stocks={stocks}/>
+          <TableBodyComponent drugData={props.rowData}/>
 
           {stockCount>stocks.length &&
           <TableFooter>

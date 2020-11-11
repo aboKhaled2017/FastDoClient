@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDownCircleRounded'
+import { CircularProgress } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => createStyles({
@@ -17,21 +18,24 @@ const useStyles = makeStyles((theme) => createStyles({
   },
 }));
 
-type TOptionValue=string|number;
-
+ 
 interface IProps<T>{
     setSelectedVal:(val:T)=>void 
     listItems:T[]
     btnText:string
     style?:React.CSSProperties | undefined
     listItemsMap?:(el:T)=>string
+    hasEdit?:boolean
+    defaulttext?:string
+    loading?:boolean
 }
 function SelectButton<T>(props:IProps<T>){
     const classes = useStyles();
-    const {setSelectedVal,listItems,btnText,style,listItemsMap}=props;
+    const {setSelectedVal,listItems,btnText,style,listItemsMap,hasEdit,defaulttext,loading}=props;
     const [open, setOpen] = React.useState(false);
-    const anchorRef = React.useRef<any>(null);
-    const [btnValue,setBtnValue]=React.useState('');
+    const anchorRef = React.useRef<any>(null);   
+    const [btnValue,setBtnValue]=React.useState(defaulttext?defaulttext:'');
+  
     const handleToggle = () => {
       setOpen((prevOpen) => !prevOpen);
     };
@@ -42,8 +46,9 @@ function SelectButton<T>(props:IProps<T>){
         return;
       }
       if(val){
-        setSelectedVal(val as T);
-      setBtnValue(`(${listItemsMap?listItemsMap(val as T):val})`);
+        if(!hasEdit)
+        setBtnValue(`(${listItemsMap?listItemsMap(val as T):val})`);     
+        setSelectedVal(val as T);       
       }
 
       setOpen(false);
@@ -58,11 +63,11 @@ function SelectButton<T>(props:IProps<T>){
   
     // return focus to the button when we transitioned from !open -> open
     const prevOpen = React.useRef(open);
+
     React.useEffect(() => {
       if (prevOpen.current === true && open === false) {
         anchorRef.current.focus();
-      }
-  
+      }  
       prevOpen.current = open;
     }, [open]);
   
@@ -78,7 +83,8 @@ function SelectButton<T>(props:IProps<T>){
             style={style}
             onClick={handleToggle}
             startIcon={
-                <ArrowDropDownIcon color="primary"/>
+              loading ?<CircularProgress size={15} color="inherit"/>
+                      :<ArrowDropDownIcon color="primary"/>
             }
           >
           {`${btnText} ${btnValue}`}

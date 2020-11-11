@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     activeClass:{
       '& .MuiButtonBase-root':{
-        background:theme.palette.primary.dark
+        background:theme.palette.secondary.dark,
       }
         
     },
@@ -106,7 +106,8 @@ const DisktopHeader=(props: IProps): ReactElement=> {
               </>
               }
               {authenticated && role==UserRoles.stocker && <>
-                <LinkButton text="مخزنى" to="/myprods"/>                   
+                <LinkButton text="مخزنى" to="/myprods"/>   
+                <LinkButton text="طلبات الرواكد" to="/stock/drgs/requests"/>                
               </>
               }
             </Box>

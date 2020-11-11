@@ -13,8 +13,10 @@ import UnAuthorized from './UnAuthorized'
 import ManageStockDrugs  from './ManageStockDrugs/Index';
 import SearchStocksPage from './SearchStocks';
 import SearchAndManageStockDrugs from './StkDrugsSearch';
+import StockDrugsRequests from './StockDrugsRequests'
 export {
     AboutUs,ContactUs,DrugSearch,ManageMyDrugs,Home,
     Login,Profile,Join,Account,NotFound,ForgotPassword,
-    UnAuthorized,ManageStockDrugs,SearchStocksPage,SearchAndManageStockDrugs
+    UnAuthorized,ManageStockDrugs,SearchStocksPage,SearchAndManageStockDrugs,
+    StockDrugsRequests
 }

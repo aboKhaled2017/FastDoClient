@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-pascal-case */
 import { IPagination } from '@/Interfaces/General';
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { E_StkPackageViewSwitcher, IStkDrugsPackage, I_PaginationReq_To_GetPage } from '../../Interfaces.d';
 import axios from 'axios';
 import { Make_Url_With_PaginationData_Params, MessageAlerter } from '@/Commons/Services';
@@ -9,9 +9,10 @@ import { Box, CircularProgress, createStyles, makeStyles, Paper, TableContainer,
 import PaginationView from '../Components/PaginationView';
 import {StkDrugsPackagesTableView,AddNewStkDrugsPackageView} from './Components'
 import {RequestServices} from './Services'
-import {PackageFromHttpService} from '../../Services'
-
-
+import {PackageFromHttpService} from '@Views/StkDrugsSearch/Services/PackageServices'
+import {Set_Pharma_Packages} from '@/Redux/Actions/DataActions'
+import { connect } from 'react-redux';
+ 
 const useStyles =  makeStyles((theme: Theme) =>
 createStyles({
    root: {
@@ -30,12 +31,16 @@ createStyles({
    }
 }));
 
-
 interface IDataStatus{
   loading:boolean 
   rows:IStkDrugsPackage[]
 }
+interface IExportedViewProps{
+  SwitchTo:(v:E_StkPackageViewSwitcher)=>void
+}
+
 interface IViewProps {
+  Set_Pharma_Packages:(packages:any)=>void
   SwitchTo:(v:E_StkPackageViewSwitcher)=>void
 }
 
@@ -67,12 +72,13 @@ const View: React.FC<IViewProps> = props => {
     };
 
     const getPageOfPackages=()=>{
-      setDataStatus(prev=>({...prev,loading:true}));
+       setDataStatus(prev=>({...prev,loading:true}));
        PackageFromHttpService.Create(pagingReq)
         .Subscibe({
           OnSuccess(res){
             setDataStatus({loading:false,rows:res.data});
             setPagingObj({...JSON.parse(res.headers['x-pagination'])});
+            props.Set_Pharma_Packages(res.data);
           },
           OnError(){
             MessageAlerter.alertServerError();
@@ -149,4 +155,6 @@ const View: React.FC<IViewProps> = props => {
   );
 };
 
-export default View;
+export default (connect(null,{Set_Pharma_Packages})(View)) as
+           any as (props:IExportedViewProps)=>ReactElement;
+//export default View;

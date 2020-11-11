@@ -29,7 +29,7 @@ const TableRow_Collapsed_InnerTable: React.FC<ITableRow_Collapsed_InnerTableProp
       <Table className={classes.table} aria-label="collapsible table">
         <TableHead className={classes.thead}>
             <TableRow>
-                <TableCell colSpan={1}>المخزن</TableCell>
+                <TableCell colSpan={1}>اسم الراكد</TableCell>
                 <TableCell>الكمية</TableCell>
                 <TableCell>السعر</TableCell>
                 <TableCell>الخصم</TableCell>

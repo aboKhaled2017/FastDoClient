@@ -69,8 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IProps {
     authenticated:boolean
-    role:string
-    
+    role:string   
     listItems:{text:string,to:string}[]
 }
 
@@ -186,6 +185,14 @@ const MobileHeader=(props: IProps): ReactElement=> {
                         </ListItemIcon>
                         <ListItemText>
                           <Button component={NavLink} to="/myprods" color="primary">مخزنى</Button>
+                        </ListItemText>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemIcon>
+                            <StoreIcon/>
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Button component={NavLink} to="/stock/drgs/requests" color="primary">طلبات الرواكد</Button>
                         </ListItemText>
                       </ListItem>
 

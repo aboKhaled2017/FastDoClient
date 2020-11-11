@@ -3,6 +3,7 @@ import { IUserIdentity, I_UI_Errors, IPh_Signup_Step1, IPh_Signup_Step2, IPh_Sig
 import {I_GetMyDrugsData, I_DrgRequest_I_Received, I_DrgRequest_I_Received_Data, I_DrgRequest_I_Made_Data } from "./DrugsTypes";
 import { I_Drgs_SeachData, I_Drgs_SearchFiltering } from "./SearchDrugsTypes";
 import { IStockDataStore } from "./DataStoreTypes";
+import { IStkDrugsPackage } from '@/Views/StkDrugsSearch/Interfaces';
 
 export interface ISearchDataState{
     loading:boolean 
@@ -17,6 +18,13 @@ export interface IUserState{
     userIdentity:IUserIdentity
    
 }
+export interface IPackagesDataStatus{
+    packages:IStkDrugsPackage[]
+    selectedPackageData:{
+        pack?:IStkDrugsPackage
+        hasEdit:boolean
+    }
+}
 export interface IDataState{
 loading:boolean
 stocksGData:IStockGData[]
@@ -24,6 +32,7 @@ areas:{
     cities:IArea[]
     destricts:IArea[]
 }
+packagesData:IPackagesDataStatus
 myDrugs:I_GetMyDrugsData
 DrgsReq_I_recieved_Data:I_DrgRequest_I_Received_Data
 DrgsReq_I_made_Data:I_DrgRequest_I_Made_Data

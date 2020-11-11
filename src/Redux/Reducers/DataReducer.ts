@@ -5,7 +5,7 @@ import {LOADING_DATA,SET_AREAS_DATA, SET_ERROR_ON_FETCH_DATA, SET_USER_DRUGS_DAT
 
 import { IDataState } from "@/Interfaces/States"
 import { clone } from "@/Helpers/HelperArrayFuncs"
-import { SET_ALL_STOCKS_G_DATA } from '../types';
+import { SET_ALL_STOCKS_G_DATA, SET_PHARMA_PACKAGES, SET_PHARMA_SELECTED_PACKAGE, SET_PHARMA_PACKAGEDATA } from '../types';
 
 
 const initialState:IDataState= {
@@ -47,6 +47,12 @@ const initialState:IDataState= {
             totalCount:0,
             totalPages:0
         }
+    },
+    packagesData:{
+        packages:[],
+        selectedPackageData:{
+            hasEdit:false
+        }
     }
 }
 
@@ -75,7 +81,13 @@ export default (state:IDataState = clone({...initialState}), { type, payload }:{
     case UPDATE_DRGREQUEST_MODEL:
         return {...clone(state),loading:false,DrgsReq_I_recieved_Data:{...clone(payload)}}
     case RESET_DATA_AFTERLOGOUT:
-        return  clone({...initialState,areas:state.areas});
+        return  clone({...clone(state),areas:state.areas});
+    case SET_PHARMA_PACKAGES:
+        return clone({...clone(state),packagesData:{...state.packagesData,packages:payload},loading:false});
+    case SET_PHARMA_SELECTED_PACKAGE:
+        return clone({...clone(state),packagesData:{...state.packagesData,selectedPackageData:{...payload}},loading:false});
+    case SET_PHARMA_PACKAGEDATA:
+        return clone({...clone(state),packagesData:payload,loading:false});
     default:
         return {...clone(state)}
     }

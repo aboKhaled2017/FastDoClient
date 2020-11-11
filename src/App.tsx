@@ -6,7 +6,7 @@ import {Header,Footer, SharedSection} from './components/Layouts'
 import { createMuiTheme, ThemeProvider, Theme, withStyles } from '@material-ui/core';
 import {AboutUs,ContactUs,DrugSearch,Home,Login,ManageMyDrugs,Profile,Join,
   Account,NotFound,ForgotPassword, UnAuthorized,ManageStockDrugs,SearchStocksPage,
-SearchAndManageStockDrugs} from './Views'
+SearchAndManageStockDrugs,StockDrugsRequests} from './Views'
 import {Provider} from 'react-redux'
 import jwtDecode from 'jwt-decode'
 import store from './Redux/store';
@@ -56,7 +56,6 @@ const InitialWorkBeforMountHome=()=>{
     }
   }
 }
-
 export default withStyles(styles) (class App extends Component<IProps>{
   componentWillMount(){
     InitialWorkBeforMountHome();    
@@ -89,6 +88,7 @@ export default withStyles(styles) (class App extends Component<IProps>{
                     <ProtectedRoute  exact path="/requestStkDrugs" component={SearchAndManageStockDrugs} targetRole={UserRoles.pharmacier}/>
                     
                     <ProtectedRoute  exact path="/myprods" component={ManageStockDrugs} targetRole={UserRoles.stocker}/>
+                    <ProtectedRoute  exact path="/stock/drgs/requests" component={StockDrugsRequests} targetRole={UserRoles.stocker}/>
 
                     <Route exact path="/not-found" component={NotFound}/>
                     <Route exact path="/unAuthorized" component={UnAuthorized}/>

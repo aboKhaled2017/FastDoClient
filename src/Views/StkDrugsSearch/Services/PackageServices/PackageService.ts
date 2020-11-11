@@ -1,6 +1,7 @@
 import { MessageAlerter } from '@/Commons/Services';
 import axios from 'axios';
-import { IPackageMetaData_body } from '../../Interfaces';
+import { IPackageMetaData_body } from '@Views/StkDrugsSearch/Interfaces';
+
 interface IOnSavePackageChanges{
     packageId:string 
     body:IPackageMetaData_body
@@ -19,12 +20,13 @@ const _factorPackageBodyBeforeSend=(body:IPackageMetaData_body)=>{
     }
     return body;
 }
+
 const RequestServices:IRequestServices={} as any;
 RequestServices.OnSavePackageChanges=(props)=>{
     const {packageId,body,onComplete,onDone,onError}=props;
     axios.put(`pharmas/stkdrugpackage/${packageId}`,_factorPackageBodyBeforeSend(body))
     .then(res=>{
-    onDone();
+     onDone(res.data);
     })
     .catch(err=>{
     onError?.call(RequestServices);

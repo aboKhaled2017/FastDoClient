@@ -2,17 +2,19 @@ import store from '@/Redux/store';
 import { Box, Snackbar, Typography } from '@material-ui/core';
 import { Alert, AlertProps} from '@material-ui/lab';
 
-import React, { useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 
 import MainView from './MainView';
-import { localSettings } from './Services';
-import GViewContext from './GViewContext';
-import { IGViewContext } from './Interfaces';
-import {PackageFromHttpService} from './Services'
+import { localSettings,PackageFromHttpService} from '@Views/StkDrugsSearch/Services/PackageServices';
+
+import {Set_Pharma_Packages,Set_Loading_Data} from '@/Redux/Actions/DataActions'
+import { connect } from 'react-redux';
 
 const AlertSettings=localSettings.VisitSearchStkDrugsView_Settings;
-interface IProps{
 
+interface IProps{
+  Set_Pharma_Packages:(packages:any)=>void
+  Set_Loading_Data:()=>void
 }
 function MyAlert(props:AlertProps) {
   return <Alert elevation={6} variant="filled" {...props} />;
@@ -27,23 +29,17 @@ const View :React.FC<IProps>=props=>{
       }
       setOpenAlert(false);
     };
-    var context:IGViewContext={
-      loading:true,
-      packagesSettings:{
-        hasEdit:false,
-        packages:[],
-    }};
+
     useEffect(()=>{
       var service=PackageFromHttpService.Create();
+      props.Set_Loading_Data();
       service.Subscibe({
-        OnSuccess:(res=>{
-          context.packagesSettings.packages=res.data; 
-          context.loading=false;      
+        OnSuccess:(res=>{         
+          props.Set_Pharma_Packages(res.data);   
         })
       },false);
     },[])
     return (
-        <GViewContext.Provider value={context}>
               <Box>
                   <Typography align="center" color="primary" variant="h5">
                     صفحة البحث وطلب ادوية من المخازن 
@@ -63,8 +59,8 @@ const View :React.FC<IProps>=props=>{
                     <MainView/>
                   </Box>
               </Box>        
-    </GViewContext.Provider>
     )
 }
 
-export default View;
+export default (connect(null,{Set_Pharma_Packages,Set_Loading_Data})(View)) as
+any as ()=>ReactElement;

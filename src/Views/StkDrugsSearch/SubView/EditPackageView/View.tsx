@@ -1,16 +1,16 @@
 /* eslint-disable react/jsx-pascal-case */
-import { Box, Button, CircularProgress, createStyles, makeStyles, Snackbar, Table, 
-  TableBody, TableCell, TableHead, TableRow, Theme, Typography } from '@material-ui/core';
+import { Box, Button, CircularProgress, createStyles, makeStyles, Snackbar,  Theme, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, ReactElement, useEffect, useState } from 'react';
 import { E_StkPackageViewSwitcher, IStkDrugsPackage, IStkDrugsPackage_FromStock, IStkDrugsPackage_FromStock_DrugData } from '../../Interfaces';
-import {packageService} from '../../Services';
+import {packageService,RequestServices} from '@Views/StkDrugsSearch/Services/PackageServices';
 import { clone } from '@/Helpers/HelperArrayFuncs';
-import {EditStkDrgsPackageStockRowView,EditPackageNameView} from './Components';
+import {EditPackageNameView} from './Components';
 import SendIcon from '@material-ui/icons/Send';
 import { App_BackDrop } from '@/components/Customs';
-import {RequestServices} from './Services'
 import ShowPackageView from '@/Views/StkDrugsSearch/SubView/Shared/ShowPackageView'
+import {Update_Pharma_Package} from '@Redux/Actions/DataActions'
+import { connect } from 'react-redux';
 
 const useStyles =  makeStyles((theme: Theme) =>
 createStyles({
@@ -42,9 +42,13 @@ createStyles({
    }
 }));
 
+interface IExportdViewProps{
+  SwitchTo:(v:E_StkPackageViewSwitcher)=>void
+}
 
 interface IViewProps {
   SwitchTo:(v:E_StkPackageViewSwitcher)=>void
+  Update_Pharma_Package:typeof Update_Pharma_Package
 }
 
 const FlayableComponents:React.FC<{open:boolean,handleClose:any,mess:string}>=props=>{
@@ -61,11 +65,13 @@ const FlayableComponents:React.FC<{open:boolean,handleClose:any,mess:string}>=pr
     </Fragment>
   )
 }
+
 const View: React.FC<IViewProps> = props => {
   const [pack,setPack]=useState<IStkDrugsPackage>(null as any);
   const classes=useStyles();
   const [loading,setLoading]=useState(false);
   const [openAlertMess,setOpenAlertMess]=useState(false);
+  
   const handleClickOpenAlertMess= () => {
     setOpenAlertMess(true);
   };
@@ -116,11 +122,11 @@ const View: React.FC<IViewProps> = props => {
   const OnSavePackageChanges=()=>{
     var body=packageService.GetPackageUpdatedBodyFromPackage(pack);
     setLoading(true);
-    RequestServices.OnSavePackageChanges({
+    props.Update_Pharma_Package({
+      body:body,
       packageId:pack.packageId,
-      body,
-      onComplete:()=>{
-       setLoading(false);
+      onComplete:(data:any)=>{
+        setLoading(false);
       },
       onDone:()=>{
         handleClickOpenAlertMess();
@@ -180,4 +186,5 @@ const View: React.FC<IViewProps> = props => {
   );
 };
 
-export default View;
+export default (connect(null,{Update_Pharma_Package})(View as any)) as 
+any as (props:IExportdViewProps)=>ReactElement;

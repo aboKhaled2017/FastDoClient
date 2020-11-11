@@ -23,19 +23,7 @@ interface IAutoTextBoxProps{
 const AutoTextBox:React.FC<IAutoTextBoxProps>=props=>{
   let {stocksData,loading,GetAllStocksNames,OnSelectedStock}=props;
   const [open, setOpen] = React.useState(false);
-  loading=stocksData.length===0?true:loading;
-  React.useEffect(() => {
-    let active = true;
-
-    (async () => {
-      GetAllStocksNames();
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, []);
-  
+ 
   const onChange=(e: React.ChangeEvent<{}>, value: IStockGData | null)=>{
     OnSelectedStock(value as any);
   }
@@ -54,7 +42,6 @@ const AutoTextBox:React.FC<IAutoTextBoxProps>=props=>{
       getOptionLabel={(option) => option.name}
       options={stocksData}
       onChange={onChange}      
-      loading={loading}
       loadingText="جارى التحميل"
       noOptionsText="لا يوجد هذا الاسم"
       renderInput={(params) => (

@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-pascal-case */
 import { IPagination } from '@/Interfaces/General';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { E_StkPackageViewSwitcher, ISearchStkDrugData, I_PaginationReq_To_GetPage, ISearchDrugsContext, IStkDrugsPackage } from '../../Interfaces';
 import axios from 'axios';
 import { Make_Url_With_PaginationData_Params, MessageAlerter } from '@/Commons/Services';
@@ -10,7 +10,8 @@ import {PaginationView} from './Components';
 import {TableView} from './Components'
 import { IStockGData } from '@/Interfaces/ModelsTypes';
 import SearchDrugsContext from './SearchDrugsContext';
-
+import { GetAllStocksNames} from "@Redux/Actions/DataActions";
+import { connect } from 'react-redux';
 const useStyles =  makeStyles((theme: Theme) =>
 createStyles({
    root: {
@@ -33,8 +34,12 @@ interface IDataStatus{
   loading:boolean 
   rows:ISearchStkDrugData[]
 }
+interface IExportedViewProps {
+  SwitchTo:(v:E_StkPackageViewSwitcher)=>void
+}
 interface IViewProps {
   SwitchTo:(v:E_StkPackageViewSwitcher)=>void
+  GetAllStocksNames:()=>void
 }
 
 const View: React.FC<IViewProps> = props => {
@@ -58,7 +63,8 @@ const View: React.FC<IViewProps> = props => {
    
     const [SelectedStock,setSelectedStock]=useState<IStockGData|undefined>(undefined);
     useEffect(()=>{      
-      getPageOfSearchedStkDrugs();    
+      getPageOfSearchedStkDrugs(); 
+      props.GetAllStocksNames();   
     },[pagingReq.pageNumber,pagingReq.pageSize,pagingReq.s,pagingReq.stockId]);
 
     const handleRefresh=()=>{
@@ -129,4 +135,5 @@ const View: React.FC<IViewProps> = props => {
   );
 };
 
-export default View;
+export default (connect(null,{GetAllStocksNames})(View)) as 
+any as (props:IExportedViewProps)=>ReactElement;

@@ -5,7 +5,6 @@ import React, { useContext } from 'react';
 import { AutocompleteCompForStocks } from '../..';
 import RefreshIcon from '@material-ui/icons/RefreshRounded'
 import  RemoveIcon  from '@material-ui/icons/CloseOutlined';
-import { IStockGData } from '@/Interfaces/ModelsTypes';
 import SelectButtonList from '@/Views/StkDrugsSearch/SubView/Components/SelectButtonList';
 import context from '../../../SearchDrugsContext';
 
