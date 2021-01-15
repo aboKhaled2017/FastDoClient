@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Box, Typography, Grid } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert'
-import SearchView from './Search_View'
+import "./index.scss"
+import{SearchView} from './Components'
 
 interface Props {
     

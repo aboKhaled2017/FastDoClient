@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
@@ -17,18 +16,27 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CancelIcon from '@material-ui/icons/CancelRounded';
 import SendIcon from '@material-ui/icons/SendRounded';
 import { Button, Box, Divider, Chip, Badge, CircularProgress, Grid } from '@material-ui/core';
-import { I_Drgs_SearchModel, I_Drgs_Search_ReturnModelAfterAdded } from '../../../Interfaces/SearchDrugsTypes';
-import { getDrugUnitType, Get_LzDrgStateFormate } from '../Services';
-import { displayDrugValidDateAs_MMYYYY_Formate, Get_DrgPriceType_StrFormate } from '../../../Commons/Services';
-import { E_LzDrgRequestStatus } from '../../../Interfaces/DrugsTypes';
-import {Update_DrgsSearch_Row_AfetrCancelReq,Update_DrgsSearch_Row_AfetrPostReq} from '../../../Redux/Actions/searchDataActions'
-import axios from 'axios'
+import { I_Drgs_SearchModel, I_Drgs_Search_ReturnModelAfterAdded } from '@/Interfaces/SearchDrugsTypes';
+import { FuncsService} from '../../Services';
+import { displayDrugValidDateAs_MMYYYY_Formate, Get_DrgPriceType_StrFormate } from '@/Commons/Services';
+import { E_LzDrgRequestStatus } from '../../../../Interfaces/DrugsTypes';
+import {Update_DrgsSearch_Row_AfetrCancelReq,Update_DrgsSearch_Row_AfetrPostReq} from '@Redux/Actions/searchDataActions'
 import { connect } from 'react-redux';
+import {RequestsService} from '../../Services'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 600,
     background:'#fafafa'
+  },
+  CardActions:{
+    paddingTop:0
+  },
+  CardContent:{
+    paddingBottom:0
+  },
+  detailsBtn:{
+    padding:0
   },
   cardHeader:{
     '& .MuiCardHeader-title':{
@@ -94,47 +102,27 @@ const SearchCard_View=(props:IProps)=> {
   };
   const handleMake_ByRequest=()=>{
     setLoading(true);
-    axios.post(`/phrdrgrequests/${model.id}`)
-    .then(res=>{
-        setLoading(false);
-        Update_DrgsSearch_Row_AfetrPostReq(res.data);
-    })
-    .catch(err=>{
+    RequestsService.SendDrugRequest({
+     id:model.id,
+     onDone(data:any){
+      Update_DrgsSearch_Row_AfetrPostReq(data);
+     },
+     onComplete(){
       setLoading(false);
-    if(err.status==404){
-      alert('حدثت مشكلة اثناء معالجة الطلب'); 
-        return;
-    }
-    if(!err.response) 
-    {
-        alert("خطأ فى الاتصال بالسيرفر");
-        return;
-    }
-    var errorsResult=err.response.data.errors;
-    alert(JSON.stringify(errorsResult))
-   })
+     }
+    });   
   }
   const handleCancel_ByRequest=()=>{
     setLoading(true);
-    axios.delete(`/phrdrgrequests/made/${model.requestId}`)
-    .then(res=>{
-        setLoading(false);
+    RequestsService.CancelDrugRequest({
+      id:model.requestId as any,
+      onDone(data:any){
         Update_DrgsSearch_Row_AfetrCancelReq(model.id);
-    })
-    .catch(err=>{
-      setLoading(false);
-    if(err.status==404){
-      alert('حدثت مشكلة اثناء معالجة الطلب'); 
-        return;
-    }
-    if(!err.response) 
-    {
-        alert("خطأ فى الاتصال بالسيرفر");
-        return;
-    }
-    var errorsResult=err.response.data.errors;
-    alert(JSON.stringify(errorsResult))
-   })
+      },
+      onComplete(){
+       setLoading(false);
+      }
+     });  
   }
   const RequestButton= ()=>{
     if(!model.isMadeRequest)
@@ -171,9 +159,9 @@ const SearchCard_View=(props:IProps)=> {
          <RequestButton/>
         }
         title={`${model.name} / ${model.type}`}
-        subheader={`${model.quantity} ${getDrugUnitType(model.unitType)} بخصم ${model.discount} %`}
+        subheader={`${model.quantity} ${FuncsService.getDrugUnitType(model.unitType)} بخصم ${model.discount} %`}
       />
-      <CardContent>
+      <CardContent className={classes.CardContent}>
         <Box mt={-1}>
           <Grid container>
                <Grid item sm={6}>
@@ -207,11 +195,20 @@ const SearchCard_View=(props:IProps)=> {
            {model.pharmLocation}
           </Typography>
         </Box>
+        <Box display="flex" mt={1}>
+          <Typography variant="subtitle1" color="primary">
+           عدد مرات طلب هذا الراكد
+          </Typography>
+          <Divider variant="middle" flexItem orientation="vertical"/>
+          <Typography variant="body1" color="textPrimary">
+          <Chip color="primary" label={model.requestsCount>0?model.requestsCount:'لا يوجد'}/>
+          </Typography>
+        </Box>
         <Typography variant="body1" color="textSecondary" component="p">
          {model.desc}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions disableSpacing className={classes.CardActions}>
         <div style={{display:'none'}}>
         <IconButton aria-label="add to favorites" title="اضافة الى اهتماماتك">
           <FavoriteIcon titleAccess="add to my favorites"/>
@@ -222,14 +219,15 @@ const SearchCard_View=(props:IProps)=> {
         </div>
         <IconButton
           title="التفاصيل"
-          className={clsx(classes.expand, {
+          className={clsx(classes.expand,classes.detailsBtn, {
             [classes.expandOpen]: expanded,
           })}
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
+           
         >
-          <ExpandMoreIcon />
+          <ExpandMoreIcon/>
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -243,7 +241,7 @@ const SearchCard_View=(props:IProps)=> {
                   <td>النوع : {model.type}</td>
               </tr>
               <tr className={classes.tr}>
-              <td>{Get_LzDrgStateFormate(model)}</td>
+              <td>{FuncsService.Get_LzDrgStateFormate(model)}</td>
               </tr>
               <tr className={classes.tr}>
               <td>تاريخ الصلاحية : {model.valideDate}</td>

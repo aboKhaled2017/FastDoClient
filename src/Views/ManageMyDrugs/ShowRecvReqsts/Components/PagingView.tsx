@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {GetMy_DrgsReqs_IRecieved_Page} from '../../../../Redux/Actions/DataActions'
+import {GetMy_DrgsReqs_IRecieved_Page} from '@Redux/Actions/DataActions'
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles, Theme, createStyles, Grid, Box, Typography, Button, Badge, Chip, Avatar } from '@material-ui/core'
-import { IDataState } from '../../../../Interfaces/States';
+import { IDataState } from '@/Interfaces/States';
 import RefreshIcon from '@material-ui/icons/RefreshRounded'
 import SelectPsMenu from './Select_PS_Menu'
-import { I_Drug_Pagination, I_PaginationReq_To_GetDrugs } from '../../../../Interfaces/DrugsTypes';
+import { I_Drug_Pagination, I_PaginationReq_To_GetDrugs } from '@/Interfaces/DrugsTypes';
 interface IProps {
     GetMy_DrgsReqs_IRecieved_Page:(page:I_PaginationReq_To_GetDrugs)=>void
     pagingData:I_Drug_Pagination

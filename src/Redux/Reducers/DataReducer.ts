@@ -5,7 +5,7 @@ import {LOADING_DATA,SET_AREAS_DATA, SET_ERROR_ON_FETCH_DATA, SET_USER_DRUGS_DAT
 
 import { IDataState } from "@/Interfaces/States"
 import { clone } from "@/Helpers/HelperArrayFuncs"
-import { SET_ALL_STOCKS_G_DATA, SET_PHARMA_PACKAGES, SET_PHARMA_SELECTED_PACKAGE, SET_PHARMA_PACKAGEDATA } from '../types';
+import { SET_ALL_STOCKS_G_DATA, SET_PHARMA_PACKAGES, SET_PHARMA_SELECTED_PACKAGE, SET_PHARMA_PACKAGEDATA, SET_STCOK_DRUGS_PACKAGES_REQUESTS } from '../types';
 
 
 const initialState:IDataState= {
@@ -14,6 +14,7 @@ const initialState:IDataState= {
         cities:[],
         destricts:[]
     },
+    stockDrugsRequests:[],
     stocksGData:[],
     myDrugs:{
         rows:[],
@@ -88,6 +89,8 @@ export default (state:IDataState = clone({...initialState}), { type, payload }:{
         return clone({...clone(state),packagesData:{...state.packagesData,selectedPackageData:{...payload}},loading:false});
     case SET_PHARMA_PACKAGEDATA:
         return clone({...clone(state),packagesData:payload,loading:false});
+    case SET_STCOK_DRUGS_PACKAGES_REQUESTS:
+        return  clone({...clone(state),stockDrugsRequests:payload,loading:false});
     default:
         return {...clone(state)}
     }

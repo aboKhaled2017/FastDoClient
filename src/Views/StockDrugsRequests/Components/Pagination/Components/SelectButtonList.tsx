@@ -8,37 +8,43 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDownCircleRounded'
-import { connect } from 'react-redux';
-import { ISearchDataState } from '../../../Interfaces/States';
-import { I_Drgs_SearchPaging } from '../../../Interfaces/SearchDrugsTypes';
-import {Set_DrgsSearch_PageNumber,Set_DrgsSearch_PageSize} from '../../../Redux/Actions/searchDataActions'
+
+import { IPagination } from '@/Interfaces/General';
+
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2)
   },
 }));
-interface IProps{
-  Set_DrgsSearch_PageNumber:(val:number)=>void 
-  Set_DrgsSearch_PageSize:(val:number)=>void 
-  pagingData:I_Drgs_SearchPaging
+
+type TOptionValue=string|number;
+
+interface IProps<T extends TOptionValue>{
+    setSelectedVal:(val:T)=>void 
+    pagingData:IPagination
+    listItems:T[]
+    btnText:string
+    style?:React.CSSProperties | undefined
+    listItemsMap?:(el:T)=>string
 }
-const  SelectPageSize_Menu=(props:IProps)=> {
+function SelectButton<T extends TOptionValue>(props:IProps<T>){
     const classes = useStyles();
-    const {pagingData,Set_DrgsSearch_PageNumber,Set_DrgsSearch_PageSize}=props;
+    const {pagingData,setSelectedVal,listItems,btnText,style,listItemsMap}=props;
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<any>(null);
-  
+    const [btnValue,setBtnValue]=React.useState('');
     const handleToggle = () => {
       setOpen((prevOpen) => !prevOpen);
     };
   
-    const handleClick = (e:any,val:number=0) => {      
+    const handleClick = (e:any,val?:T) => {      
       if (anchorRef.current && anchorRef.current.contains(e.target)) {
         return;
       }
-      if(val){
-        Set_DrgsSearch_PageSize(val);
-      }
+
+      setSelectedVal(val as T);
+      setBtnValue(`(${listItemsMap?listItemsMap(val as T):val})`);
+
       setOpen(false);
     };
   
@@ -68,24 +74,27 @@ const  SelectPageSize_Menu=(props:IProps)=> {
             variant="contained"
             color="inherit"
             size="small"
+            style={style}
             onClick={handleToggle}
             startIcon={
                 <ArrowDropDownIcon color="primary"/>
             }
           >
-          حجم الصفحة ({pagingData.pageSize})
+          {`${btnText} ${btnValue}`}
           </Button>
-          <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+          <Popper open={open} anchorEl={anchorRef.current} 
+                  role={undefined} transition 
+                  >
             {({ TransitionProps, placement }) => (
-              <Grow
+              <Grow 
                 {...TransitionProps}
                 style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
               >
                 <Paper>
                   <ClickAwayListener onClickAway={e=>handleClick(e)}>
                     <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    {[2,4,5,7,9,10,15,20].map(el=>(
-                        <MenuItem  onClick={e=>handleClick(e,el)}>{el}</MenuItem>
+                    {listItems.map(el=>(
+                        <MenuItem  onClick={e=>handleClick(e,el)}>{listItemsMap?listItemsMap(el):el}</MenuItem>
                     ))}
                     </MenuList>
                   </ClickAwayListener>
@@ -96,7 +105,5 @@ const  SelectPageSize_Menu=(props:IProps)=> {
       </>
     );
 }
-  
-export default connect((state:{searchData:ISearchDataState})=>({
-    pagingData:state.searchData.searchDataTable.pagination
-    }),{Set_DrgsSearch_PageNumber,Set_DrgsSearch_PageSize})(SelectPageSize_Menu) as any;
+
+export default SelectButton;

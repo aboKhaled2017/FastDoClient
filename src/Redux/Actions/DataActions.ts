@@ -1,4 +1,4 @@
-import { LOADING_DATA, SET_AREAS_DATA, SET_ERROR_ON_FETCH_DATA, SET_USER_DRUGS_DATA, UPDATE_LZ_DRG, STOP_LOADING_DATA, SET_USER_DRUGS_REQS_RECIEVED_DATA, UPDATE_DRGREQUEST_MODEL, SET_USER_DRUGS_REQS_MADE_DATA, SET_ALL_STOCKS_G_DATA, SET_PHARMA_PACKAGES, SET_PHARMA_SELECTED_PACKAGE, SET_PHARMA_PACKAGEDATA } from '../types';
+import { LOADING_DATA, SET_AREAS_DATA, SET_ERROR_ON_FETCH_DATA, SET_USER_DRUGS_DATA, UPDATE_LZ_DRG, STOP_LOADING_DATA, SET_USER_DRUGS_REQS_RECIEVED_DATA, UPDATE_DRGREQUEST_MODEL, SET_USER_DRUGS_REQS_MADE_DATA, SET_ALL_STOCKS_G_DATA, SET_PHARMA_PACKAGES, SET_PHARMA_SELECTED_PACKAGE, SET_PHARMA_PACKAGEDATA, SET_STCOK_DRUGS_PACKAGES_REQUESTS } from '../types';
 import axios from 'axios'
 import { Dispatch, AnyAction } from 'redux'
 import { IArea } from '@/Interfaces/ModelsTypes';
@@ -9,6 +9,7 @@ import { IPackagesDataStatus } from '../../Interfaces/States';
 import { IPackageMetaData_body } from '@/Views/StkDrugsSearch/Interfaces';
 import {getBodyFromPackage} from '@/Services/PackageServices'
 import { MessageAlerter } from '@/Commons/Services';
+import { IStkDrugsRequest } from '@/Interfaces/StockDrgsRequestsTypes';
 export const GetAreas=()=>(dispatch:Dispatch<AnyAction>|any)=>{
     dispatch({type:LOADING_DATA});
     axios.get('/areas/all')
@@ -208,4 +209,7 @@ export const Update_Pharma_Package=(props:{
     .finally(()=>{
      onComplete();
     });
+}
+export const Set_Stock_Drugs_Requests=(requests:IStkDrugsRequest[])=>(dispatch:Dispatch<AnyAction>|any)=>{
+  dispatch({type:SET_STCOK_DRUGS_PACKAGES_REQUESTS,payload:requests});
 }

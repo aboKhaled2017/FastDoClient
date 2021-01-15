@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {Set_DrgsSearch_PageNumber_And_PageSize} from '../../../Redux/Actions/searchDataActions'
+import {Set_DrgsSearch_PageNumber_And_PageSize} from '@Redux/Actions/searchDataActions'
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles, Theme, createStyles, Grid, Box, Typography, Button, Badge, Chip, Avatar } from '@material-ui/core'
 import RefreshIcon from '@material-ui/icons/RefreshRounded'
-import SelectPsMenu from './Select_PS_Menu'
-import { ISearchDataState } from '../../../Interfaces/States';
-import { I_Drgs_SearchPaging, I_Drgs_SearchPaging_Parmas } from '../../../Interfaces/SearchDrugsTypes';
+import SelectBtnMenu from '@/components/Buttons/ButtonList/Button'
+import { ISearchDataState } from '@/Interfaces/States';
+import { I_Drgs_SearchPaging, I_Drgs_SearchPaging_Parmas } from '@/Interfaces/SearchDrugsTypes';
 interface IProps {
     Set_DrgsSearch_PageNumber_And_PageSize:(pageNumber:number,pageSize:number)=>void
     pagingData:  I_Drgs_SearchPaging 
@@ -34,24 +34,24 @@ const PaginationView =(props:IProps)=>{
     }
     return (<Box className={classes.pagination}>
                 <Grid container>
-                <Grid item sm={5}>
-                    <Pagination   
-                            
-                            count={totalPages}
-                            page={currentPage}
-                            hideNextButton={nextPageLink==null}
-                            hidePrevButton={prevPageLink==null}
-                            onChange={handleChanage}
-                            color="primary" /> 
-                    <Box mt={1}>
-                        <Chip style={{margin:'auto 1px'}} 
-                              avatar={<Avatar style={{color:'red'}}>{totalCount}</Avatar>}
-                              label={`اجمالى العناصر`}/>
-                        <Chip label={`اجمالى الصفحات`}
-                              avatar={<Avatar style={{color:'red'}}>{totalPages}</Avatar>}/>         
-                    </Box>
-                </Grid>
-                <Grid item sm={7}>
+                    <Grid item sm={5} xs={12}>
+                        <Pagination   
+                                
+                                count={totalPages}
+                                page={currentPage}
+                                hideNextButton={nextPageLink==null}
+                                hidePrevButton={prevPageLink==null}
+                                onChange={handleChanage}
+                                color="primary" /> 
+                        <Box mt={1}>
+                            <Chip style={{margin:'auto 1px'}} 
+                                avatar={<Avatar style={{color:'red'}}>{totalCount}</Avatar>}
+                                label={`اجمالى العناصر`}/>
+                            <Chip label={`اجمالى الصفحات`}
+                                avatar={<Avatar style={{color:'red'}}>{totalPages}</Avatar>}/>         
+                        </Box>
+                    </Grid>
+                    <Grid item  sm={7} xs={12}>
                     <Box display="inline-block">
                        <Button size="small" variant="contained" color="primary"
                         endIcon={<RefreshIcon/>}
@@ -64,7 +64,9 @@ const PaginationView =(props:IProps)=>{
                        
                     </Box>
                     <Box display="inline-block" mx={1}>
-                      <SelectPsMenu/>
+                      <SelectBtnMenu<number> btnText="حجم الصفحة"
+                        listItems={[2,4,6,8,10]}
+                        setSelectedVal={num=>{props.Set_DrgsSearch_PageNumber_And_PageSize(1,num)}}/>
                     </Box>
                 </Grid>
                 </Grid>

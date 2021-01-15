@@ -4,6 +4,7 @@ import {I_GetMyDrugsData, I_DrgRequest_I_Received, I_DrgRequest_I_Received_Data,
 import { I_Drgs_SeachData, I_Drgs_SearchFiltering } from "./SearchDrugsTypes";
 import { IStockDataStore } from "./DataStoreTypes";
 import { IStkDrugsPackage } from '@/Views/StkDrugsSearch/Interfaces';
+import { IStkDrugsRequest } from './StockDrgsRequestsTypes';
 
 export interface ISearchDataState{
     loading:boolean 
@@ -32,6 +33,7 @@ areas:{
     cities:IArea[]
     destricts:IArea[]
 }
+stockDrugsRequests:IStkDrugsRequest[]
 packagesData:IPackagesDataStatus
 myDrugs:I_GetMyDrugsData
 DrgsReq_I_recieved_Data:I_DrgRequest_I_Received_Data
